@@ -9,26 +9,24 @@ import spaceship from '../assets/spaceship-256.png'
 
 const Frisbee = () => {
   const [isFlying, setIsFlying] = useState(false)
+  const [showUfoTimer, setShowUfoTimer] = useState(false)
   const [showUfo, setShowUfo] = useState(false)
 
   useEffect(() => {
-    if (isFlying) {
+    if (isFlying && !showUfoTimer) {
+      setShowUfoTimer(true)
       setTimeout(() => {
         console.log('showing ufo')
         setShowUfo(true)
       }, 3000)
-    } else {
-      setShowUfo(false)
     }
-  }, [isFlying])
+  }, [isFlying, showUfoTimer])
 
   const ufoSpring = useSpring({
-    from: 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)',
-    to: showUfo ? 
-      'translateX(-20vw) translateY(20vh) rotate(280deg) scaleX(-1)' 
-      : 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)',
-    config: { duration: 3000 },
-    reset: true
+    from: { transform: 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)' },
+    to: showUfo  ? { transform: 'translateX(-20vw) translateY(20vh) rotate(280deg) scaleX(-1)' } : { transform: 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)' },
+    config: { duration: 2500 },
+    reset: false
   })
 
   const frisbeeSpring = useSpring({
@@ -146,7 +144,7 @@ const Frisbee = () => {
         style={{
           ...ufoSpring,
           position: 'absolute',
-          top: '20vh',
+          top: '0vh',
           width: '15vh',
           height: '15vh',
           backgroundImage: `url(${spaceship})`,
@@ -155,29 +153,7 @@ const Frisbee = () => {
           backgroundRepeat: 'no-repeat',
           zIndex: 4
         }}
-      >
-        {/* UFO lights */}
-        <div style={{
-          position: 'absolute',
-          bottom: '10%',
-          left: '10%',
-          width: '80%',
-          height: '10%',
-          display: 'flex',
-          justifyContent: 'space-around'
-        }}>
-          {[...Array(5)].map((_, i) => (
-            <div key={i} style={{
-              width: '10%',
-              height: '100%',
-              background: '#f1c40f',
-              borderRadius: '50%',
-              animation: 'pulse 1s ease-in-out infinite alternate',
-              animationDelay: `${i * 0.2}s`
-            }} />
-          ))}
-        </div>
-      </animated.div>
+      />
 
       {/* Content container */}
       <div style={{
@@ -202,8 +178,6 @@ const Frisbee = () => {
           borderRadius: '20px',
           margin: '20px',        
         }}>
-
-
           <div style={{
             position: 'absolute',
             bottom: '10vh',
