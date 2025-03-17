@@ -1,23 +1,43 @@
 import { useSpring, animated } from '@react-spring/web'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './Frisbee.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
 import lop from '../assets/lop.png'
 import player from '../assets/player-character.png'
 import spaceship from '../assets/spaceship-256.png'
+import spaceshipSound from '../assets/spaceship-flight-crash.ogg'
 
 const Frisbee = () => {
   const [isFlying, setIsFlying] = useState(false)
   const [showUfoTimer, setShowUfoTimer] = useState(false)
   const [showUfo, setShowUfo] = useState(false)
+  const [showText, setShowText] = useState(true)
+  const audioRef = useRef(new Audio(spaceshipSound))
 
   useEffect(() => {
+    const audio = audioRef.current
+    return () => {
+      audio.pause()
+      audio.currentTime = 0
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showUfo) {
+      setShowText(false)
+    }
+  }, [showUfo])
+
+  useEffect(() => {
+    const audio = audioRef.current
     if (isFlying && !showUfoTimer) {
       setShowUfoTimer(true)
       setTimeout(() => {
         console.log('showing ufo')
         setShowUfo(true)
+        audio.currentTime = 0
+        audio.play()
       }, 3000)
     }
   }, [isFlying, showUfoTimer])
@@ -61,7 +81,7 @@ const Frisbee = () => {
         top: 0,
         left: 0,
         animation: 'panBackground 240s linear infinite'
-      }} />
+      }} />``
 
       {/* Planet foreground */}
       <div style={{
@@ -179,6 +199,7 @@ const Frisbee = () => {
           margin: '20px',        
         }}>
           <div style={{
+            display: showText ? 'block' : 'none',
             position: 'absolute',
             bottom: '10vh',
             left: '40vh',
