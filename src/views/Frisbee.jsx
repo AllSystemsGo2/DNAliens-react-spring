@@ -7,12 +7,14 @@ import lop from '../assets/lop.png'
 import player from '../assets/player-character.png'
 import spaceship from '../assets/spaceship-256.png'
 import spaceshipSound from '../assets/spaceship-flight-crash.ogg'
+import crash from '../assets/crash.png'
 
 const Frisbee = () => {
   const [isFlying, setIsFlying] = useState(false)
   const [showUfoTimer, setShowUfoTimer] = useState(false)
   const [showUfo, setShowUfo] = useState(false)
   const [showText, setShowText] = useState(true)
+  const [showCrash, setShowCrash] = useState(false)
   const audioRef = useRef(new Audio(spaceshipSound))
 
   useEffect(() => {
@@ -26,6 +28,9 @@ const Frisbee = () => {
   useEffect(() => {
     if (showUfo) {
       setShowText(false)
+      setTimeout(() => {
+        setShowCrash(true)
+      }, 3250)
     }
   }, [showUfo])
 
@@ -81,7 +86,7 @@ const Frisbee = () => {
         top: 0,
         left: 0,
         animation: 'panBackground 240s linear infinite'
-      }} />``
+      }} />
 
       {/* Planet foreground */}
       <div style={{
@@ -172,6 +177,25 @@ const Frisbee = () => {
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           zIndex: 4
+        }}
+      />
+
+      {/* Crash Site */}
+      <div 
+        className="crash-image"
+        style={{
+          display: showCrash ? 'block' : 'none',
+          position: 'absolute',
+          left: '0vh',
+          bottom: '40vh',
+          width: '45vh',
+          height: '45vh',
+          backgroundImage: `url(${crash})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 3,
+          cursor: 'pointer'
         }}
       />
 
