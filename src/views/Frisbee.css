@@ -1,0 +1,30 @@
+@keyframes pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.6;
+    box-shadow: 0 0 5px #f1c40f;
+  }
+  to {
+    transform: scale(1.2);
+    opacity: 1;
+    box-shadow: 0 0 15px #f1c40f;
+  }
+}
+
+@keyframes panBackground {
+  from {
+    background-position: 0% 25%;
+  }
+  to {
+    background-position: -100% 25%;
+  }
+}
+
+@keyframes lopBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
