@@ -1,34 +1,59 @@
 import { useSpring, animated } from '@react-spring/web'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Frisbee.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
 import lop from '../assets/lop.png'
 import player from '../assets/player-character.png'
 import spaceship from '../assets/spaceship-256.png'
+import spaceshipSound from '../assets/spaceship-flight-crash.ogg'
+import crash from '../assets/crash.png'
 
 const Frisbee = () => {
+  const navigate = useNavigate()
   const [isFlying, setIsFlying] = useState(false)
+  const [showUfoTimer, setShowUfoTimer] = useState(false)
   const [showUfo, setShowUfo] = useState(false)
+  const [showText, setShowText] = useState(true)
+  const [showCrash, setShowCrash] = useState(false)
+  const audioRef = useRef(new Audio(spaceshipSound))
 
   useEffect(() => {
-    if (isFlying) {
+    const audio = audioRef.current
+    return () => {
+      audio.pause()
+      audio.currentTime = 0
+    }
+  }, [])
+
+  useEffect(() => {
+    if (showUfo) {
+      setShowText(false)
+      setTimeout(() => {
+        setShowCrash(true)
+      }, 3250)
+    }
+  }, [showUfo])
+
+  useEffect(() => {
+    const audio = audioRef.current
+    if (isFlying && !showUfoTimer) {
+      setShowUfoTimer(true)
       setTimeout(() => {
         console.log('showing ufo')
         setShowUfo(true)
+        audio.currentTime = 0
+        audio.play()
       }, 3000)
-    } else {
-      setShowUfo(false)
     }
-  }, [isFlying])
+  }, [isFlying, showUfoTimer])
 
   const ufoSpring = useSpring({
-    from: 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)',
-    to: showUfo ? 
-      'translateX(-20vw) translateY(20vh) rotate(280deg) scaleX(-1)' 
-      : 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)',
-    config: { duration: 3000 },
-    reset: true
+    from: { transform: 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)' },
+    to: showUfo  ? { transform: 'translateX(-20vw) translateY(20vh) rotate(280deg) scaleX(-1)' } : { transform: 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)' },
+    config: { duration: 2500 },
+    reset: false
   })
 
   const frisbeeSpring = useSpring({
@@ -146,7 +171,7 @@ const Frisbee = () => {
         style={{
           ...ufoSpring,
           position: 'absolute',
-          top: '20vh',
+          top: '0vh',
           width: '15vh',
           height: '15vh',
           backgroundImage: `url(${spaceship})`,
@@ -155,29 +180,27 @@ const Frisbee = () => {
           backgroundRepeat: 'no-repeat',
           zIndex: 4
         }}
-      >
-        {/* UFO lights */}
-        <div style={{
+      />
+
+      {/* Crash Site */}
+      <div 
+        className="crash-image"
+        style={{
+          display: showCrash ? 'block' : 'none',
           position: 'absolute',
-          bottom: '10%',
-          left: '10%',
-          width: '80%',
-          height: '10%',
-          display: 'flex',
-          justifyContent: 'space-around'
-        }}>
-          {[...Array(5)].map((_, i) => (
-            <div key={i} style={{
-              width: '10%',
-              height: '100%',
-              background: '#f1c40f',
-              borderRadius: '50%',
-              animation: 'pulse 1s ease-in-out infinite alternate',
-              animationDelay: `${i * 0.2}s`
-            }} />
-          ))}
-        </div>
-      </animated.div>
+          left: '0vh',
+          bottom: '40vh',
+          width: '45vh',
+          height: '45vh',
+          backgroundImage: `url(${crash})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 5,
+          cursor: 'pointer'
+        }}
+        onClick={() => navigate('/crash-site')}
+      />
 
       {/* Content container */}
       <div style={{
@@ -202,9 +225,8 @@ const Frisbee = () => {
           borderRadius: '20px',
           margin: '20px',        
         }}>
-
-
           <div style={{
+            display: showText ? 'block' : 'none',
             position: 'absolute',
             bottom: '10vh',
             left: '40vh',
