@@ -67,8 +67,27 @@ function App() {
         <Routes>
           <Route path="/" element={
             <div>
-              <h1>Animated Lottie Demo</h1>
-              <AnimatedLottie />
+              <h3>This is a simple app demonstrating a combination of tools & technologies. All pages have sound effects.</h3>
+              <h3>Click <Link to="/frisbee">Frisbee Game</Link> to begin. You will be led to Crash Site through narrative interaction.</h3>
+              <div>
+                <h2>Code base</h2>
+                <li>React SPA in JSX</li>
+                <li>React Spring</li>
+                <li>Simple CSS Animations</li>
+                <li>React Audio</li>
+                <li>Lottie</li>
+              </div>
+              <div>
+                <h2>Art Tools & Resources</h2>
+                <li>Gemini Flash 2.0 - static image generation</li>
+                <li>PixelBay - open source, royalty-free sound library </li>
+                <li>Krita - open source image editor</li>
+                <li>Audacity - open source audio editor</li>
+              </div>
+              <div>
+                <h2>Code Gen Tools</h2>
+                <li>Claude 3.5 Sonnet</li>
+              </div>
             </div>
           } />
           <Route path="/frisbee" element={<Frisbee />} />

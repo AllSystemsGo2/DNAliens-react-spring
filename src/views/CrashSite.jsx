@@ -43,6 +43,8 @@ const CrashSite = () => {
   })
 
   useEffect(() => {
+    setIsPlaying(true)
+
     const speechTimer = setTimeout(() => {
       setShowSpeechBubble(true)
     }, 3000)
@@ -56,6 +58,10 @@ const CrashSite = () => {
       clearTimeout(promptTimer)
     }
   }, [])
+
+  useEffect(() => {
+    if(!isLoading) setIsPlaying(true)
+  }, [isLoading])
 
   useEffect(() => {
     const audio = audioRef.current
