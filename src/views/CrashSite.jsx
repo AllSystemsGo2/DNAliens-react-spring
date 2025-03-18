@@ -206,7 +206,7 @@ const CrashSite = () => {
           }}
           style={{
             top: '5vh',
-            left: '50%',
+            left: '50vh',
             transform: 'translateX(-50%)',
             zIndex: 3
           }}
