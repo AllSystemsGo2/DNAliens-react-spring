@@ -1,0 +1,125 @@
+.multiple-choice-prompt {
+  position: absolute;
+  background: rgba(13, 12, 34, 0.9);
+  border: 2px solid rgba(66, 220, 255, 0.4);
+  border-radius: 15px;
+  padding: 20px 25px;
+  color: #fff;
+  font-family: monospace;
+  text-align: left;
+  animation: fadeIn 1s ease-out;
+  text-shadow: 0 0 10px rgba(66, 220, 255, 0.3);
+  letter-spacing: 1px;
+  backdrop-filter: blur(5px);
+  min-width: 250px;
+  box-shadow: 0 0 20px rgba(66, 220, 255, 0.1);
+}
+
+.question-text {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(66, 220, 255, 0.2);
+}
+
+.choices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.choice-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.choice-label:hover {
+  background: rgba(66, 220, 255, 0.1);
+}
+
+/* Hide default radio button */
+.choice-label input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+
+/* Custom radio button */
+.radio-custom {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(66, 220, 255, 0.4);
+  border-radius: 50%;
+  margin-right: 12px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Radio button inner circle */
+.radio-custom::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #42dcff;
+  transition: transform 0.2s ease;
+  box-shadow: 0 0 10px rgba(66, 220, 255, 0.5);
+}
+
+/* Show inner circle when radio is checked */
+.choice-label input[type="radio"]:checked + .radio-custom::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.choice-label input[type="radio"]:checked + .radio-custom {
+  border-color: #42dcff;
+  box-shadow: 0 0 15px rgba(66, 220, 255, 0.3);
+}
+
+.choice-text {
+  font-size: 1em;
+  transition: color 0.3s ease;
+}
+
+.choice-label:hover .choice-text {
+  color: #42dcff;
+}
+
+.submit-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: rgba(66, 220, 255, 0.1);
+  border: 1px solid rgba(66, 220, 255, 0.4);
+  border-radius: 8px;
+  color: #fff;
+  font-family: monospace;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.5s ease-out;
+  width: 100%;
+}
+
+.submit-button:hover {
+  background: rgba(66, 220, 255, 0.2);
+  box-shadow: 0 0 20px rgba(66, 220, 255, 0.3);
+  transform: scale(1.02);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

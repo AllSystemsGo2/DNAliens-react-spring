@@ -8,11 +8,13 @@ import lop from '../assets/lop.png'
 import player from '../assets/player-character-2.png'
 import spaceshipRustling from '../assets/spaceship-rustling.ogg'
 import SpeechBubble from '../components/SpeechBubble'
+import MultipleChoicePrompt from '../components/MultipleChoicePrompt'
 
 const CrashSite = () => {
   const [isPlaying, setIsPlaying] = useState(true)
   const [volume, setVolume] = useState(0.5)
   const [isLoading, setIsLoading] = useState(true)
+  const [showPrompt, setShowPrompt] = useState(true)
   const audioRef = useRef(new Audio(spaceshipRustling))
 
   useEffect(() => {
@@ -111,8 +113,8 @@ const CrashSite = () => {
         mainText="Something's in there..."
         subText=""
         style={{
-          bottom: '52vh',
-          right: '8vh',
+          bottom: '48vh',
+          right: '4vh',
           zIndex: 3,
           minWidth: '200px',
           boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
@@ -122,7 +124,7 @@ const CrashSite = () => {
       {/* Lop foreground */}
       <div id="lop-character" style={{
         position: 'absolute',
-        bottom: '20vh',
+        bottom: '15vh',
         right: '5vh',
         width: '30vh',
         height: '30vh',
@@ -137,7 +139,7 @@ const CrashSite = () => {
       {/* Player foreground */}
       <div id="player-character" style={{
         position: 'absolute',
-        bottom: '10vh',
+        bottom: '5vh',
         right: '15vh',
         width: '30vh',
         height: '30vh',
@@ -148,6 +150,28 @@ const CrashSite = () => {
         zIndex: 2,
         animation: 'lopBounceFlip 2s ease-in-out infinite'
       }} />
+
+      {/* Multiple choice prompt */}
+      {showPrompt && (
+        <MultipleChoicePrompt
+          question="What should we do?"
+          choices={[
+            "It could be dangerous, we should be careful.",
+            "Let’s reach in and find out!",
+            "Eh, let’s just leave."
+          ]}
+          onSubmit={(choice) => {
+            console.log('Selected choice:', choice)
+            setShowPrompt(false)
+          }}
+          style={{
+            top: '5vh',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 3
+          }}
+        />
+      )}
 
       {/* Audio Control Button */}
       <div style={{
