@@ -20,23 +20,38 @@
   }
 }
 
-@keyframes glowPulse {
+@keyframes glowPulse_Yellow {
   0% {
-    filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.6));
+    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.6));
   }
   50% {
-    filter: drop-shadow(0 0 20px rgba(255, 165, 0, 0.8));
+    filter: drop-shadow(0 0 8px rgba(255, 165, 0, 0.8));
   }
   100% {
-    filter: drop-shadow(0 0 10px rgba(255, 165, 0, 0.6));
+    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.6));
+  }
+}
+
+@keyframes glowPulseHigh_Yellow {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.8));
+  }
+  50% {
+    filter: drop-shadow(0 0 30px rgba(255, 165, 0, 1));
+  }
+  100% {
+    filter: drop-shadow(0 0 5px rgba(255, 165, 0, 0.8));
   }
 }
 
 .crash-image {
-  animation: glowPulse 2s ease-in-out infinite;
   transition: filter 0.3s ease;
 }
 
 .crash-image:hover {
-  filter: drop-shadow(0 0 30px rgba(255, 165, 0, 1));
+  animation: glowPulseHigh_Yellow 2s ease-in-out infinite;
+}
+
+.crash-image:not(:hover) {
+  animation: glowPulse_Yellow 2s ease-in-out infinite;
 }

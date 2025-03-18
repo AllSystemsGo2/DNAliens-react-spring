@@ -9,6 +9,7 @@ import player from '../assets/player-character-2.png'
 import spaceshipRustling from '../assets/spaceship-rustling.ogg'
 import SpeechBubble from '../components/SpeechBubble'
 import MultipleChoicePrompt from '../components/MultipleChoicePrompt'
+import Paragraph from '../components/Paragraph'
 
 const CrashSite = () => {
   const [isPlaying, setIsPlaying] = useState(true)
@@ -16,6 +17,7 @@ const CrashSite = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [showPrompt, setShowPrompt] = useState(false)
   const [showSpeechBubble, setShowSpeechBubble] = useState(false)
+  const [showEnd, setShowEnd] = useState(false)
   const audioRef = useRef(new Audio(spaceshipRustling))
 
   const lopSpring = useSpring({
@@ -203,12 +205,27 @@ const CrashSite = () => {
           onSubmit={(choice) => {
             console.log('Selected choice:', choice)
             setShowPrompt(false)
+            setShowEnd(true)
           }}
           style={{
             top: '5vh',
             left: '50vh',
             transform: 'translateX(-50%)',
             zIndex: 3
+          }}
+        />
+      )}
+      {/* End */}
+      {showEnd && (
+        <Paragraph
+          header="The END"
+          body="That's the end for now."
+          style={{
+            top: '20vh',
+            right: '40vh',
+            zIndex: 3,
+            minWidth: '200px',
+            boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
           }}
         />
       )}
