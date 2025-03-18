@@ -7,6 +7,15 @@
   }
 }
 
+@keyframes lopBounceFlip {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg) scaleX(1);
+  }
+  50% {
+    transform: translateY(-15px) rotate(3deg) scaleX(1);
+  }
+}
+
 @keyframes panBackground {
   from {
     background-position: 0% center;

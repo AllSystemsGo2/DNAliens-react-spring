@@ -1,5 +1,6 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Frisbee.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
@@ -10,6 +11,7 @@ import spaceshipSound from '../assets/spaceship-flight-crash.ogg'
 import crash from '../assets/crash.png'
 
 const Frisbee = () => {
+  const navigate = useNavigate()
   const [isFlying, setIsFlying] = useState(false)
   const [showUfoTimer, setShowUfoTimer] = useState(false)
   const [showUfo, setShowUfo] = useState(false)
@@ -194,9 +196,10 @@ const Frisbee = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          zIndex: 3,
+          zIndex: 5,
           cursor: 'pointer'
         }}
+        onClick={() => navigate('/crash-site')}
       />
 
       {/* Content container */}
