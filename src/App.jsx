@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { MemoryRouter, Routes, Route, Link } from 'react-router-dom'
 import AnimatedLottie from './components/AnimatedLottie'
 import Frisbee from './views/Frisbee'
 import CrashSite from './views/CrashSite'
@@ -7,7 +7,7 @@ import './styles/animations.css'
 
 function App() {
   return (
-    <BrowserRouter>
+    <MemoryRouter>
       <div className="App" style={{
         minHeight: '100vh',
         minWidth: '120vh',
@@ -75,7 +75,7 @@ function App() {
           <Route path="/crash-site" element={<CrashSite />} />
         </Routes>
       </div>
-    </BrowserRouter>
+    </MemoryRouter>
   )
 }
 
