@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useSpring } from '@react-spring/web'
+import { useSpring, animated } from '@react-spring/web'
 import './CrashSite.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
@@ -14,8 +14,46 @@ const CrashSite = () => {
   const [isPlaying, setIsPlaying] = useState(true)
   const [volume, setVolume] = useState(0.5)
   const [isLoading, setIsLoading] = useState(true)
-  const [showPrompt, setShowPrompt] = useState(true)
+  const [showPrompt, setShowPrompt] = useState(false)
+  const [showSpeechBubble, setShowSpeechBubble] = useState(false)
   const audioRef = useRef(new Audio(spaceshipRustling))
+
+  const lopSpring = useSpring({
+    from: { right: '-30vh' },
+    to: { right: '5vh' },
+    delay: 500,
+    config: {
+      mass: 2,
+      tension: 280,
+      friction: 24
+    }
+  })
+
+  const playerSpring = useSpring({
+    from: { right: '-40vh' },
+    to: { right: '15vh' },
+    delay: 800,
+    config: {
+      mass: 2,
+      tension: 280,
+      friction: 24
+    }
+  })
+
+  useEffect(() => {
+    const speechTimer = setTimeout(() => {
+      setShowSpeechBubble(true)
+    }, 3000)
+
+    const promptTimer = setTimeout(() => {
+      setShowPrompt(true)
+    }, 6000)
+
+    return () => {
+      clearTimeout(speechTimer)
+      clearTimeout(promptTimer)
+    }
+  }, [])
 
   useEffect(() => {
     const audio = audioRef.current
@@ -109,23 +147,24 @@ const CrashSite = () => {
       }} />
 
       {/* Lop speech bubble */}
-      <SpeechBubble
-        mainText="Something's in there..."
+      {showSpeechBubble && (
+        <SpeechBubble
+          mainText="Something's in there..."
         subText=""
-        style={{
-          bottom: '48vh',
-          right: '4vh',
-          zIndex: 3,
-          minWidth: '200px',
-          boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
-        }}
-      />
+          style={{
+            bottom: '48vh',
+            right: '4vh',
+            zIndex: 3,
+            minWidth: '200px',
+            boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
+          }}
+        />
+      )}
 
       {/* Lop foreground */}
-      <div id="lop-character" style={{
+      <animated.div id="lop-character" style={{
         position: 'absolute',
         bottom: '15vh',
-        right: '5vh',
         width: '30vh',
         height: '30vh',
         backgroundImage: `url(${lop})`,
@@ -133,14 +172,14 @@ const CrashSite = () => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         zIndex: 2,
-        animation: 'lopBounce 2s ease-in-out infinite'
+        animation: 'lopBounce 2s ease-in-out infinite',
+        ...lopSpring
       }} />
 
       {/* Player foreground */}
-      <div id="player-character" style={{
+      <animated.div id="player-character" style={{
         position: 'absolute',
         bottom: '5vh',
-        right: '15vh',
         width: '30vh',
         height: '30vh',
         backgroundImage: `url(${player})`,
@@ -148,7 +187,8 @@ const CrashSite = () => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         zIndex: 2,
-        animation: 'lopBounceFlip 2s ease-in-out infinite'
+        animation: 'lopBounceFlip 2s ease-in-out infinite',
+        ...playerSpring
       }} />
 
       {/* Multiple choice prompt */}
