@@ -18,50 +18,32 @@ function App() {
           background: '#1a1a1a',
           marginBottom: '20px',
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start'
         }}>
-          <Link 
-            to="/" 
-            className="nav-link"
-            style={{ 
-              marginRight: '20px', 
-              color: '#fff',
-              textDecoration: 'none',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              transition: 'all 0.3s ease',
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
-            }}
-          >Home</Link>
-          <Link 
-            to="/frisbee" 
-            className="nav-link"
-            style={{ 
-              marginRight: '20px',
-              color: '#fff',
-              textDecoration: 'none',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              transition: 'all 0.3s ease',
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
-            }}
-          >Frisbee Game</Link>
-          <Link 
-            to="/crash-site" 
-            className="nav-link"
-            style={{ 
-              marginRight: '20px',
-              color: '#fff',
-              textDecoration: 'none',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              transition: 'all 0.3s ease',
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
-            }}
-          >Crash Site</Link>
+          {[
+            { to: '/', label: 'Home' },
+            { to: '/frisbee', label: 'Frisbee Game' },
+            { to: '/crash-site', label: 'Crash Site' }
+          ].map(({ to, label }) => (
+            <Link 
+              key={to}
+              to={to} 
+              className="nav-link"
+              style={{ 
+                marginRight: '20px', 
+                color: '#fff',
+                textDecoration: 'none',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                background: 'rgba(255, 255, 255, 0.1)',
+                transition: 'all 0.3s ease',
+                textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
+              }}
+            >{label}</Link>
+          ))}
         </nav>
 
         <Routes>

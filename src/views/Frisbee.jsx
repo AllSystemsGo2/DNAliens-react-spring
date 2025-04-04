@@ -1,6 +1,7 @@
 import { useSpring, animated } from '@react-spring/web'
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
 import './Frisbee.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
@@ -9,14 +10,24 @@ import player from '../assets/player-character.png'
 import spaceship from '../assets/spaceship-256.png'
 import spaceshipSound from '../assets/spaceship-flight-crash.ogg'
 import crash from '../assets/crash.png'
+import {
+  setIsFlying,
+  setShowUfoTimer,
+  setShowUfo,
+  setShowText,
+  setShowCrash,
+} from '../store/slices/frisbeeSlice'
 
 const Frisbee = () => {
   const navigate = useNavigate()
-  const [isFlying, setIsFlying] = useState(false)
-  const [showUfoTimer, setShowUfoTimer] = useState(false)
-  const [showUfo, setShowUfo] = useState(false)
-  const [showText, setShowText] = useState(true)
-  const [showCrash, setShowCrash] = useState(false)
+  const dispatch = useDispatch()
+  const {
+    isFlying,
+    showUfoTimer,
+    showUfo,
+    showText,
+    showCrash,
+  } = useSelector((state) => state.frisbee)
   const audioRef = useRef(new Audio(spaceshipSound))
 
   useEffect(() => {
@@ -29,25 +40,25 @@ const Frisbee = () => {
 
   useEffect(() => {
     if (showUfo) {
-      setShowText(false)
+      dispatch(setShowText(false))
       setTimeout(() => {
-        setShowCrash(true)
+        dispatch(setShowCrash(true))
       }, 3250)
     }
-  }, [showUfo])
+  }, [showUfo, dispatch])
 
   useEffect(() => {
     const audio = audioRef.current
     if (isFlying && !showUfoTimer) {
-      setShowUfoTimer(true)
+      dispatch(setShowUfoTimer(true))
       setTimeout(() => {
         console.log('showing ufo')
-        setShowUfo(true)
+        dispatch(setShowUfo(true))
         audio.currentTime = 0
         audio.play()
       }, 3000)
     }
-  }, [isFlying, showUfoTimer])
+  }, [isFlying, showUfoTimer, dispatch])
 
   const ufoSpring = useSpring({
     from: { transform: 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)' },
@@ -66,7 +77,7 @@ const Frisbee = () => {
       duration: 2000
     },
     onRest: () => {
-      if (isFlying) setIsFlying(false)
+      if (isFlying) dispatch(setIsFlying(false))
     }
   })
 
@@ -150,7 +161,7 @@ const Frisbee = () => {
           border: '2px solid rgba(255, 255, 255, 0.3)',
           zIndex: 5,
         }}
-        onClick={() => setIsFlying(prev => !prev)}
+        onClick={() => dispatch(setIsFlying(!isFlying))}
       >
         {/* Inner ring of the frisbee */}
         <div style={{
