@@ -3,6 +3,7 @@ import { client } from '../../graphql/client'
 import { GET_USER } from '../../graphql/queries/user'
 import { login } from '../../auth'
 
+
 export const loginUser = createAsyncThunk(
   'auth/login',
   async ({ username, password }) => {
@@ -12,6 +13,7 @@ export const loginUser = createAsyncThunk(
       throw new Error('Login failed. Please check your credentials and try again.')
     }
     else if(response.message == "Authentication successful") {
+      localStorage.setItem('username', response.user_profile.Username)
       localStorage.setItem('auth_token', response.auth_response.AuthenticationResult.IdToken)
       localStorage.setItem('refresh_token', response.auth_response.AuthenticationResult.RefreshToken)
       return {
@@ -29,15 +31,19 @@ export const loginUser = createAsyncThunk(
 export const fetchUser = createAsyncThunk(
   'auth/fetchUser',
   async () => {
+    const username = localStorage.getItem('username')
     const { data } = await client.query({
-      query: GET_USER,
+      query: GET_USER,  
+      variables: {
+        username
+      }
     })
-    return data.me
+    return {username, ...data.getUser}
   }
 )
 
 const initialState = {
-  username: '',
+  username: localStorage.getItem('username'),
   isLoggedIn: false,
   token: localStorage.getItem('auth_token'),
   loading: false,
@@ -53,6 +59,9 @@ export const authSlice = createSlice({
     },
     setIsLoggedIn: (state, action) => {
       state.isLoggedIn = action.payload
+    },
+    setToken: (state, action) => {
+      state.token = action.payload
     },
     logout: (state) => {
       state.username = ''
@@ -99,6 +108,6 @@ export const authSlice = createSlice({
   },
 })
 
-export const { setUsername, setIsLoggedIn, logout } = authSlice.actions
+export const { setUsername, setIsLoggedIn, setToken, logout } = authSlice.actions
 
 export default authSlice.reducer

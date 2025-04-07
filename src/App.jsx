@@ -5,8 +5,9 @@ import CrashSite from './views/CrashSite'
 import './App.css'
 import './styles/animations.css'
 import './styles/nav.css'
-import { loginUser, logout } from './store/slices/authSlice'
-import { useState } from 'react'
+import { loginUser, logout, fetchUser } from './store/slices/authSlice'
+import { useEffect, useState } from 'react'
+import { setStoreDispatch } from './graphql/client'
 
 function App() {
   const dispatch = useDispatch()
@@ -18,6 +19,7 @@ function App() {
   const handleLogin = async () => {
     try {
       await dispatch(loginUser({ username, password })).unwrap()
+      setStoreDispatch(dispatch)
       setPassword('') // Clear password after successful login
     } catch {
       // Error is handled by the reducer
@@ -27,6 +29,10 @@ function App() {
   const handleLogout = () => {
     dispatch(logout())
   }
+
+  useEffect(() => {
+    dispatch(fetchUser())
+  }, [dispatch])
 
   return (
     <MemoryRouter>

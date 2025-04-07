@@ -32,3 +32,28 @@ export async function login (username, password) {
     });
   })
 }
+
+
+
+export async function refreshAuthToken (token) {
+  const data = JSON.stringify({
+    refresh_token: token    
+  });
+
+  const config = {
+    method: 'post',
+    url: `/refresh`,
+    data : data
+  };
+
+  return new Promise((resolve, reject) => {
+    apiAnonymous.request(config)
+    .then((response) => {
+      resolve(response.data.idToken) //json
+    })
+    .catch((error) => {
+      console.log(error);
+      reject(error);
+    });
+  })
+}

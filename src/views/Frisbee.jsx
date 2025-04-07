@@ -1,5 +1,5 @@
 import { useSpring, animated } from '@react-spring/web'
-import { useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import './Frisbee.css'
@@ -13,18 +13,25 @@ import crash from '../assets/crash.png'
 import {
   setIsFlying,
   setShowUfoTimer,
-  setShowUfo,
   setShowText,
   setShowCrash,
 } from '../store/slices/frisbeeSlice'
+import { selectPageAttribute, setPageAttribute, initializePageAttribute } from '../store/slices/pageSlice'
 
 const Frisbee = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
+  const dispatchSetShowUfo = useCallback( (value) => dispatch(setPageAttribute({pageId: "frisbee", key: "showUfo", value})), [dispatch])
+  const showUfo = useSelector(state => selectPageAttribute(state, "frisbee", "showUfo", false)) 
+  useEffect(() => {
+    // all initializations
+    dispatch(initializePageAttribute({pageId: "frisbee", key: "showUfo", defaultValue: false}))
+  }, [dispatch])
+
   const {
     isFlying,
     showUfoTimer,
-    showUfo,
     showText,
     showCrash,
   } = useSelector((state) => state.frisbee)
@@ -53,12 +60,12 @@ const Frisbee = () => {
       dispatch(setShowUfoTimer(true))
       setTimeout(() => {
         console.log('showing ufo')
-        dispatch(setShowUfo(true))
+        dispatchSetShowUfo(true)
         audio.currentTime = 0
         audio.play()
       }, 3000)
     }
-  }, [isFlying, showUfoTimer, dispatch])
+  }, [isFlying, showUfoTimer, dispatch, dispatchSetShowUfo])
 
   const ufoSpring = useSpring({
     from: { transform: 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)' },
