@@ -12,6 +12,9 @@ export const GET_USER = gql`
         teacher 
         students
       }
+      gameData {
+        documentRoot
+      }
     }
   } 
 `

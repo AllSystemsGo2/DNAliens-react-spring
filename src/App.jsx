@@ -21,6 +21,7 @@ function App() {
       await dispatch(loginUser({ username, password })).unwrap()
       setStoreDispatch(dispatch)
       setPassword('') // Clear password after successful login
+      await dispatch(fetchUser())
     } catch {
       // Error is handled by the reducer
     }

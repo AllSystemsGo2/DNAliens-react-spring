@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { client } from '../../graphql/client'
 import { GET_USER } from '../../graphql/queries/user'
 import { login } from '../../auth'
-
+import { setPages } from '../slices/pageSlice'
 
 export const loginUser = createAsyncThunk(
   'auth/login',
@@ -30,7 +30,7 @@ export const loginUser = createAsyncThunk(
 
 export const fetchUser = createAsyncThunk(
   'auth/fetchUser',
-  async () => {
+  async (_, { dispatch }) => {
     const username = localStorage.getItem('username')
     const { data } = await client.query({
       query: GET_USER,  
@@ -38,6 +38,7 @@ export const fetchUser = createAsyncThunk(
         username
       }
     })
+    dispatch(setPages(JSON.parse(data.getUser.gameData.documentRoot).DNAliens))
     return {username, ...data.getUser}
   }
 )

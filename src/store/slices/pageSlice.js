@@ -89,7 +89,11 @@ const initialState = {
 export const pageSlice = createSlice({
   name: 'page',
   initialState,
-  reducers: {},
+  reducers: {
+    setPages: (state, action) => {
+      state.pages = action.payload
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(setPageAttribute.pending, (state) => {
@@ -135,5 +139,7 @@ export const pageSlice = createSlice({
       })
   }
 })
+
+export const { setPages } = pageSlice.actions
 
 export default pageSlice.reducer

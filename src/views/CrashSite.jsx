@@ -19,14 +19,16 @@ const defaultAttributes = {
   volume: 0.5,
   isLoading: true,
   showPrompt: false,
+  shownPrompt: false,
   showSpeechBubble: false,
   showEnd: false,
 }
 
-const setShowPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "showPrompt", value})
 const setIsPlaying = (value) => setPageAttribute({pageId: "crashSite", key: "isPlaying", value})
 const setVolume = (value) => setPageAttribute({pageId: "crashSite", key: "volume", value})
 const setIsLoading = (value) => setPageAttribute({pageId: "crashSite", key: "isLoading", value})
+const setShowPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "showPrompt", value})
+const setShownPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "shownPrompt", value})
 const setShowSpeechBubble = (value) => setPageAttribute({pageId: "crashSite", key: "showSpeechBubble", value})
 const setShowEnd = (value) => setPageAttribute({pageId: "crashSite", key: "showEnd", value})
 
@@ -42,6 +44,7 @@ const CrashSite = () => {
     volume,
     isLoading,
     showPrompt,
+    shownPrompt,  
     showSpeechBubble,
     showEnd,
   } = useSelector((state) => selectPageAttributes(state, "crashSite", defaultAttributes))
@@ -77,15 +80,16 @@ const CrashSite = () => {
       dispatch(setShowSpeechBubble(true))
     }, 3000)
 
-    const promptTimer = setTimeout(() => {
+    const promptTimer = !shownPrompt ? setTimeout(() => {
       dispatch(setShowPrompt(true))
-    }, 6000)
+      dispatch(setShownPrompt(true))
+    }, 6000) : null
 
     return () => {
       clearTimeout(speechTimer)
       clearTimeout(promptTimer)
     }
-  }, [dispatch])
+  }, [dispatch, shownPrompt])
 
   useEffect(() => {
     if(!isLoading) dispatch(setIsPlaying(true))
