@@ -1,5 +1,5 @@
 import { useSpring, animated } from '@react-spring/web'
-import { useCallback, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import './Frisbee.css'
@@ -10,31 +10,40 @@ import player from '../assets/player-character.png'
 import spaceship from '../assets/spaceship-256.png'
 import spaceshipSound from '../assets/spaceship-flight-crash.ogg'
 import crash from '../assets/crash.png'
-import {
-  setIsFlying,
-  setShowUfoTimer,
-  setShowText,
-  setShowCrash,
-} from '../store/slices/frisbeeSlice'
-import { selectPageAttribute, setPageAttribute, initializePageAttribute } from '../store/slices/pageSlice'
+import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice'
+
+
+const defaultAttributes = {
+  isFlying: false,
+  showUfoTimer: false,
+  showUfo: false,
+  showText: true,
+  showCrash: false,
+} 
+
+const setShowUfo = (value) => setPageAttribute({pageId: "frisbee", key: "showUfo", value})
+const setIsFlying =  (value) => setPageAttribute({pageId: "frisbee", key: "isFlying", value})
+const setShowUfoTimer =  (value) => setPageAttribute({pageId: "frisbee", key: "showUfoTimer", value})
+const setShowText =  (value) => setPageAttribute({pageId: "frisbee", key: "showText", value})
+const setShowCrash =  (value) => setPageAttribute({pageId: "frisbee", key: "showCrash", value})
 
 const Frisbee = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-  const dispatchSetShowUfo = useCallback( (value) => dispatch(setPageAttribute({pageId: "frisbee", key: "showUfo", value})), [dispatch])
-  const showUfo = useSelector(state => selectPageAttribute(state, "frisbee", "showUfo", false)) 
   useEffect(() => {
-    // all initializations
-    dispatch(initializePageAttribute({pageId: "frisbee", key: "showUfo", defaultValue: false}))
+    dispatch(initializePageAttributes({pageId: "frisbee", 
+      props: defaultAttributes
+    }))
   }, [dispatch])
 
   const {
     isFlying,
     showUfoTimer,
-    showText,
     showCrash,
-  } = useSelector((state) => state.frisbee)
+    showText,
+    showUfo
+  } = useSelector((state) => selectPageAttributes(state, "frisbee", defaultAttributes))
   const audioRef = useRef(new Audio(spaceshipSound))
 
   useEffect(() => {
@@ -60,12 +69,12 @@ const Frisbee = () => {
       dispatch(setShowUfoTimer(true))
       setTimeout(() => {
         console.log('showing ufo')
-        dispatchSetShowUfo(true)
+        dispatch(setShowUfo(true))
         audio.currentTime = 0
         audio.play()
       }, 3000)
     }
-  }, [isFlying, showUfoTimer, dispatch, dispatchSetShowUfo])
+  }, [isFlying, showUfoTimer, dispatch])
 
   const ufoSpring = useSpring({
     from: { transform: 'translateX(110vw) translateY(0vh) rotate(280deg) scaleX(-1)' },

@@ -3,12 +3,12 @@ import { client } from '../../graphql/client'
 import { WRITE_GAME_DATA } from '../../graphql/mutations/gameData'
 import { GET_USER } from '../../graphql/queries/user'
 
-export const setPageAttribute = createAsyncThunk(
-  'page/setPageAttribute',
+const writePageAttribute = createAsyncThunk(
+  'page/writePageAttribute',
   async ({pageId, key, value}, { getState }) => {
     try {
-      const { data } = await client.query({
-        query: WRITE_GAME_DATA,
+      const { data } = await client.mutate({
+        mutation: WRITE_GAME_DATA,
         variables: {
           username: getState().auth.username,
           documentPath: `DNAliens/${pageId}/${key}`,
@@ -16,16 +16,23 @@ export const setPageAttribute = createAsyncThunk(
         }
       })
 
-      if(data.errors.length == 0) {
+      if(!data.writeGameData.errors || data.writeGameData.errors.length == 0) {
         return { pageId, key, value }
       } else {
-        throw new Error(data.errors[0].message)
+        throw new Error(data.writeGameData.errors[0].message)
       }
-    } catch { // (error) {
-      // throw error
-      // TECH-DEBT: Store the changed value locally even if the cloud write fails 
-      return { pageId, key, value }
+    } catch (error) {
+      console.error("setPageAttribute error", error)
+      throw error      
     }
+  }
+)
+
+export const setPageAttribute = createAsyncThunk(
+  'page/setPageAttribute',
+  async ({pageId, key, value}, { dispatch }) => {
+    dispatch(writePageAttribute({pageId, key, value}))
+    return { pageId, key, value }
   }
 )
 
@@ -46,23 +53,28 @@ export const getPages = createAsyncThunk(
     }
   }
 )
-export const initializePageAttribute = createAsyncThunk(
-  'page/initializePageAttribute',
-  async ({pageId, key, defaultValue}, { getState }) => {
-    // if (!getState().page?.pages?.[pageId]?.[key]) {
-      // await dispatch(setPageAttribute({pageId, key, value:defaultValue}))
-    // }
-    console.log(pageId, key, defaultValue)
+
+export const initializePageAttributes = createAsyncThunk(
+  'page/initializePageAttributes',
+  async ({pageId, props}, { getState }) => {
+    // console.error(pageId, props)
     return { 
       pageId, 
-      key, 
-      value: selectPageAttribute(getState(), pageId, key, defaultValue) 
+      props: Object.keys(props).map((k) => ({
+        [k]: selectPageAttribute(getState(), pageId, k, props[k])
+      }))
+      .reduce((p,c) => { return Object.assign(p, c) }, {})
     }
   }
 )
 
 
-export const selectPageAttribute = (state, pageId, key, defaultValue) => {
+
+export const selectPageAttributes = (state, pageId, defaultAttributes) => {
+  return {...defaultAttributes, ...state.page?.pages?.[pageId]}
+}
+
+const selectPageAttribute = (state, pageId, key, defaultValue) => {
   return state.page?.pages?.[pageId]?.[key] ?? defaultValue
 }
 
@@ -95,6 +107,9 @@ export const pageSlice = createSlice({
         state.loading = false
         state.error = action.error.message
       })
+      .addCase(writePageAttribute.rejected, (state, action) => {
+        state.error = action.error.message
+      })
       .addCase(getPages.pending, (state) => {
         state.loading = true
         state.error = null
@@ -107,13 +122,16 @@ export const pageSlice = createSlice({
         state.loading = false
         state.error = action.error.message
       })
-      .addCase(initializePageAttribute.fulfilled, (state, action) => {
+      .addCase(initializePageAttributes.fulfilled, (state, action) => {
         state.loading = false
-        console.log("action.payload", action.payload)
         if (!state.pages[action.payload.pageId]) {
           state.pages[action.payload.pageId] = {}
         }
-        state.pages[action.payload.pageId][action.payload.key] = action.payload.value
+        state.pages[action.payload.pageId] = {...state.pages[action.payload.pageId], ...action.payload.props}
+      })
+      .addCase(initializePageAttributes.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
       })
   }
 })
