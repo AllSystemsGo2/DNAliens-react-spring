@@ -11,18 +11,32 @@ import SpeechBubble from '../components/SpeechBubble'
 import MultipleChoicePrompt from '../components/MultipleChoicePrompt'
 import Paragraph from '../components/Paragraph'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  setIsPlaying,
-  setVolume,
-  setIsLoading,
-  setShowPrompt,
-  setShowSpeechBubble,
-  setShowEnd,
-} from '../store/slices/crashSiteSlice'
 
+import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice'
+
+const defaultAttributes = {
+  isPlaying: false,
+  volume: 0.5,
+  isLoading: true,
+  showPrompt: false,
+  showSpeechBubble: false,
+  showEnd: false,
+}
+
+const setShowPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "showPrompt", value})
+const setIsPlaying = (value) => setPageAttribute({pageId: "crashSite", key: "isPlaying", value})
+const setVolume = (value) => setPageAttribute({pageId: "crashSite", key: "volume", value})
+const setIsLoading = (value) => setPageAttribute({pageId: "crashSite", key: "isLoading", value})
+const setShowSpeechBubble = (value) => setPageAttribute({pageId: "crashSite", key: "showSpeechBubble", value})
+const setShowEnd = (value) => setPageAttribute({pageId: "crashSite", key: "showEnd", value})
 
 const CrashSite = () => {
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializePageAttributes({pageId: "crashSite", props: defaultAttributes}))
+  }, [dispatch])
+
   const {
     isPlaying,
     volume,
@@ -30,7 +44,7 @@ const CrashSite = () => {
     showPrompt,
     showSpeechBubble,
     showEnd,
-  } = useSelector((state) => state.crashSite)
+  } = useSelector((state) => selectPageAttributes(state, "crashSite", defaultAttributes))
 
   const audioRef = useRef(new Audio(spaceshipRustling))
 
