@@ -1,11 +1,42 @@
-import { MemoryRouter, Routes, Route, Link } from 'react-router-dom'
-import AnimatedLottie from './components/AnimatedLottie'
+import { Link, MemoryRouter, Routes, Route } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import Frisbee from './views/Frisbee'
 import CrashSite from './views/CrashSite'
 import './App.css'
 import './styles/animations.css'
+import './styles/nav.css'
+import { loginUser, logout, fetchUser, refreshAuth } from './store/slices/authSlice'
+import { useEffect, useState } from 'react'
+import { setStoreDispatch } from './graphql/client'
 
 function App() {
+  const dispatch = useDispatch()
+  const { username, isLoggedIn } = useSelector((state) => state.auth)
+  const [password, setPassword] = useState('')
+  const loading = useSelector((state) => state.auth.loading)
+  const error = useSelector((state) => state.auth.error)
+
+  const handleLogin = async () => {
+    try {
+      await dispatch(loginUser({ username, password })).unwrap()
+      setPassword('') // Clear password after successful login
+      await dispatch(fetchUser())
+    } catch {
+      // Error is handled by the reducer
+    }
+  }
+
+  const handleLogout = () => {
+    dispatch(logout())
+  }
+
+  useEffect(() => {
+    setStoreDispatch(dispatch)
+    dispatch(refreshAuth()).then(() => {
+        dispatch(fetchUser())
+    })
+  }, [dispatch])
+
   return (
     <MemoryRouter>
       <div className="App" style={{
@@ -18,52 +49,68 @@ function App() {
           background: '#1a1a1a',
           marginBottom: '20px',
           borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)'
+          boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
         }}>
-          <Link 
-            to="/" 
-            className="nav-link"
-            style={{ 
-              marginRight: '20px', 
-              color: '#fff',
-              textDecoration: 'none',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              transition: 'all 0.3s ease',
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
-            }}
-          >Home</Link>
-          <Link 
-            to="/frisbee" 
-            className="nav-link"
-            style={{ 
-              marginRight: '20px',
-              color: '#fff',
-              textDecoration: 'none',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              transition: 'all 0.3s ease',
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
-            }}
-          >Frisbee Game</Link>
-          <Link 
-            to="/crash-site" 
-            className="nav-link"
-            style={{ 
-              marginRight: '20px',
-              color: '#fff',
-              textDecoration: 'none',
-              padding: '8px 16px',
-              borderRadius: '20px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              transition: 'all 0.3s ease',
-              textShadow: '0 0 10px rgba(255, 255, 255, 0.5)'
-            }}
-          >Crash Site</Link>
+          <div style={{ display: 'flex', gap: '20px' }}>
+            {[
+              { to: '/', label: 'Home' },
+              { to: '/frisbee', label: 'Frisbee Game' },
+              { to: '/crash-site', label: 'Crash Site' }
+            ].map(({ to, label }) => (
+              <Link 
+                key={to}
+                to={to} 
+                className="nav-link"
+              >
+                {label}
+              </Link>
+            ))}
+          </div>
+          {!isLoggedIn ? (
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => dispatch({ type: 'auth/setUsername', payload: e.target.value })}
+                className="login-input"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="login-input"
+                onKeyPress={(e) => e.key === 'Enter' && handleLogin()}
+              />
+              <button
+                onClick={handleLogin}
+                className="login-button"
+                disabled={loading}
+              >
+                {loading ? 'Logging in...' : 'Login'}
+              </button>
+              {error && (
+                <div style={{ color: 'red', marginTop: '0.5rem' }}>
+                  {error}
+                </div>
+              )}
+            </div>
+          ) : (
+            <div style={{ color: 'white', display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              Welcome, {username}!
+              <button
+                onClick={handleLogout}
+                className="login-button"
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </nav>
-
         <Routes>
           <Route path="/" element={
             <div>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import './CrashSite.css'
 import starryBackground from '../assets/starry-background.jpg'
@@ -10,14 +10,45 @@ import spaceshipRustling from '../assets/spaceship-rustling.ogg'
 import SpeechBubble from '../components/SpeechBubble'
 import MultipleChoicePrompt from '../components/MultipleChoicePrompt'
 import Paragraph from '../components/Paragraph'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice'
+
+const defaultAttributes = {
+  isPlaying: false,
+  volume: 0.5,
+  isLoading: true,
+  showPrompt: false,
+  shownPrompt: false,
+  showSpeechBubble: false,
+  showEnd: false,
+}
+
+const setIsPlaying = (value) => setPageAttribute({pageId: "crashSite", key: "isPlaying", value})
+const setVolume = (value) => setPageAttribute({pageId: "crashSite", key: "volume", value})
+const setIsLoading = (value) => setPageAttribute({pageId: "crashSite", key: "isLoading", value})
+const setShowPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "showPrompt", value})
+const setShownPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "shownPrompt", value})
+const setShowSpeechBubble = (value) => setPageAttribute({pageId: "crashSite", key: "showSpeechBubble", value})
+const setShowEnd = (value) => setPageAttribute({pageId: "crashSite", key: "showEnd", value})
 
 const CrashSite = () => {
-  const [isPlaying, setIsPlaying] = useState(true)
-  const [volume, setVolume] = useState(0.5)
-  const [isLoading, setIsLoading] = useState(true)
-  const [showPrompt, setShowPrompt] = useState(false)
-  const [showSpeechBubble, setShowSpeechBubble] = useState(false)
-  const [showEnd, setShowEnd] = useState(false)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(initializePageAttributes({pageId: "crashSite", props: defaultAttributes}))
+  }, [dispatch])
+
+  const {
+    isPlaying,
+    volume,
+    isLoading,
+    showPrompt,
+    shownPrompt,  
+    showSpeechBubble,
+    showEnd,
+  } = useSelector((state) => selectPageAttributes(state, "crashSite", defaultAttributes))
+
   const audioRef = useRef(new Audio(spaceshipRustling))
 
   const lopSpring = useSpring({
@@ -43,32 +74,33 @@ const CrashSite = () => {
   })
 
   useEffect(() => {
-    setIsPlaying(true)
+    dispatch(setIsPlaying(true))
 
     const speechTimer = setTimeout(() => {
-      setShowSpeechBubble(true)
+      dispatch(setShowSpeechBubble(true))
     }, 3000)
 
-    const promptTimer = setTimeout(() => {
-      setShowPrompt(true)
-    }, 6000)
+    const promptTimer = !shownPrompt ? setTimeout(() => {
+      dispatch(setShowPrompt(true))
+      dispatch(setShownPrompt(true))
+    }, 6000) : null
 
     return () => {
       clearTimeout(speechTimer)
       clearTimeout(promptTimer)
     }
-  }, [])
+  }, [dispatch, shownPrompt])
 
   useEffect(() => {
-    if(!isLoading) setIsPlaying(true)
-  }, [isLoading])
+    if(!isLoading) dispatch(setIsPlaying(true))
+  }, [isLoading, dispatch])
 
   useEffect(() => {
     const audio = audioRef.current
     audio.loop = true
     audio.volume = volume
 
-    const handleCanPlay = () => setIsLoading(false)
+    const handleCanPlay = () => dispatch(setIsLoading(false))
     audio.addEventListener('canplay', handleCanPlay)
 
     const playAudio = async () => {
@@ -80,7 +112,7 @@ const CrashSite = () => {
         }
       } catch (error) {
         console.log('Audio playback error:', error)
-        setIsPlaying(false)
+        dispatch(setIsPlaying(false))
       }
     }
 
@@ -91,7 +123,7 @@ const CrashSite = () => {
       audio.pause()
       audio.currentTime = 0
     }
-  }, [isPlaying, volume])
+  }, [isPlaying, volume, dispatch])
 
   return (
     <div className="crash-site-view" style={{
@@ -210,8 +242,8 @@ const CrashSite = () => {
           ]}
           onSubmit={(choice) => {
             console.log('Selected choice:', choice)
-            setShowPrompt(false)
-            setShowEnd(true)
+            dispatch(setShowPrompt(false))
+            dispatch(setShowEnd(true))
           }}
           style={{
             top: '5vh',
@@ -252,14 +284,14 @@ const CrashSite = () => {
           max="1"
           step="0.1"
           value={volume}
-          onChange={(e) => setVolume(parseFloat(e.target.value))}
+          onChange={(e) => dispatch(setVolume(parseFloat(e.target.value)))}
           style={{
             width: '100px',
             accentColor: '#42dcff'
           }}
         />
         <button
-          onClick={() => setIsPlaying(!isPlaying)}
+          onClick={() => dispatch(setIsPlaying(!isPlaying))}
           disabled={isLoading}
           style={{
             padding: '10px 20px',
