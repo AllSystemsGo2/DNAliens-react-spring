@@ -5,7 +5,7 @@ import CrashSite from './views/CrashSite'
 import './App.css'
 import './styles/animations.css'
 import './styles/nav.css'
-import { loginUser, logout, fetchUser } from './store/slices/authSlice'
+import { loginUser, logout, fetchUser, refreshAuth } from './store/slices/authSlice'
 import { useEffect, useState } from 'react'
 import { setStoreDispatch } from './graphql/client'
 
@@ -19,7 +19,6 @@ function App() {
   const handleLogin = async () => {
     try {
       await dispatch(loginUser({ username, password })).unwrap()
-      setStoreDispatch(dispatch)
       setPassword('') // Clear password after successful login
       await dispatch(fetchUser())
     } catch {
@@ -32,7 +31,10 @@ function App() {
   }
 
   useEffect(() => {
-    dispatch(fetchUser())
+    setStoreDispatch(dispatch)
+    dispatch(refreshAuth()).then(() => {
+        dispatch(fetchUser())
+    })
   }, [dispatch])
 
   return (

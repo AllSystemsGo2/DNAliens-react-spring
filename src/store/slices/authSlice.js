@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { client } from '../../graphql/client'
 import { GET_USER } from '../../graphql/queries/user'
-import { login } from '../../auth'
+import { login, refreshAuthToken } from '../../auth'
 import { setPages } from '../slices/pageSlice'
 
 export const loginUser = createAsyncThunk(
@@ -13,18 +13,23 @@ export const loginUser = createAsyncThunk(
       throw new Error('Login failed. Please check your credentials and try again.')
     }
     else if(response.message == "Authentication successful") {
-      localStorage.setItem('username', response.user_profile.Username)
-      localStorage.setItem('auth_token', response.auth_response.AuthenticationResult.IdToken)
-      localStorage.setItem('refresh_token', response.auth_response.AuthenticationResult.RefreshToken)
       return {
         token: response.auth_response.AuthenticationResult.IdToken,
-        username: response.user_profile.Username
+        username: response.user_profile.Username, 
+        refresh_token: response.auth_response.AuthenticationResult.RefreshToken
       } 
     }
     else {
       alert('Login failed. Please check your credentials and try again.')
       throw new Error('Login failed. Please check your credentials and try again.')
     }
+  }
+)
+export const refreshAuth = createAsyncThunk(
+  'auth/refreshToken',
+  async () => {
+    const refresh_token = localStorage.getItem('refresh_token')
+    return refreshAuthToken(refresh_token)
   }
 )
 
@@ -70,15 +75,21 @@ export const authSlice = createSlice({
       state.token = null
       state.error = null
       localStorage.removeItem('auth_token')
+      localStorage.removeItem('refresh_token')
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(loginUser.pending, (state) => {
         state.loading = true
+        localStorage.removeItem('auth_token')
         state.error = null
       })
       .addCase(loginUser.fulfilled, (state, action) => {
+        localStorage.setItem('username', action.payload.username)
+        localStorage.setItem('auth_token', action.payload.token)
+        localStorage.setItem('refresh_token', action.payload.refresh_token)
+
         state.loading = false
         state.isLoggedIn = true
         state.token = action.payload.token
@@ -87,6 +98,17 @@ export const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
+      })
+      .addCase(refreshAuth.pending, (state) => {
+        state.loading = true
+        localStorage.removeItem('auth_token')
+        state.error = null
+      })
+      .addCase(refreshAuth.fulfilled, (state, action) => {
+        state.loading = false
+        state.login = true
+        state.token = action.payload
+        localStorage.setItem('auth_token', action.payload)
       })
       .addCase(fetchUser.pending, (state) => {
         state.loading = true
@@ -104,6 +126,7 @@ export const authSlice = createSlice({
           state.isLoggedIn = false
           state.token = null
           localStorage.removeItem('auth_token')
+          localStorage.removeItem('refresh_token')
         }
       })
   },
