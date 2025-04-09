@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
 import './MultipleChoicePrompt.css'
+import { useDispatch } from 'react-redux'
+import { setResponse } from '../store/slices/responseSlice'
 
-const MultipleChoicePrompt = ({ question, choices, onSubmit, style }) => {
+const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style }) => {
   const [selectedChoice, setSelectedChoice] = useState(null)
+  const dispatch = useDispatch()
 
   const handleSubmit = () => {
+    console.log(responseKey, choices[selectedChoice])
+    dispatch(setResponse({ key: responseKey, value: choices[selectedChoice]}))
     if (selectedChoice !== null) {
       onSubmit(choices[selectedChoice])
     }
