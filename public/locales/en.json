@@ -20,5 +20,32 @@
       "artTools": "Art Tools & Resources",
       "codeGenTools": "Code Gen Tools"
     }
+  },
+  "frisbee": {
+    "title": "Space Frisbee",
+    "instruction": "Click the frisbee to throw it!"
+  },
+  "crashSite": {
+    "speechBubble": {
+      "mainText": "Something's in there...",
+      "subText": ""
+    },
+    "prompt": {
+      "question": "What should we do?",
+      "choices": [
+        "It could be dangerous, we should be careful.",
+        "Let's reach in and find out!",
+        "Eh, let's just leave."
+      ]
+    },
+    "end": {
+      "header": "The END",
+      "body": "That's the end for now."
+    },
+    "audio": {
+      "loading": "Loading...",
+      "soundOn": "Sound:On",
+      "soundOff": "Sound:Off"
+    }
   }
 }
