@@ -235,6 +235,7 @@ const CrashSite = () => {
       {showPrompt && (
         <MultipleChoicePrompt
           question="What should we do?"
+          responseKey="crashSite"
           choices={[
             "It could be dangerous, we should be careful.",
             "Let’s reach in and find out!",
