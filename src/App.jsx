@@ -2,6 +2,7 @@ import { Link, MemoryRouter, Routes, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Frisbee from './views/Frisbee'
 import CrashSite from './views/CrashSite'
+import Level1Fight from './views/Level1Fight'
 import './App.css'
 import './styles/animations.css'
 import './styles/nav.css'
@@ -58,7 +59,8 @@ function App() {
             {[
               { to: '/', label: 'Home' },
               { to: '/frisbee', label: 'Frisbee Game' },
-              { to: '/crash-site', label: 'Crash Site' }
+              { to: '/crash-site', label: 'Crash Site' },
+              { to: '/level1-fight', label: 'Level 1 Fight' }
             ].map(({ to, label }) => (
               <Link 
                 key={to}
@@ -139,6 +141,7 @@ function App() {
           } />
           <Route path="/frisbee" element={<Frisbee />} />
           <Route path="/crash-site" element={<CrashSite />} />
+          <Route path="/level1-fight" element={<Level1Fight />} />
         </Routes>
       </div>
     </MemoryRouter>

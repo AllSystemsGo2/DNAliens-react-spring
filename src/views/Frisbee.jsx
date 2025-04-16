@@ -1,12 +1,12 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect, useRef } from 'react'
+import Lop from '../components/Character/Lop'
+import Player from '../components/Character/Player'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import './Frisbee.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
-import lop from '../assets/lop.png'
-import player from '../assets/player-character.png'
 import spaceship from '../assets/spaceship-256.png'
 import spaceshipSound from '../assets/spaceship-flight-crash.ogg'
 import crash from '../assets/crash.png'
@@ -132,34 +132,10 @@ const Frisbee = () => {
       }} />
 
       {/* Lop foreground */}
-      <div id="lop-character" style={{
-        position: 'absolute',
-        bottom: '20vh',
-        right: '5vh',
-        width: '30vh',
-        height: '30vh',
-        backgroundImage: `url(${lop})`,
-        backgroundSize: 'contain',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 2,
-        animation: 'lopBounce 2s ease-in-out infinite'
-      }} />
+      <Lop />
 
       {/* Player foreground */}
-      <div id="player-character" style={{
-        position: 'absolute',
-        bottom: '10vh',
-        left: '5vh',
-        width: '30vh',
-        height: '30vh',
-        backgroundImage: `url(${player})`,
-        backgroundSize: 'contain',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 2,
-        animation: 'lopBounce 2s ease-in-out infinite'
-      }} />
+      <Player />
 
       <animated.div
         id="frisbee"
