@@ -3,19 +3,19 @@ import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/player-character-2.png'
 
-const Player = ({ bottom = '10vh', left = '5vh' }) => {
+const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2 }) => {
   const style = {
     position: 'absolute',
     bottom,
-    left,
+    ...(right ? { right } : {left}),
     width: '30vh',
     height: '30vh',
     backgroundImage: `url(${characterImage})`,
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    zIndex: 2,
-    animation: 'lopBounce 2s ease-in-out infinite'
+    animation: 'lopBounce 2s ease-in-out infinite',
+    zIndex
   };
 
   return (
@@ -25,7 +25,9 @@ const Player = ({ bottom = '10vh', left = '5vh' }) => {
 
 Player.propTypes = {
   bottom: PropTypes.string,
-  left: PropTypes.string
+  left: PropTypes.string,
+  right: PropTypes.string,
+  zIndex: PropTypes.number
 };
 
 export default Player;

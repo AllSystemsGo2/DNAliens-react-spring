@@ -29,7 +29,6 @@ const Scene = ({ skyImage, terrainImage, transformTerrain }) => {
         backgroundSize: 'cover',
         backgroundPosition: 'center bottom',
         backgroundRepeat: 'no-repeat',
-        zIndex: 1,
         ...(transformTerrain && { transform: transformTerrain })
       }} />
     </>

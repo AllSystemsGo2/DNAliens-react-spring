@@ -107,7 +107,7 @@ const Frisbee = () => {
       <Scene skyImage={starryBackground} terrainImage={planetForeground} />
 
       {/* Lop foreground */}
-      <Lop />
+      <Lop right="5vh" />
 
       {/* Player foreground */}
       <Player />

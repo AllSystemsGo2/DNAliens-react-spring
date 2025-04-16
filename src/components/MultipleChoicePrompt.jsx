@@ -8,7 +8,6 @@ const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style 
   const dispatch = useDispatch()
 
   const handleSubmit = () => {
-    console.log(responseKey, choices[selectedChoice])
     dispatch(setResponse({ key: responseKey, value: choices[selectedChoice]}))
     if (selectedChoice !== null) {
       onSubmit(choices[selectedChoice])
@@ -19,7 +18,7 @@ const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style 
     <div className="multiple-choice-prompt" style={style}>
       <div className="question-text">{question}</div>
       <div className="choices-container">
-        {choices.slice(0, 4).map((choice, index) => (
+        {choices.slice(0, choices.length).map((choice, index) => (
           <label key={index} className="choice-label">
             <input
               type="radio"

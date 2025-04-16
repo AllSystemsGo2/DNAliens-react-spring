@@ -13,14 +13,14 @@ const Level1Fight = () => {
   const questionBank = {
     questions: [
       {
+        responseKey: '1',
         question: "What is DNA?",
         answers: [
           "Deoxyribonucleic acid",
           "Dynamic Nuclear Assembly",
           "Digital Network Access",
           "Data Network Architecture"
-        ],
-        correct: 0
+        ]
       }
       // Add more questions as needed
     ]
