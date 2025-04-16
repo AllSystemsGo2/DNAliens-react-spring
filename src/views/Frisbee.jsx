@@ -2,6 +2,7 @@ import { useSpring, animated } from '@react-spring/web'
 import { useEffect, useRef } from 'react'
 import Lop from '../components/Character/Lop'
 import Player from '../components/Character/Player'
+import Scene from '../components/Scene'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import './Frisbee.css'
@@ -103,33 +104,7 @@ const Frisbee = () => {
       minHeight: '100vh',
       overflow: 'hidden'
     }}>
-      {/* Starry background */}
-      <div style={{
-        backgroundImage: `url(${starryBackground})`,
-        backgroundSize: '125% 100%',
-        backgroundPosition: '0% 25%',
-        backgroundRepeat: 'repeat-x repeat-y',
-        minHeight: '100vh',
-        width: '100%',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        animation: 'panBackground 240s linear infinite'
-      }} />
-
-      {/* Planet foreground */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        height: '50vh',
-        backgroundImage: `url(${planetForeground})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center bottom',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 1
-      }} />
+      <Scene skyImage={starryBackground} terrainImage={planetForeground} />
 
       {/* Lop foreground */}
       <Lop />

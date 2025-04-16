@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import FightScene from '../components/FightScene'; 
 import './Level1Fight.css';
+import Scene from '../components/Scene'
+import starryBackground from '../assets/starry-background.jpg'
+import planetForeground from '../assets/planet-foreground.png'
 
 const Level1Fight = () => {
   const [playerHealth, setPlayerHealth] = useState(10);
@@ -25,6 +28,7 @@ const Level1Fight = () => {
 
   return (
     <div className="level1-fight">
+      <Scene skyImage={starryBackground} terrainImage={planetForeground} transformTerrain="scaleX(-1)" />
       <FightScene 
         players={['player', 'lop']}
         enemies={['enemy1']}
