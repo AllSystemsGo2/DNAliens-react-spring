@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types';
 import './MultipleChoicePrompt.css'
 import { useDispatch } from 'react-redux'
 import { setResponse } from '../store/slices/responseSlice'
 
-const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style }) => {
+const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style, submitText = "Submit" }) => {
   const [selectedChoice, setSelectedChoice] = useState(null)
   const dispatch = useDispatch()
 
@@ -36,11 +37,16 @@ const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style 
           className="submit-button"
           onClick={handleSubmit}
         >
-          Confirm
+          {submitText}
         </button>
       )}
     </div>
   )
 }
+
+MultipleChoicePrompt.propTypes = {
+  submitText: PropTypes.string.isRequired
+};
+
 
 export default MultipleChoicePrompt

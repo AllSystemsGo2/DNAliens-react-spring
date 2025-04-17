@@ -6,9 +6,20 @@ import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
 
 const Level1Fight = () => {
-  const [playerHealth, setPlayerHealth] = useState(10);
+  const [playerHealth, setPlayerHealth] = useState(5);
   const [enemyHealth, setEnemyHealth] = useState(10);
-  const maxHealth = 100;
+
+  const onEnemyStun = (isStunned) => {
+    if (isStunned)   {
+      setEnemyHealth(enemyHealth-1);
+    }
+  };
+
+  const onPlayerStun = (isStunned) => {
+    if (isStunned) {
+      setPlayerHealth(playerHealth-1);
+    }
+  };
 
   const questionBank = {
     questions: [
@@ -20,7 +31,8 @@ const Level1Fight = () => {
           "Dynamic Nuclear Assembly",
           "Digital Network Access",
           "Data Network Architecture"
-        ]
+        ],
+        correct: "Deoxyribonucleic acid"
       }
       // Add more questions as needed
     ]
@@ -30,12 +42,16 @@ const Level1Fight = () => {
     <div className="level1-fight">
       <Scene skyImage={starryBackground} terrainImage={planetForeground} transformTerrain="scaleX(-1)" />
       <FightScene 
+        pageId="level1fight"
         players={['player', 'lop']}
         enemies={['enemy1']}
         playerHealth={playerHealth}
         enemyHealth={enemyHealth}
-        maxHealth={maxHealth}
+        maxHealth={10}
         questionBank={questionBank}
+        turn="enemy"
+        onEnemyStun={onEnemyStun}
+        onPlayerStun={onPlayerStun}
       />
     </div>
   );
