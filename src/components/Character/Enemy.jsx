@@ -12,9 +12,9 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
     return false
   };
 
-  useEffect(() => {
-    console.error("Enemy state", state)
-  },[state])
+  // useEffect(() => {
+  //   console.error("Enemy state", state)
+  // },[state])
      
   const style = {
     position: 'absolute',
