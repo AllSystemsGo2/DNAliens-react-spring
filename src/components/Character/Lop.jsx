@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/lop.png'
 
 
-const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2 }) => {
+const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state}) => {
+  useEffect(() => {
+    console.log("Lop state", state)
+  },[state])
+
   const style = {
     position: 'absolute',
     bottom,
@@ -28,7 +32,8 @@ LopCharacter.propTypes = {
   bottom: PropTypes.string,
   right: PropTypes.string,
   left: PropTypes.string,
-  zIndex: PropTypes.number
+  zIndex: PropTypes.number,
+  state: PropTypes.string
 };
 
 export default LopCharacter;

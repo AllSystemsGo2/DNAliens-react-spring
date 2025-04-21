@@ -19,7 +19,7 @@ const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style,
     <div className="multiple-choice-prompt" style={style}>
       <div className="question-text">{question}</div>
       <div className="choices-container">
-        {choices.slice(0, choices.length).map((choice, index) => (
+        {choices?.slice(0, choices?.length).map((choice, index) => (
           <label key={index} className="choice-label">
             <input
               type="radio"
