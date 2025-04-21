@@ -36,7 +36,7 @@ const Level1Fight = () => {
   const setShowFight = (value) => dispatch(setPageAttribute({pageId: "level1fight", key: "showFight", value}))
   const setShowWin = (value) => dispatch(setPageAttribute({pageId: "level1fight", key: "showWin", value}))
   const setShowLose = (value) => dispatch(setPageAttribute({pageId: "level1fight", key: "showLose", value}))
-  const setShowLaunchShip = (value) => dispatch(setPageAttribute({pageId: "level1fight", key: "showLaunchShip", value}))
+  const setStartLaunchShip = (value) => dispatch(setPageAttribute({pageId: "level1fight", key: "startLaunchShip", value}))
 
   const onEnemyStun = (isStunned) => {
     if (isStunned) {
@@ -139,10 +139,11 @@ const Level1Fight = () => {
       />}
       {showPrompt && <DialogPrompt prompt="Select the correct answer to strike the enemy or block!" options={["I'm Ready"]} onSelect={() => { setShowPrompt(false); setShowFight(true) }} />}
       {(showWin || showLose) && <div className="end-screen">
-        {showWin && <DialogPrompt prompt="You knocked back those grumps!" options={["Let's get out of here!"]} onSelect={() => { 
+        {showWin && <DialogPrompt prompt="You knocked back those grumps!" options={["Let's get out of here!"]} onSelect={(option) => { 
           // launch the space ship          
-          setShowLaunchShip(true)
-          setShowFight(false)
+          setStartLaunchShip(true);
+          setShowFight(false);
+          setShowWin(false);
          }} />}
         {showLose && <DialogPrompt prompt="Oh no! You were knocked out by the aliens." options={["I'm ready to try again!"]} onSelect={() => { 
           // restart the fight
@@ -152,7 +153,7 @@ const Level1Fight = () => {
       </div>
       }
       {startLaunchShip && <div className="launch-screen">
-        <Paragraph>insert launch ship taking off animation...</Paragraph>
+        <Paragraph header="Debug" body="insert launch ship taking off animation..."/>
       </div>
       }
     </div>

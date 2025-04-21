@@ -6,7 +6,7 @@ import missImage from '../assets/miss-effect-1.png'
 
 // type= 'miss' | 'hit'
 
-const PopEffect = ({ type='miss', bottom = '10vh', left = '5vh', right, zIndex = 2 }) => {
+const PopEffect = ({ type='miss', bottom = '10vh', left = '5vh', right, zIndex = 2, timer=900 }) => {
 
   const [_type, setType] = useState(type)
   
@@ -25,7 +25,7 @@ const PopEffect = ({ type='miss', bottom = '10vh', left = '5vh', right, zIndex =
       setType(type)
       setTimeout(() => {
         setType(undefined)
-      }, 1000)
+      }, timer)
     }
   }, [type])
 

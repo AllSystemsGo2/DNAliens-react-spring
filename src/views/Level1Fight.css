@@ -7,3 +7,11 @@
   background-color: #000;  /* Dark background for the fight scene */
   color: white;
 }
+
+.end-screen {
+  position: absolute;
+}
+
+.launch-screen {
+  position: absolute;
+}

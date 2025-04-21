@@ -25,6 +25,8 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
   const [_turn, set_Turn] = useState(turn)
   const [playerState, setPlayerState] = useState("idle")
   const [enemyState, setEnemyState] = useState("idle")
+  const [playerPopEffect, setPlayerPopEffect] = useState(null)
+  const [enemyPopEffect, setEnemyPopEffect] = useState(null)
   
   const setQuestionIndex = (value) => setPageAttribute({pageId: pageId, key: "questionIndex", value})
   const {
@@ -52,10 +54,11 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
       setEnemyState("attack")
       setTimeout(() => {
         setPlayerState("deflect")
+        setEnemyPopEffect("miss")
         setTimeout(() => {
           setEnemyState("stun")
+          setEnemyPopEffect("hit")
           setTimeout(() => {
-            console.log("reinit", fightState, _turn)
             setFightState("reinit")        
           }, 1000)
         }, 1000)
@@ -65,8 +68,10 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
       setPlayerState("attack")
       setTimeout(() => {
         setEnemyState("deflect")
+        setPlayerPopEffect("miss")
         setTimeout(() => {
           setPlayerState("stun")
+          setPlayerPopEffect("hit")
           setTimeout(() => {
             setFightState("reinit")        
           }, 1000)
@@ -77,8 +82,8 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
       setPlayerState("attack")
       setTimeout(() => {
         setEnemyState("stun")
+        setEnemyPopEffect("hit")
         setTimeout(() => {
-          console.log("reinit", fightState, _turn)
           setFightState("reinit")        
         }, 1000)
       }, 1000)
@@ -87,6 +92,7 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
       setEnemyState("attack")
       setTimeout(() => {
         setPlayerState("stun")
+        setPlayerPopEffect("hit")
         setTimeout(() => {
           setFightState("reinit")        
         }, 1000)
@@ -140,17 +146,6 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
     return fightState === "question" && questionIndex < questionBank?.questions?.length
   }
 
-
-  const popEffect = (state,stateB) => {
-    if(state == 'stun') {
-      return 'hit'
-    }
-    if(stateB == 'deflect') {
-      return 'miss'
-    }
-    return null
-  }
-
   return (
     <div className="fight-scene">
       {showMCPrompt() && <MultipleChoicePrompt key={questionIndex} style={{ position: 'absolute', top: '5vh', left: '25%', width: '50%' }} question={questionBank?.questions[questionIndex]?.question} responseKey={questionBank?.questions[questionIndex]?.responseKey} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>}
@@ -186,8 +181,8 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
         </div>
       </div>
       <div className="effects-container">
-        {<PopEffect type={popEffect(playerState, enemyState)} left="12vh" /> }
-        {<PopEffect type={popEffect(enemyState, playerState)} right="12vh" /> }
+        {<PopEffect type={playerPopEffect} left="12vh" /> }
+        {<PopEffect type={enemyPopEffect} right="12vh" /> }
       </div>
       <div className="end-screen">
         
