@@ -6,7 +6,7 @@ import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
 
 const Level1Fight = () => {
-  const [playerHealth, setPlayerHealth] = useState(5);
+  const [playerHealth, setPlayerHealth] = useState(10);
   const [enemyHealth, setEnemyHealth] = useState(10);
 
   const onEnemyStun = (isStunned) => {
