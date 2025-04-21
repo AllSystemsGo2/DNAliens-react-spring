@@ -2,7 +2,8 @@
   "nav": {
     "home": "Home",
     "frisbeeGame": "Frisbee Game",
-    "crashSite": "Crash Site"
+    "crashSite": "Crash Site",
+    "level1Fight": "Level 1 Fight"
   },
   "auth": {
     "username": "Username",

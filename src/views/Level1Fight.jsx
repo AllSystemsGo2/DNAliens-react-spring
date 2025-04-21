@@ -25,15 +25,48 @@ const Level1Fight = () => {
     questions: [
       {
         responseKey: '1',
-        question: "What is DNA?",
+        question: "Which cell part contains a cell's genetic information?",
         answers: [
-          "Deoxyribonucleic acid",
-          "Dynamic Nuclear Assembly",
-          "Digital Network Access",
-          "Data Network Architecture"
+          "Cytoplasm",
+          "Chloroplast",
+          "Cell wall",
+          "Nucleus"
         ],
-        correct: "Deoxyribonucleic acid"
-      }
+        correct: "Nucleus"
+      },
+      {
+        responseKey: '2',
+        question: "The cell wall is found in which type of cells?",
+        answers: [
+          "Animal cells only",
+          "Plant cells only",
+          "Both plant and animal cells",
+          "Neither plant nor animal cells"
+        ],
+        correct: "Plant cells only"
+      },
+      {
+        responseKey: '3',
+        question: "The cell wall is found in which type of cells?",
+        answers: [
+          "Animal cells only",
+          "Plant cells only",
+          "Both plant and animal cells",
+          "Neither plant nor animal cells"
+        ],
+        correct: "Plant cells only"
+      },
+      {
+        responseKey: '4',
+        question: "Is the correct answer 4?",
+        answers: [
+          "Wrong Choice",
+          "Incorrect",
+          "Pick another",
+          "Correct"
+        ],
+        correct: "Correct"
+      },
       // Add more questions as needed
     ]
   };

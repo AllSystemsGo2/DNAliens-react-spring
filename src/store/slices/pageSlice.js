@@ -3,6 +3,32 @@ import { client } from '../../graphql/client'
 import { WRITE_GAME_DATA } from '../../graphql/mutations/gameData'
 import { GET_USER } from '../../graphql/queries/user'
 
+export const resetPageAttributes = createAsyncThunk(
+  'page/resetPageAttributes',
+  async (_, { getState }) => {
+    try {
+      const value = {}
+      const { data } = await client.mutate({
+        mutation: WRITE_GAME_DATA,
+        variables: {
+          username: getState().auth.username,
+          documentPath: `DNAliens/pages`,
+          value
+        }
+      })
+
+      if(!data.writeGameData.errors || data.writeGameData.errors.length == 0) {
+        return { success: true, pages: {} }
+      } else {
+        throw new Error(data.writeGameData.errors[0].message)
+      }
+    } catch (error) {
+      console.error("resetPageAttributes error", error)
+      throw error      
+    }
+  }
+)
+
 const writePageAttribute = createAsyncThunk(
   'page/writePageAttribute',
   async ({pageId, key, value}, { getState }) => {
@@ -11,7 +37,7 @@ const writePageAttribute = createAsyncThunk(
         mutation: WRITE_GAME_DATA,
         variables: {
           username: getState().auth.username,
-          documentPath: `DNAliens/${pageId}/${key}`,
+          documentPath: `DNAliens/pages/${pageId}/${key}`,
           value: value
         }
       })
@@ -47,7 +73,7 @@ export const getPages = createAsyncThunk(
     })
 
     if(data.errors.length == 0) {
-      return { data: data.getUser.documentRoot['DNAliens'] }
+      return { data: data.getUser.documentRoot['DNAliens']["pages"] }
     } else {
       throw new Error(data.errors[0].message)
     }
@@ -67,8 +93,6 @@ export const initializePageAttributes = createAsyncThunk(
     }
   }
 )
-
-
 
 export const selectPageAttributes = (state, pageId, defaultAttributes) => {
   return {...defaultAttributes, ...state.page?.pages?.[pageId]}
@@ -123,6 +147,17 @@ export const pageSlice = createSlice({
         state.pages = action.payload.data
       })
       .addCase(getPages.rejected, (state, action) => {
+        state.loading = false
+        state.error = action.error.message
+      })
+      .addCase(resetPageAttributes.pending, (state) => {
+        state.loading = true
+      })
+      .addCase(resetPageAttributes.fulfilled, (state, action) => {
+        state.loading = false
+        state.pages = action.payload.pages
+      })
+      .addCase(resetPageAttributes.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
       })

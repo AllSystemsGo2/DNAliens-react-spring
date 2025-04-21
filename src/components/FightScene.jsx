@@ -27,19 +27,24 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
     dispatch(initializePageAttributes({pageId: pageId, props: defaultAttributes}))
   }, [dispatch, pageId])
 
+  useEffect( () => {
+    console.log("questionIndex", questionIndex)
+  }, [questionIndex])
+
   const handleQuestion = (answer) => {
     const right = answer === questionBank?.questions[questionIndex]?.correct;
+    console.log("handleQuestion", right)
     if(right) {
       onEnemyStun(true);
     } else {
       onPlayerStun(true);
     }
-    setQuestionIndex(questionIndex + 1);
+    dispatch(setQuestionIndex(questionIndex + 1));
   };
 
   return (
     <div className="fight-scene">
-      <MultipleChoicePrompt style={{ position: 'absolute', top: '5vh', left: '25%', width: '50%' }} question={questionBank?.questions[questionIndex]?.question} responseKey={questionBank?.questions[questionIndex]?.responseKey} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>
+      <MultipleChoicePrompt key={questionIndex} style={{ position: 'absolute', top: '5vh', left: '25%', width: '50%' }} question={questionBank?.questions[questionIndex]?.question} responseKey={questionBank?.questions[questionIndex]?.responseKey} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>
       <div className="health-row">
         <div className="health-container">
           <div className="health-bar">
@@ -52,8 +57,6 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
           </div>
         </div>
       </div>
-      
-
       <div className="fight-container">
         <div className="characters-container">
           {players.map((player, index) => {

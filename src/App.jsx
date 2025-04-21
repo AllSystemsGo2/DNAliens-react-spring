@@ -12,6 +12,7 @@ import { setStoreDispatch } from './graphql/client'
 import { useTranslation } from 'react-i18next'
 import './store/i18n'
 import LanguageSelector from './components/LanguageSelector'
+import { resetPageAttributes } from './store/slices/pageSlice'
 
 function App() {
   const { t } = useTranslation()
@@ -33,6 +34,10 @@ function App() {
 
   const handleLogout = () => {
     dispatch(logout())
+  }
+
+  const handleResetGameData = () => {
+    dispatch(resetPageAttributes())
   }
 
   useEffect(() => {
@@ -64,7 +69,7 @@ function App() {
                 { to: '/', label: t('nav.home') },
                 { to: '/frisbee', label: t('nav.frisbeeGame') },
                 { to: '/crash-site', label: t('nav.crashSite') },
-                { to: '/level1-fight', label: 'Level 1 Fight' } // t('nav.level1Fight') }
+                { to: '/level1-fight', label: t('nav.level1Fight') }
             ].map(({ to, label }) => (
               <Link 
                 key={to}
@@ -143,6 +148,9 @@ function App() {
               <div>
                 <h2>{t('home.sections.codeGenTools')}</h2>
                 <li>Claude 3.5 Sonnet</li>
+              </div>
+              <div>
+                <button onClick={handleResetGameData}>Reset Game Data</button>
               </div>
             </div>
           } />
