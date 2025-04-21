@@ -10,25 +10,32 @@ import planetForeground from '../assets/planet-foreground.png'
 const defaultAttributes = {
   playerHealth: 10,
   enemyHealth: 10,
+  turn: "enemy"
 };
 
 const Level1Fight = () => {
   const dispatch = useDispatch();
-  const { playerHealth, enemyHealth } = useSelector(state => selectPageAttributes(state, 'level1fight', defaultAttributes));
+  const { playerHealth, enemyHealth, turn } = useSelector(state => selectPageAttributes(state, 'level1fight', defaultAttributes));
 
   useEffect(() => {
     dispatch(initializePageAttributes({ pageId: 'level1fight', props: defaultAttributes }));
   }, [dispatch]);
 
+  const flipTurn = () => {
+    dispatch(setPageAttribute({ pageId: 'level1fight', key: 'turn', value: turn === 'enemy' ? 'player' : 'enemy' }));
+  };
+
   const onEnemyStun = (isStunned) => {
     if (isStunned) {
       dispatch(setPageAttribute({ pageId: 'level1fight', key: 'enemyHealth', value: enemyHealth - 1 }));
+      flipTurn();
     }
   };
 
   const onPlayerStun = (isStunned) => {
     if (isStunned) {
       dispatch(setPageAttribute({ pageId: 'level1fight', key: 'playerHealth', value: playerHealth - 1 }));
+      flipTurn();
     }
   };
 

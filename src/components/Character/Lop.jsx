@@ -6,7 +6,7 @@ import characterImage from '../../assets/lop.png'
 
 const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state}) => {
   useEffect(() => {
-    console.log("Lop state", state)
+    console.error("Lop state", state)
   },[state])
 
   const style = {

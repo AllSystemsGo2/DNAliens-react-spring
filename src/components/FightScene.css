@@ -55,6 +55,14 @@
   
 }
 
+.effects-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 /* 
 .player-health-container { 
   left: 15%;

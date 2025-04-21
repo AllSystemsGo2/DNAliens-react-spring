@@ -13,7 +13,7 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
   };
 
   useEffect(() => {
-    console.log("Enemy state", state)
+    console.error("Enemy state", state)
   },[state])
      
   const style = {

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Player from './Character/Player';
 import Lop from './Character/Lop';
 import Enemy from './Character/Enemy';
+import PopEffect from './PopEffect';
 import { useSpring, animated } from '@react-spring/web';
 import './FightScene.css';
 import MultipleChoicePrompt from './MultipleChoicePrompt';
@@ -16,11 +17,12 @@ const defaultAttributes = {
   questionIndex: 0
 }
 
-const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enemyHealth, maxHealth = 10, onEnemyStun, onPlayerStun, turn}) => {
+const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enemyHealth, maxHealth = 10, onEnemyStun, onPlayerStun, turn="enemy"}) => {
   const dispatch = useDispatch()  
   const [fightState, setFightState] = useState("init")
   const [_playerHeath, set_PlayerHealth] = useState(playerHealth)
   const [_enemyHealth, set_EnemyHealth] = useState(enemyHealth)
+  const [_turn, set_Turn] = useState(turn)
   const [playerState, setPlayerState] = useState("idle")
   const [enemyState, setEnemyState] = useState("idle")
   
@@ -31,15 +33,32 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
 
   useEffect(() => {
     if(fightState == "reinit") {
+      setPlayerState("idle")
+      setEnemyState("idle")
       set_PlayerHealth(playerHealth)
       set_EnemyHealth(enemyHealth)
+      set_Turn(turn)
+
+      if(questionIndex < questionBank?.questions?.length) {
+        setFightState("question")
+      }
+      else {
+        setFightState("end")
+      }
     }
-  }, [fightState, playerHealth, enemyHealth])
-
-  // useEffect(() => {
-  //   //run state machine check??
-
-  // }, [])
+    else if(fightState == "end") {
+      const totalHealth = _playerHeath + (maxHealth - _enemyHealth)
+      
+      if(totalHealth / questionBank?.questions?.length >= .8) {
+        setPlayerState("win")
+        setEnemyState("faint")
+      }
+      else {
+        setPlayerState("faint")
+        setEnemyState("win")
+      }
+    }
+  }, [fightState, _playerHeath, _enemyHealth, maxHealth, questionBank])
 
   useEffect(() => {
     dispatch(initializePageAttributes({pageId: pageId, props: defaultAttributes}))
@@ -58,7 +77,7 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
     }
 
     // Animate the Fight. Replace later with an event system?
-    if(fightState == "enemyStun" && turn == 'enemy') {
+    if(fightState == "enemyStun" && _turn == 'enemy') {
       setEnemyState("attack")
       setTimeout(() => {
         setPlayerState("deflect")
@@ -70,7 +89,7 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
         }, 1000)
       }, 1000)
     }
-    if(fightState == "playerStun" && turn == 'player') {
+    if(fightState == "playerStun" && _turn == 'player') {
       setPlayerState("attack")
       setTimeout(() => {
         setEnemyState("deflect")
@@ -82,7 +101,7 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
         }, 1000)
       }, 1000)
     }
-    if(fightState == "enemyStun" && turn == 'player') {
+    if(fightState == "enemyStun" && _turn == 'player') {
       setPlayerState("attack")
       setTimeout(() => {
         setEnemyState("stun")
@@ -91,7 +110,7 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
         }, 1000)
       }, 1000)
     }
-    if(fightState == "playerStun" && turn == 'enemy') {
+    if(fightState == "playerStun" && _turn == 'enemy') {
       setEnemyState("attack")
       setTimeout(() => {
         setPlayerState("stun")
@@ -101,23 +120,13 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
       }, 1000)
     }
 
-    if(fightState == "reinit") {
-      if(questionIndex < questionBank?.questions?.length) {
-        setFightState("question")
-      }
-      else {
-        setFightState("end")
-      }
-    }
-
     if(fightState == "end") {
       // do nothing
     }
-  }, [fightState, turn, questionIndex, questionBank])
+  }, [fightState])
 
   const handleQuestion = (answer) => {
     const right = answer === questionBank?.questions[questionIndex]?.correct;
-    console.log("handleQuestion", right)
     if(right) {
       onEnemyStun(true);
       setFightState("enemyStun")
@@ -131,6 +140,18 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
 
   const showMCPrompt = () => {
     return fightState === "question" && questionIndex < questionBank?.questions?.length
+  }
+
+
+  const popEffect = (state) => {
+    switch (state) {
+      case 'stun':
+        return 'hit'
+      case 'attack':
+        return 'miss'
+      default:
+        return null
+    }
   }
 
   return (
@@ -166,6 +187,13 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
           <Enemy key={index} character={enemy} right={`${10*index+5}vh`} zIndex={enemies.length-index} state={enemyState} />
         ))}
         </div>
+      </div>
+      <div className="effects-container">
+        {<PopEffect type={popEffect(playerState)} left="12vh" /> }
+        {<PopEffect type={popEffect(enemyState)} right="12vh" /> }
+      </div>
+      <div className="end-screen">
+        
       </div>
     </div>
   );

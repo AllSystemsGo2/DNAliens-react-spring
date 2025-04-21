@@ -5,7 +5,7 @@ import characterImage from '../../assets/player-character-2.png'
 
 const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => {
   useEffect(() => {
-    console.log("Player state", state)
+    console.error("Player state", state)
   },[state])
 
   const style = {
