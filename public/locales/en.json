@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "home": "Home",
+    "frisbeeGame": "Frisbee Game",
+    "crashSite": "Crash Site"
+  },
+  "auth": {
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "logout": "Logout",
+    "welcome": "Welcome, {{username}}!"
+  },
+  "home": {
+    "intro": "This is a simple app demonstrating a combination of tools & technologies. All pages have sound effects.",
+    "instructions": "Click 'Frisbee Game' to begin. You will be led to Crash Site through narrative interaction.",
+    "sections": {
+      "codebase": "Code base",
+      "artTools": "Art Tools & Resources",
+      "codeGenTools": "Code Gen Tools"
+    }
+  },
+  "frisbee": {
+    "title": "Space Frisbee",
+    "instruction": "Click the frisbee to throw it!"
+  },
+  "crashSite": {
+    "speechBubble": {
+      "mainText": "Something's in there...",
+      "subText": ""
+    },
+    "prompt": {
+      "question": "What should we do?",
+      "choices": [
+        "It could be dangerous, we should be careful.",
+        "Let's reach in and find out!",
+        "Eh, let's just leave."
+      ]
+    },
+    "end": {
+      "header": "The END",
+      "body": "That's the end for now."
+    },
+    "audio": {
+      "loading": "Loading...",
+      "soundOn": "Sound:On",
+      "soundOff": "Sound:Off"
+    }
+  }
+}

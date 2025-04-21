@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useSpring, animated } from '@react-spring/web'
+import { useTranslation } from 'react-i18next'
 import './CrashSite.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
@@ -34,6 +35,7 @@ const setShowEnd = (value) => setPageAttribute({pageId: "crashSite", key: "showE
 
 const CrashSite = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
 
   useEffect(() => {
     dispatch(initializePageAttributes({pageId: "crashSite", props: defaultAttributes}))
@@ -189,8 +191,8 @@ const CrashSite = () => {
       {/* Lop speech bubble */}
       {showSpeechBubble && (
         <SpeechBubble
-          mainText="Something's in there..."
-        subText=""
+          mainText={t('crashSite.speechBubble.mainText')}
+          subText={t('crashSite.speechBubble.subText')}
           style={{
             bottom: '48vh',
             right: '4vh',
@@ -234,13 +236,9 @@ const CrashSite = () => {
       {/* Multiple choice prompt */}
       {showPrompt && (
         <MultipleChoicePrompt
-          question="What should we do?"
+          question={t('crashSite.prompt.question')}
           responseKey="crashSite"
-          choices={[
-            "It could be dangerous, we should be careful.",
-            "Let’s reach in and find out!",
-            "Eh, let’s just leave."
-          ]}
+          choices={t('crashSite.prompt.choices', { returnObjects: true })}
           onSubmit={(choice) => {
             console.log('Selected choice:', choice)
             dispatch(setShowPrompt(false))
@@ -257,8 +255,8 @@ const CrashSite = () => {
       {/* End */}
       {showEnd && (
         <Paragraph
-          header="The END"
-          body="That's the end for now."
+          header={t('crashSite.end.header')}
+          body={t('crashSite.end.body')}
           style={{
             top: '20vh',
             right: '40vh',
@@ -305,7 +303,7 @@ const CrashSite = () => {
             opacity: isLoading ? 0.5 : 1
           }}
         >
-          {isLoading ? 'Loading...' : isPlaying ? 'Sound:Off' : 'Sound:On'}
+          {isLoading ? t('crashSite.audio.loading') : isPlaying ? t('crashSite.audio.soundOff') : t('crashSite.audio.soundOn')}
         </button>
       </div>
     </div>

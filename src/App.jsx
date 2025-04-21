@@ -9,8 +9,12 @@ import './styles/nav.css'
 import { loginUser, logout, fetchUser, refreshAuth } from './store/slices/authSlice'
 import { useEffect, useState } from 'react'
 import { setStoreDispatch } from './graphql/client'
+import { useTranslation } from 'react-i18next'
+import './store/i18n'
+import LanguageSelector from './components/LanguageSelector'
 
 function App() {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const { username, isLoggedIn } = useSelector((state) => state.auth)
   const [password, setPassword] = useState('')
@@ -57,10 +61,10 @@ function App() {
         }}>
           <div style={{ display: 'flex', gap: '20px' }}>
             {[
-              { to: '/', label: 'Home' },
-              { to: '/frisbee', label: 'Frisbee Game' },
-              { to: '/crash-site', label: 'Crash Site' },
-              { to: '/level1-fight', label: 'Level 1 Fight' }
+                { to: '/', label: t('nav.home') },
+                { to: '/frisbee', label: t('nav.frisbeeGame') },
+                { to: '/crash-site', label: t('nav.crashSite') },
+                { to: '/level1-fight', label: 'Level 1 Fight' } // t('nav.level1Fight') }
             ].map(({ to, label }) => (
               <Link 
                 key={to}
@@ -71,18 +75,19 @@ function App() {
               </Link>
             ))}
           </div>
+          <span></span>
           {!isLoggedIn ? (
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
               <input
                 type="text"
-                placeholder="Username"
+                placeholder={t('auth.username')}
                 value={username}
                 onChange={(e) => dispatch({ type: 'auth/setUsername', payload: e.target.value })}
                 className="login-input"
               />
               <input
                 type="password"
-                placeholder="Password"
+                placeholder={t('auth.password')}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="login-input"
@@ -93,17 +98,18 @@ function App() {
                 className="login-button"
                 disabled={loading}
               >
-                {loading ? 'Logging in...' : 'Login'}
+                {loading ? t('auth.loggingIn') : t('auth.login')}
               </button>
               {error && (
                 <div style={{ color: 'red', marginTop: '0.5rem' }}>
                   {error}
                 </div>
               )}
+              
             </div>
           ) : (
             <div style={{ color: 'white', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              Welcome, {username}!
+              {t('auth.welcome', { username })}
               <button
                 onClick={handleLogout}
                 className="login-button"
@@ -112,14 +118,15 @@ function App() {
               </button>
             </div>
           )}
+          <LanguageSelector selected="en" />
         </nav>
         <Routes>
           <Route path="/" element={
             <div>
-              <h3>This is a simple app demonstrating a combination of tools & technologies. All pages have sound effects.</h3>
-              <h3>Click <Link to="/frisbee">Frisbee Game</Link> to begin. You will be led to Crash Site through narrative interaction.</h3>
+              <h3>{t('home.intro')}</h3>
+              <h3>{t('home.instructions')}</h3>
               <div>
-                <h2>Code base</h2>
+                <h2>{t('home.sections.codebase')}</h2>
                 <li>React SPA in JSX</li>
                 <li>React Spring</li>
                 <li>Simple CSS Animations</li>
@@ -127,14 +134,14 @@ function App() {
                 <li>Lottie</li>
               </div>
               <div>
-                <h2>Art Tools & Resources</h2>
+                <h2>{t('home.sections.artTools')}</h2>
                 <li>Gemini Flash 2.0 - static image generation</li>
                 <li>PixelBay - open source, royalty-free sound library </li>
                 <li>Krita - open source image editor</li>
                 <li>Audacity - open source audio editor</li>
               </div>
               <div>
-                <h2>Code Gen Tools</h2>
+                <h2>{t('home.sections.codeGenTools')}</h2>
                 <li>Claude 3.5 Sonnet</li>
               </div>
             </div>

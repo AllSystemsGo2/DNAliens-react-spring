@@ -5,6 +5,7 @@ import Player from '../components/Character/Player'
 import Scene from '../components/Scene'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import './Frisbee.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
@@ -31,6 +32,7 @@ const setShowCrash =  (value) => setPageAttribute({pageId: "frisbee", key: "show
 const Frisbee = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   useEffect(() => {
     dispatch(initializePageAttributes({pageId: "frisbee", 
@@ -194,7 +196,7 @@ const Frisbee = () => {
           fontWeight: '600',
           letterSpacing: '2px',
           marginBottom: '30px'
-        }}>Space Frisbee</h1>
+        }}>{t('frisbee.title')}</h1>
       
         <div style={{ 
           position: 'relative', 
@@ -217,7 +219,7 @@ const Frisbee = () => {
             border: '1px solid rgba(66, 220, 255, 0.2)',
             boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
           }}>
-            Click the frisbee to throw it!
+            {t('frisbee.instruction')}
           </div>
         </div>
       </div>
