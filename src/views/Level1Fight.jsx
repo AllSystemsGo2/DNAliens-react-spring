@@ -1,23 +1,34 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice';
 import FightScene from '../components/FightScene'; 
 import './Level1Fight.css';
 import Scene from '../components/Scene'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
 
+const defaultAttributes = {
+  playerHealth: 10,
+  enemyHealth: 10,
+};
+
 const Level1Fight = () => {
-  const [playerHealth, setPlayerHealth] = useState(10);
-  const [enemyHealth, setEnemyHealth] = useState(10);
+  const dispatch = useDispatch();
+  const { playerHealth, enemyHealth } = useSelector(state => selectPageAttributes(state, 'level1fight', defaultAttributes));
+
+  useEffect(() => {
+    dispatch(initializePageAttributes({ pageId: 'level1fight', props: defaultAttributes }));
+  }, [dispatch]);
 
   const onEnemyStun = (isStunned) => {
-    if (isStunned)   {
-      setEnemyHealth(enemyHealth-1);
+    if (isStunned) {
+      dispatch(setPageAttribute({ pageId: 'level1fight', key: 'enemyHealth', value: enemyHealth - 1 }));
     }
   };
 
   const onPlayerStun = (isStunned) => {
     if (isStunned) {
-      setPlayerHealth(playerHealth-1);
+      dispatch(setPageAttribute({ pageId: 'level1fight', key: 'playerHealth', value: playerHealth - 1 }));
     }
   };
 
