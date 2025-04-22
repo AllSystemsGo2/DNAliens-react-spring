@@ -73,7 +73,7 @@ const Level1Fight = () => {
   const questionBank = {
     questions: [
       {
-        responseKey: '1',
+        responseKey: 'level1fight-q1',
         question: "Which cell part contains a cell's genetic information?",
         answers: [
           "Cytoplasm",
@@ -84,7 +84,7 @@ const Level1Fight = () => {
         correct: "Nucleus"
       },
       {
-        responseKey: '2',
+        responseKey: 'level1fight-q2',
         question: "The cell wall is found in which type of cells?",
         answers: [
           "Animal cells only",
@@ -95,7 +95,7 @@ const Level1Fight = () => {
         correct: "Plant cells only"
       },
       {
-        responseKey: '3',
+        responseKey: 'level1fight-q3',
         question: "The cell wall is found in which type of cells?",
         answers: [
           "Animal cells only",
@@ -106,7 +106,7 @@ const Level1Fight = () => {
         correct: "Plant cells only"
       },
       {
-        responseKey: '4',
+        responseKey: 'level1fight-q4',
         question: "Is the correct answer 4?",
         answers: [
           "Wrong Choice",
