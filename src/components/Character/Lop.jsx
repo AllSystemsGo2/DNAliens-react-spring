@@ -1,13 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/lop.png'
 
 
 const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state}) => {
-  // useEffect(() => {
-  //   console.error("Lop state", state)
-  // },[state])
+  const [showDebugState, setShowDebugState] = useState(false)
+
+  useEffect(() => {
+    console.error("Lop state", state)
+    setShowDebugState(true)
+    setTimeout( () => {
+      setShowDebugState(false)
+    }, 1000)
+  },[state])
 
   const style = {
     position: 'absolute',
@@ -24,7 +30,9 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state}
   };
 
   return (
-    <div id="lop-character" style={style} />
+    <div id="lop-character" style={style}>
+      {showDebugState && <span id="state-debug">{state}</span>}
+    </div>
   );
 };
 

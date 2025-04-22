@@ -1,12 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/player-character-2.png'
 
 const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => {
-  // useEffect(() => {
-  //   console.error("Player state", state)
-  // },[state])
+  const [showDebugState, setShowDebugState] = useState(false)
+
+  useEffect(() => {
+    console.error("Player state", state)
+    setShowDebugState(true)
+    setTimeout( () => {
+      setShowDebugState(false)
+    }, 1000)
+  },[state])
 
   const style = {
     position: 'absolute',
@@ -23,7 +29,9 @@ const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => 
   };
 
   return (
-    <div id="player-character" style={style} />
+    <div id="player-character" style={style}>
+      {showDebugState && <span id="state-debug">{state}</span>}
+    </div>
   );
 };
 

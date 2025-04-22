@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 
@@ -12,9 +12,15 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
     return false
   };
 
-  // useEffect(() => {
-  //   console.error("Enemy state", state)
-  // },[state])
+  const [showDebugState, setShowDebugState] = useState(false)
+
+  useEffect(() => {
+    console.error("Enemy state", state)
+    setShowDebugState(true)
+    setTimeout( () => {
+      setShowDebugState(false)
+    }, 1000)
+  },[state])
      
   const style = {
     position: 'absolute',
@@ -35,7 +41,9 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
   };
 
   return (
-    <div id="enemy-character" style={style} />
+    <div id="enemy-character" style={style}>
+      {showDebugState && <div id="state-debug" style={{transform:"scaleX(-1)"}}>{state}</div>}
+    </div>
   );
 };
 

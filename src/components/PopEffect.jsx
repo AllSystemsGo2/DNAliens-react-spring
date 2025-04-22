@@ -4,6 +4,8 @@ import { animated, useSpring } from '@react-spring/web';
 import hitImage from '../assets/hit-effect-1.png'
 import missImage from '../assets/miss-effect-1.png'
 
+//TODO: Add animations to PopEffect that make the graphic pop up and fade out
+
 // type= 'miss' | 'hit'
 
 const PopEffect = ({ type='miss', bottom = '10vh', left = '5vh', right, zIndex = 2, timer=900 }) => {
