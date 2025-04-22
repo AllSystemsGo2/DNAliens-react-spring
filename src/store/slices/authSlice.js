@@ -43,20 +43,21 @@ export const fetchUser = createAsyncThunk(
         username
       }
     })
-    // Parse from the database, where all attributes are strings.
+
+    // Parse pageAttributes from database, (all attributes are strings in database)
     const DNAliens = JSON.parse(data.getUser.gameData.documentRoot).DNAliens
-    Object.keys(DNAliens).forEach(pageId => {
-      Object.keys(DNAliens[pageId]).forEach(key => {
+    Object.keys(DNAliens["pages"]).forEach(pageId => {
+      Object.keys(DNAliens["pages"][pageId]).forEach(key => {
         try { 
-          DNAliens[pageId][key] = JSON.parse(DNAliens[pageId][key])
+          DNAliens["pages"][pageId][key] = JSON.parse(DNAliens["pages"][pageId][key])
         }
         catch  {
           // its a string, so keep it as a string
         }
       })
     })
+    dispatch(setPages(DNAliens["pages"]))
 
-    dispatch(setPages(DNAliens))
     return {username, ...data.getUser}
   }
 )

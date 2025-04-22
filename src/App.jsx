@@ -2,6 +2,7 @@ import { Link, MemoryRouter, Routes, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Frisbee from './views/Frisbee'
 import CrashSite from './views/CrashSite'
+import Level1Fight from './views/Level1Fight'
 import './App.css'
 import './styles/animations.css'
 import './styles/nav.css'
@@ -11,6 +12,7 @@ import { setStoreDispatch } from './graphql/client'
 import { useTranslation } from 'react-i18next'
 import './store/i18n'
 import LanguageSelector from './components/LanguageSelector'
+import { resetPageAttributes } from './store/slices/pageSlice'
 
 function App() {
   const { t } = useTranslation()
@@ -32,6 +34,10 @@ function App() {
 
   const handleLogout = () => {
     dispatch(logout())
+  }
+
+  const handleResetGameData = () => {
+    dispatch(resetPageAttributes())
   }
 
   useEffect(() => {
@@ -60,9 +66,10 @@ function App() {
         }}>
           <div style={{ display: 'flex', gap: '20px' }}>
             {[
-              { to: '/', label: t('nav.home') },
-              { to: '/frisbee', label: t('nav.frisbeeGame') },
-              { to: '/crash-site', label: t('nav.crashSite') }
+                { to: '/', label: t('nav.home') },
+                { to: '/frisbee', label: t('nav.frisbeeGame') },
+                { to: '/crash-site', label: t('nav.crashSite') },
+                { to: '/level1-fight', label: t('nav.level1Fight') }
             ].map(({ to, label }) => (
               <Link 
                 key={to}
@@ -142,10 +149,14 @@ function App() {
                 <h2>{t('home.sections.codeGenTools')}</h2>
                 <li>Claude 3.5 Sonnet</li>
               </div>
+              <div>
+                <button onClick={handleResetGameData}>Reset Game Data</button>
+              </div>
             </div>
           } />
           <Route path="/frisbee" element={<Frisbee />} />
           <Route path="/crash-site" element={<CrashSite />} />
+          <Route path="/level1-fight" element={<Level1Fight />} />
         </Routes>
       </div>
     </MemoryRouter>

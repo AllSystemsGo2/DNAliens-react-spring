@@ -1,13 +1,14 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect, useRef } from 'react'
+import Lop from '../components/Character/Lop'
+import Player from '../components/Character/Player'
+import Scene from '../components/Scene'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import './Frisbee.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
-import lop from '../assets/lop.png'
-import player from '../assets/player-character.png'
 import spaceship from '../assets/spaceship-256.png'
 import spaceshipSound from '../assets/spaceship-flight-crash.ogg'
 import crash from '../assets/crash.png'
@@ -105,63 +106,13 @@ const Frisbee = () => {
       minHeight: '100vh',
       overflow: 'hidden'
     }}>
-      {/* Starry background */}
-      <div style={{
-        backgroundImage: `url(${starryBackground})`,
-        backgroundSize: '125% 100%',
-        backgroundPosition: '0% 25%',
-        backgroundRepeat: 'repeat-x repeat-y',
-        minHeight: '100vh',
-        width: '100%',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        animation: 'panBackground 240s linear infinite'
-      }} />
-
-      {/* Planet foreground */}
-      <div style={{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        height: '50vh',
-        backgroundImage: `url(${planetForeground})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center bottom',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 1
-      }} />
+      <Scene skyImage={starryBackground} terrainImage={planetForeground} />
 
       {/* Lop foreground */}
-      <div id="lop-character" style={{
-        position: 'absolute',
-        bottom: '20vh',
-        right: '5vh',
-        width: '30vh',
-        height: '30vh',
-        backgroundImage: `url(${lop})`,
-        backgroundSize: 'contain',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 2,
-        animation: 'lopBounce 2s ease-in-out infinite'
-      }} />
+      <Lop right="5vh" />
 
       {/* Player foreground */}
-      <div id="player-character" style={{
-        position: 'absolute',
-        bottom: '10vh',
-        left: '5vh',
-        width: '30vh',
-        height: '30vh',
-        backgroundImage: `url(${player})`,
-        backgroundSize: 'contain',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 2,
-        animation: 'lopBounce 2s ease-in-out infinite'
-      }} />
+      <Player />
 
       <animated.div
         id="frisbee"
