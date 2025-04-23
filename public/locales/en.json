@@ -3,7 +3,8 @@
     "home": "Home",
     "frisbeeGame": "Frisbee Game",
     "crashSite": "Crash Site",
-    "level1Fight": "Level 1 Fight"
+    "level1Fight": "Level 1 Fight",
+    "level1Escape": "Level 1 Escape"
   },
   "auth": {
     "username": "Username",

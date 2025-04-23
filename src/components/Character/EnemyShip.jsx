@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
-import characterImage from '../../assets/player-character-2.png'
 
-const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => {
+// state: idle, boost, fuel, stall, win, faint
+
+const EnemyShip = ({ bottom = '10vh', left = '5vh', size = '30vh', right, zIndex = 2, character, state }) => {
   const [showDebugState, setShowDebugState] = useState(false)
 
+  const characterUrl = ()=> {
+    if(character === 'enemy1') {
+      return false;
+    }
+    return false
+  };
+
   useEffect(() => {
-    console.error("Player state", state)
+    console.error("EnemyShip state", state)
     setShowDebugState(true)
     setTimeout( () => {
       setShowDebugState(false)
@@ -18,32 +26,35 @@ const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => 
     position: 'absolute',
     bottom,
     ...(right ? { right } : {left}),
-    width: '30vh',
-    height: '30vh',
+    width: size,
+    height: size,    
     animation: 'characterBounce 2s ease-in-out infinite',
     zIndex
   };
 
   const characterStyle = {
-    position: 'block',
+    display: 'block',
     width: '100%',
     height: '100%',
-    backgroundImage: `url(${characterImage})`,
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    transform: 'scaleX(-1)',
-  };
+    ...(characterUrl() ? {
+      backgroundImage: `url(${characterUrl()})`,
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    } : {
+      backgroundColor: '#FF00FF' // Fuchsia fallback
+    }),
+  }
 
   return (
-    <div id="player-character" style={style}>
+    <div id="enemy-ship" style={style}>
       <div style={characterStyle}></div>
-      {showDebugState && <span id="state-debug">{state}</span>}
+      {showDebugState && <div id="state-debug">{state}</div>}
     </div>
   );
 };
 
-Player.propTypes = {
+EnemyShip.propTypes = {
   bottom: PropTypes.string,
   left: PropTypes.string,
   right: PropTypes.string,
@@ -51,4 +62,4 @@ Player.propTypes = {
   state: PropTypes.string
 };
 
-export default Player;
+export default EnemyShip;
