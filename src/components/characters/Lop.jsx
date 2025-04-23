@@ -4,7 +4,7 @@ import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/lop.png'
 
 
-const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state}) => {
+const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state, children}) => {
   const [showDebugState, setShowDebugState] = useState(false)
 
   useEffect(() => {
@@ -17,11 +17,23 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state}
 
   const style = {
     position: 'absolute',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     bottom,
     ...(right ? { right } : {left}),
     width: '30vh',
     height: '30vh',
     zIndex,
+  };
+
+  const blockStyle = {
+    position: 'block',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     animation: 'characterBounce 2s ease-in-out infinite'
   };
 
@@ -38,8 +50,11 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state}
 
   return (
     <div id="lop-character" style={style}>
-      <div style={characterStyle}></div>
+      <div style={blockStyle}>
+        <div style={characterStyle}></div>
+      </div>
       {showDebugState && <span id="state-debug">{state}</span>}
+      {children}
     </div>
   );
 };
