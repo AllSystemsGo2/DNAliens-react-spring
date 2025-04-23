@@ -24,6 +24,8 @@ function App() {
   const loading = useSelector((state) => state.auth.loading)
   const error = useSelector((state) => state.auth.error)
 
+  const [disableReset, setDisableReset] = useState(false)
+
   const handleLogin = async () => {
     try {
       await dispatch(loginUser({ username, password })).unwrap()
@@ -39,7 +41,10 @@ function App() {
   }
 
   const handleResetGameData = () => {
-    dispatch(resetPageAttributes())
+    setDisableReset(true)
+    dispatch(resetPageAttributes()).finally(() => {
+      setDisableReset(false)
+    })
   }
 
   useEffect(() => {
@@ -59,8 +64,6 @@ function App() {
         <nav style={{
           padding: '20px',
           background: '#1a1a1a',
-          marginBottom: '20px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
           boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           display: 'flex',
           alignItems: 'center',
@@ -154,7 +157,7 @@ function App() {
                 <li>Claude 3.5 Sonnet</li>
               </div>
               <div>
-                <button onClick={handleResetGameData}>Reset Game Data</button>
+                <button onClick={handleResetGameData} disabled={disableReset}>Reset Game Data</button>
               </div>
             </div>
           } />

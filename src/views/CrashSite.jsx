@@ -191,23 +191,28 @@ const CrashSite = () => {
 
 
       {/* Lop foreground */}
-      <Lop bottom="15vh" right="25vh" zIndex={2} state="idle" >
-        {/* Lop speech bubble */}
-        {showSpeechBubble && (
-          <SpeechBubble
-            maxWidth='400px'
-            left="-25%"
-            top="-30%"
-            mainText={t('crashSite.speechBubble.mainText')}
-            subText={t('crashSite.speechBubble.subText')}
-            style={{
-              zIndex: 3,
-              minWidth: '200px',
-              boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
-            }}
-          />
-        )}
-      </Lop>
+      <animated.div id="player-character" style={{
+        position: 'absolute',
+        bottom: '0vh',
+        ...lopSpring}}>
+        <Lop bottom="15vh" right="25vh" zIndex={2} state="idle" >
+          {/* Lop speech bubble */}
+          {showSpeechBubble && (
+            <SpeechBubble
+              maxWidth='400px'
+              left="-25%"
+              top="-30%"
+              mainText={t('crashSite.speechBubble.mainText')}
+              subText={t('crashSite.speechBubble.subText')}
+              style={{
+                zIndex: 3,
+                minWidth: '200px',
+                boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
+              }}
+            />
+          )}
+        </Lop>
+      </animated.div>
 
       {/* Player foreground */}
       <animated.div id="player-character" style={{

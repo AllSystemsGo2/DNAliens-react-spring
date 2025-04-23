@@ -5,7 +5,7 @@ import baddies1 from '../../assets/baddies1.png'
 import baddies2 from '../../assets/baddies2.png'
 
 
-const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, state}) => {
+const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, state, children}) => {
   const characterUrl = ()=> {
     if(character === 'baddies1') {
       return baddies1;
@@ -16,10 +16,31 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
     return false
   };
 
+  const [_prevLeft, setPrevLeft] = useState(left);
+  const [_left, setLeft] = useState(left);
+
+  const [_prevRight, setPrevRight] = useState(right);
+  const [_right, setRight] = useState(right);
+
+  useEffect(() => {
+    setPrevRight(_right);
+    setRight(right);
+  }, [right]);
+
+  useEffect(() => {
+    setPrevLeft(_left);
+    setLeft(left);
+  }, [left]);
+
+  const translateSpring = useSpring({
+    position: 'absolute',
+    ...(right? {right: (right != _prevRight) ? _right : _prevRight} : { left: (left != _prevLeft) ? left : _prevLeft} ),
+    config: { tension: 60, friction: 14 }
+  });
+
   const [showDebugState, setShowDebugState] = useState(false)
 
   useEffect(() => {
-    console.error("Enemy state", state)
     setShowDebugState(true)
     setTimeout( () => {
       setShowDebugState(false)
@@ -29,10 +50,19 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
   const style = {
     position: 'absolute',
     bottom,
-    ...(right ? { right } : {left}),
     width: '30vh',
     height: '30vh',
     zIndex,
+    ...translateSpring
+  };
+
+  const blockStyle = {
+    position: 'block',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     animation: 'characterBounce 2s ease-in-out infinite'
   };
 
@@ -52,10 +82,13 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
   };
 
   return (
-    <div id="enemy-character" style={style}>
-      <div style={characterStyle}></div>
+    <animated.div id="enemy-character" style={style}>
+      <div style={blockStyle}>
+        <div style={characterStyle}/>
+      </div>
       {showDebugState && <div id="state-debug">{state}</div>}
-    </div>
+      {children}
+    </animated.div>
   );
 };
 
