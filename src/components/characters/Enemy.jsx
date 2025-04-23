@@ -1,39 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
+import baddies1 from '../../assets/baddies1.png'
+import baddies2 from '../../assets/baddies2.png'
 
-// state: idle, boost, fuel, stall, win, faint
 
-const EnemyShip = ({ bottom = '10vh', left = '5vh', size = '30vh', right, zIndex = 2, character, state }) => {
-  const [showDebugState, setShowDebugState] = useState(false)
-
+const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, state}) => {
   const characterUrl = ()=> {
-    if(character === 'enemy1') {
-      return false;
+    if(character === 'baddies1') {
+      return baddies1;
+    }
+    if(character === 'baddies2') {
+      return baddies2;
     }
     return false
   };
 
+  const [showDebugState, setShowDebugState] = useState(false)
+
   useEffect(() => {
-    console.error("EnemyShip state", state)
+    console.error("Enemy state", state)
     setShowDebugState(true)
     setTimeout( () => {
       setShowDebugState(false)
     }, 1000)
   },[state])
-
+     
   const style = {
     position: 'absolute',
     bottom,
     ...(right ? { right } : {left}),
-    width: size,
-    height: size,    
-    animation: 'characterBounce 2s ease-in-out infinite',
-    zIndex
+    width: '30vh',
+    height: '30vh',
+    zIndex,
+    animation: 'characterBounce 2s ease-in-out infinite'
   };
 
   const characterStyle = {
-    display: 'block',
+    position: 'block',
     width: '100%',
     height: '100%',
     ...(characterUrl() ? {
@@ -43,18 +47,20 @@ const EnemyShip = ({ bottom = '10vh', left = '5vh', size = '30vh', right, zIndex
       backgroundRepeat: 'no-repeat',
     } : {
       backgroundColor: '#FF00FF' // Fuchsia fallback
-    }),
-  }
+    }),   
+    transform: 'scaleX(-1)',
+  };
 
   return (
-    <div id="enemy-ship" style={style}>
+    <div id="enemy-character" style={style}>
       <div style={characterStyle}></div>
       {showDebugState && <div id="state-debug">{state}</div>}
     </div>
   );
 };
 
-EnemyShip.propTypes = {
+Enemy.propTypes = {
+  characterImage: PropTypes.string,
   bottom: PropTypes.string,
   left: PropTypes.string,
   right: PropTypes.string,
@@ -62,4 +68,4 @@ EnemyShip.propTypes = {
   state: PropTypes.string
 };
 
-export default EnemyShip;
+export default Enemy;

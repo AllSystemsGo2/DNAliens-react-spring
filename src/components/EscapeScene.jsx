@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types';
-import PlayerShip from './Character/PlayerShip';
-import EnemyShip from './Character/EnemyShip';
+import PlayerShip from './characters/PlayerShip';
+import EnemyShip from './characters/EnemyShip';
 import PopEffect from './PopEffect';
 import './EscapeScene.css';
 import MultipleChoicePrompt from './MultipleChoicePrompt';

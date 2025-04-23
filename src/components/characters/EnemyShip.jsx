@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
-import characterImage from '../../assets/cellina-spaceship.png'
 
-// state: idle, boost, fuel, stall, win, faint
+// EscapeScene states: idle, boost, fuel, stall, win, faint
 
-const PlayerShip = ({ bottom = '10vh', left = '5vh', right, size = '30vh', character, zIndex = 2, state }) => {
+
+const EnemyShip = ({ bottom = '10vh', left = '5vh', size = '30vh', right, zIndex = 2, character, state }) => {
   const [showDebugState, setShowDebugState] = useState(false)
 
+  const characterUrl = ()=> {
+    if(character === 'enemy1') {
+      return false;
+    }
+    return false
+  };
+
   useEffect(() => {
-    console.error("PlayerShip state", state)
+    console.error("EnemyShip state", state)
     setShowDebugState(true)
     setTimeout( () => {
       setShowDebugState(false)
@@ -21,31 +28,34 @@ const PlayerShip = ({ bottom = '10vh', left = '5vh', right, size = '30vh', chara
     bottom,
     ...(right ? { right } : {left}),
     width: size,
-    height: size,
+    height: size,    
     animation: 'characterBounce 2s ease-in-out infinite',
     zIndex
   };
 
   const characterStyle = {
-    position: 'block',    
+    display: 'block',
     width: '100%',
     height: '100%',
-    backgroundImage: `url(${characterImage})`,
-    backgroundSize: 'contain',
-    backgroundPosition: 'center',
-    backgroundRepeat: 'no-repeat',
-    transform: 'scaleX(-1)',
-  };
+    ...(characterUrl() ? {
+      backgroundImage: `url(${characterUrl()})`,
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      backgroundRepeat: 'no-repeat',
+    } : {
+      backgroundColor: '#FF00FF' // Fuchsia fallback
+    }),
+  }
 
   return (
-    <div id="player-ship" style={style}>
+    <div id="enemy-ship" style={style}>
       <div style={characterStyle}></div>
       {showDebugState && <div id="state-debug">{state}</div>}
     </div>
   );
 };
 
-PlayerShip.propTypes = {
+EnemyShip.propTypes = {
   bottom: PropTypes.string,
   left: PropTypes.string,
   right: PropTypes.string,
@@ -53,4 +63,4 @@ PlayerShip.propTypes = {
   state: PropTypes.string
 };
 
-export default PlayerShip;
+export default EnemyShip;

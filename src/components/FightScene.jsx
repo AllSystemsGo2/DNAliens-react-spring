@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types';
-import Player from './Character/Player';
-import Lop from './Character/Lop';
-import Enemy from './Character/Enemy';
+import Player from './characters/Player';
+import Lop from './characters/Lop';
+import Enemy from './characters/Enemy';
 import PopEffect from './PopEffect';
 import './FightScene.css';
 import MultipleChoicePrompt from './MultipleChoicePrompt';

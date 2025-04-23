@@ -127,7 +127,7 @@ const Level1Fight = () => {
       {showFight  && <FightScene 
         pageId="level1fight"
         players={['player', 'lop']}
-        enemies={['enemy1']}
+        enemies={['baddies1', 'baddies2']}
         playerHealth={playerHealth}
         enemyHealth={enemyHealth}
         maxHealth={10}
