@@ -1,0 +1,61 @@
+.escape-scene {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.health-row {
+  position: absolute;
+  top: 2vh;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5vh;
+}
+
+.health-container {
+  width: 20vh;
+}
+
+.health-bar {
+  width: 100%;
+  height: 2vh;
+  background-color: #ddd;
+  border-radius: 1vh;
+  overflow: hidden;
+}
+
+.health-fill {
+  height: 100%;
+  background-color: #4CAF50;
+  transition: width 0.3s ease-in-out;
+}
+
+.escape-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5vh;
+}
+
+.effects-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.end-screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -21,16 +21,24 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state}
     ...(right ? { right } : {left}),
     width: '30vh',
     height: '30vh',
+    zIndex,
+    animation: 'characterBounce 2s ease-in-out infinite'
+  };
+
+  const characterStyle = {
+    position: 'block',
+    width: '100%',
+    height: '100%',
     backgroundImage: `url(${characterImage})`,
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    zIndex,
-    animation: 'lopBounce 2s ease-in-out infinite'
+    transform: 'scaleX(-1)',
   };
 
   return (
     <div id="lop-character" style={style}>
+      <div style={characterStyle}></div>
       {showDebugState && <span id="state-debug">{state}</span>}
     </div>
   );

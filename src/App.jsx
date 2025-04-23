@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Frisbee from './views/Frisbee'
 import CrashSite from './views/CrashSite'
 import Level1Fight from './views/Level1Fight'
+import Level1Escape from './views/Level1Escape'
 import './App.css'
 import './styles/animations.css'
 import './styles/nav.css'
@@ -69,7 +70,8 @@ function App() {
                 { to: '/', label: t('nav.home') },
                 { to: '/frisbee', label: t('nav.frisbeeGame') },
                 { to: '/crash-site', label: t('nav.crashSite') },
-                { to: '/level1-fight', label: t('nav.level1Fight') }
+                { to: '/level1-fight', label: t('nav.level1Fight') },
+                { to: '/level1-escape', label: t('nav.level1Escape') }
             ].map(({ to, label }) => (
               <Link 
                 key={to}
@@ -157,6 +159,7 @@ function App() {
           <Route path="/frisbee" element={<Frisbee />} />
           <Route path="/crash-site" element={<CrashSite />} />
           <Route path="/level1-fight" element={<Level1Fight />} />
+          <Route path="/level1-escape" element={<Level1Escape />} />
         </Routes>
       </div>
     </MemoryRouter>

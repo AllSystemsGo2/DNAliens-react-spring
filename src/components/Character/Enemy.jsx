@@ -28,6 +28,14 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
     ...(right ? { right } : {left}),
     width: '30vh',
     height: '30vh',
+    zIndex,
+    animation: 'characterBounce 2s ease-in-out infinite'
+  };
+
+  const characterStyle = {
+    position: 'block',
+    width: '100%',
+    height: '100%',
     ...(characterUrl() ? {
       backgroundImage: `url(${characterUrl()})`,
       backgroundSize: 'contain',
@@ -35,14 +43,14 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
       backgroundRepeat: 'no-repeat',
     } : {
       backgroundColor: '#FF00FF' // Fuchsia fallback
-    }),
-    zIndex,
-    animation: 'lopBounce 2s ease-in-out infinite'
+    }),   
+    transform: 'scaleX(-1)',
   };
 
   return (
     <div id="enemy-character" style={style}>
-      {showDebugState && <div id="state-debug" style={{transform:"scaleX(-1)"}}>{state}</div>}
+      <div style={characterStyle}></div>
+      {showDebugState && <div id="state-debug">{state}</div>}
     </div>
   );
 };

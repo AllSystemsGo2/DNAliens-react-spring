@@ -184,9 +184,9 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
         {<PopEffect type={playerPopEffect} left="12vh" /> }
         {<PopEffect type={enemyPopEffect} right="12vh" /> }
       </div>
-      <div className="end-screen">
+      {fightState == "end" && <div className="end-screen">
         
-      </div>
+      </div>}
     </div>
   );
 };

@@ -1,0 +1,17 @@
+.level1-escape {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000;  /* Dark background for the fight scene */
+  color: white;
+}
+
+.end-screen {
+  position: absolute;
+}
+
+.launch-screen {
+  position: absolute;
+}
