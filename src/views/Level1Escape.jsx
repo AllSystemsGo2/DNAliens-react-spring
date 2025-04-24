@@ -119,7 +119,7 @@ const Level1Escape = () => {
       {showEscape  && <EscapeScene 
         pageId="level1escape"
         player={'cellina-spaceship'}
-        enemy={'enemy-ship1'}
+        enemy={'baddies-ship1'}
         playerHealth={playerHealth}
         enemyHealth={enemyHealth}
         maxHealth={10}

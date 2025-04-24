@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
+import enemyShip3 from '../../assets/enemy-spaceship3.png'
 
 // EscapeScene states: idle, boost, fuel, stall, win, faint
 
 
-const EnemyShip = ({ bottom = '10vh', left = '5vh', size = '30vh', right, zIndex = 2, character, state }) => {
+const EnemyShip = ({ bottom = '10vh', left = '5vh', size = '40vh', right, zIndex = 2, character, state }) => {
   const [showDebugState, setShowDebugState] = useState(false)
 
   const characterUrl = ()=> {
-    if(character === 'enemy1') {
-      return false;
+    if(character === 'baddies-ship1') {
+      return enemyShip3;
     }
     return false
   };
@@ -29,7 +30,7 @@ const EnemyShip = ({ bottom = '10vh', left = '5vh', size = '30vh', right, zIndex
     ...(right ? { right } : {left}),
     width: size,
     height: size,    
-    animation: 'characterBounce 2s ease-in-out infinite',
+    animation: 'characterBounce 4s ease-in-out infinite',
     zIndex
   };
 
@@ -37,6 +38,7 @@ const EnemyShip = ({ bottom = '10vh', left = '5vh', size = '30vh', right, zIndex
     display: 'block',
     width: '100%',
     height: '100%',
+    transform: 'rotateZ(-20deg) scaleX(-1)',
     ...(characterUrl() ? {
       backgroundImage: `url(${characterUrl()})`,
       backgroundSize: 'contain',
