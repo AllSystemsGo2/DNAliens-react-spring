@@ -4,6 +4,7 @@ import Frisbee from './views/Frisbee'
 import CrashSite from './views/CrashSite'
 import Level1Fight from './views/Level1Fight'
 import Level1Escape from './views/Level1Escape'
+import Level1QuizChoice from './views/Level1QuizChoice'
 import './App.css'
 import './styles/animations.css'
 import './styles/nav.css'
@@ -23,6 +24,8 @@ function App() {
   const loading = useSelector((state) => state.auth.loading)
   const error = useSelector((state) => state.auth.error)
 
+  const [disableReset, setDisableReset] = useState(false)
+
   const handleLogin = async () => {
     try {
       await dispatch(loginUser({ username, password })).unwrap()
@@ -38,7 +41,10 @@ function App() {
   }
 
   const handleResetGameData = () => {
-    dispatch(resetPageAttributes())
+    setDisableReset(true)
+    dispatch(resetPageAttributes()).finally(() => {
+      setDisableReset(false)
+    })
   }
 
   useEffect(() => {
@@ -58,8 +64,6 @@ function App() {
         <nav style={{
           padding: '20px',
           background: '#1a1a1a',
-          marginBottom: '20px',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
           boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           display: 'flex',
           alignItems: 'center',
@@ -70,6 +74,7 @@ function App() {
                 { to: '/', label: t('nav.home') },
                 { to: '/frisbee', label: t('nav.frisbeeGame') },
                 { to: '/crash-site', label: t('nav.crashSite') },
+                { to: '/level1-quizchoice', label: t('nav.level1QuizChoice') },
                 { to: '/level1-fight', label: t('nav.level1Fight') },
                 { to: '/level1-escape', label: t('nav.level1Escape') }
             ].map(({ to, label }) => (
@@ -152,12 +157,13 @@ function App() {
                 <li>Claude 3.5 Sonnet</li>
               </div>
               <div>
-                <button onClick={handleResetGameData}>Reset Game Data</button>
+                <button onClick={handleResetGameData} disabled={disableReset}>Reset Game Data</button>
               </div>
             </div>
           } />
           <Route path="/frisbee" element={<Frisbee />} />
           <Route path="/crash-site" element={<CrashSite />} />
+          <Route path="/level1-quizchoice" element={<Level1QuizChoice />} />
           <Route path="/level1-fight" element={<Level1Fight />} />
           <Route path="/level1-escape" element={<Level1Escape />} />
         </Routes>

@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
-import characterImage from '../../assets/cellina-spaceship.png'
+import characterImage from '../../assets/sprinkles1.png'
 
-// state: idle, boost, fuel, stall, win, faint
-
-const PlayerShip = ({ bottom = '10vh', left = '5vh', right, size = '30vh', character, zIndex = 2, state }) => {
+const Sprinkles = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => {
   const [showDebugState, setShowDebugState] = useState(false)
 
   useEffect(() => {
-    console.error("PlayerShip state", state)
+    console.error("Sprinkles state", state)
     setShowDebugState(true)
     setTimeout( () => {
       setShowDebugState(false)
@@ -20,32 +18,30 @@ const PlayerShip = ({ bottom = '10vh', left = '5vh', right, size = '30vh', chara
     position: 'absolute',
     bottom,
     ...(right ? { right } : {left}),
-    width: size,
-    height: size,
-    animation: 'characterBounce 2s ease-in-out infinite',
+    width: '30vh',
+    height: '30vh',
     zIndex
   };
 
   const characterStyle = {
-    position: 'block',    
+    position: 'block',
     width: '100%',
     height: '100%',
     backgroundImage: `url(${characterImage})`,
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    transform: 'scaleX(-1)',
   };
 
   return (
-    <div id="player-ship" style={style}>
+    <div id="player-character" style={style}>
       <div style={characterStyle}></div>
-      {showDebugState && <div id="state-debug">{state}</div>}
+      {showDebugState && <span id="state-debug">{state}</span>}
     </div>
   );
 };
 
-PlayerShip.propTypes = {
+Sprinkles.propTypes = {
   bottom: PropTypes.string,
   left: PropTypes.string,
   right: PropTypes.string,
@@ -53,4 +49,4 @@ PlayerShip.propTypes = {
   state: PropTypes.string
 };
 
-export default PlayerShip;
+export default Sprinkles;

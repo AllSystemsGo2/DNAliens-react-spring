@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types';
-import PlayerShip from './Character/PlayerShip';
-import EnemyShip from './Character/EnemyShip';
+import PlayerShip from './characters/PlayerShip';
+import EnemyShip from './characters/EnemyShip';
 import PopEffect from './PopEffect';
 import './EscapeScene.css';
 import MultipleChoicePrompt from './MultipleChoicePrompt';
@@ -119,7 +119,7 @@ const EscapeScene = ({ pageId, player, enemy, questionBank, playerHealth, enemyH
       {showMCPrompt() && <MultipleChoicePrompt key={questionIndex} style={{ position: 'absolute', top: '5vh', left: '25%', width: '50%' }} question={questionBank?.questions[questionIndex]?.question} responseKey={questionBank?.questions[questionIndex]?.responseKey} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>}      
       <div className="escape-container">
           <PlayerShip left={`${(25+5*_playerHeath)}vh`} bottom="25vh" size="10vh" zIndex={3} character={player}state={playerState}/>
-          <EnemyShip left={`${(10+5*_enemyHealth)}vh`} bottom="10vh" size="10vh" zIndex={3} character={enemy} state={enemyState}/>
+          <EnemyShip left={`${(10+5*_enemyHealth)}vh`} bottom="10vh" size="15vh" zIndex={3} character={enemy} state={enemyState}/>
       </div>
       <div className="effects-container">
         {<PopEffect type={playerPopEffect} left="12vh" /> }

@@ -14,7 +14,6 @@ const Scene = ({ skyImage, terrainImage, transformTerrain }) => {
         width: '100%',
         position: 'absolute',
         top: 0,
-        left: 0,
         animation: 'panBackground 240s linear infinite'
       }} />
 

@@ -5,9 +5,10 @@ import './CrashSite.css'
 import starryBackground from '../assets/starry-background.jpg'
 import planetForeground from '../assets/planet-foreground.png'
 import spaceship from '../assets/spaceship-crashed-2048.png'
-import lop from '../assets/lop.png'
+
 import player from '../assets/player-character-2.png'
 import spaceshipRustling from '../assets/spaceship-rustling.ogg'
+import Lop from '../components/characters/Lop'
 import SpeechBubble from '../components/SpeechBubble'
 import MultipleChoicePrompt from '../components/MultipleChoicePrompt'
 import Paragraph from '../components/Paragraph'
@@ -188,35 +189,30 @@ const CrashSite = () => {
         zIndex: 2
       }} />
 
-      {/* Lop speech bubble */}
-      {showSpeechBubble && (
-        <SpeechBubble
-          mainText={t('crashSite.speechBubble.mainText')}
-          subText={t('crashSite.speechBubble.subText')}
-          style={{
-            bottom: '48vh',
-            right: '4vh',
-            zIndex: 3,
-            minWidth: '200px',
-            boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
-          }}
-        />
-      )}
 
       {/* Lop foreground */}
-      <animated.div id="lop-character" style={{
+      <animated.div id="player-character" style={{
         position: 'absolute',
-        bottom: '15vh',
-        width: '30vh',
-        height: '30vh',
-        backgroundImage: `url(${lop})`,
-        backgroundSize: 'contain',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 2,
-        animation: 'lopBounce 2s ease-in-out infinite',
-        ...lopSpring
-      }} />
+        bottom: '0vh',
+        ...lopSpring}}>
+        <Lop bottom="15vh" right="25vh" zIndex={2} state="idle" >
+          {/* Lop speech bubble */}
+          {showSpeechBubble && (
+            <SpeechBubble
+              maxWidth='400px'
+              left="-25%"
+              top="-30%"
+              mainText={t('crashSite.speechBubble.mainText')}
+              subText={t('crashSite.speechBubble.subText')}
+              style={{
+                zIndex: 3,
+                minWidth: '200px',
+                boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
+              }}
+            />
+          )}
+        </Lop>
+      </animated.div>
 
       {/* Player foreground */}
       <animated.div id="player-character" style={{
