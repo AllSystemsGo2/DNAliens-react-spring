@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import baddies1 from '../../assets/baddies1.png'
 import baddies2 from '../../assets/baddies2.png'
+import MovableCharacter from './MovableCharacter';
 
-
-const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, state, children}) => {
+const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, state, children }) => {
   const characterUrl = ()=> {
     if(character === 'baddies1') {
       return baddies1;
@@ -16,27 +16,6 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
     return false
   };
 
-  const [_prevLeft, setPrevLeft] = useState(left);
-  const [_left, setLeft] = useState(left);
-
-  const [_prevRight, setPrevRight] = useState(right);
-  const [_right, setRight] = useState(right);
-
-  useEffect(() => {
-    setPrevRight(_right);
-    setRight(right);
-  }, [right]);
-
-  useEffect(() => {
-    setPrevLeft(_left);
-    setLeft(left);
-  }, [left]);
-
-  const translateSpring = useSpring({
-    position: 'absolute',
-    ...(right? {right: (right != _prevRight) ? _right : _prevRight} : { left: (left != _prevLeft) ? left : _prevLeft} ),
-    config: { tension: 60, friction: 14 }
-  });
 
   const [showDebugState, setShowDebugState] = useState(false)
 
@@ -46,15 +25,7 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
       setShowDebugState(false)
     }, 1000)
   },[state])
-     
-  const style = {
-    position: 'absolute',
-    bottom,
-    width: '30vh',
-    height: '30vh',
-    zIndex,
-    ...translateSpring
-  };
+  
 
   const blockStyle = {
     position: 'block',
@@ -82,13 +53,13 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
   };
 
   return (
-    <animated.div id="enemy-character" style={style}>
+    <MovableCharacter id="enemy-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}/>
       </div>
       {showDebugState && <div id="state-debug">{state}</div>}
       {children}
-    </animated.div>
+    </MovableCharacter>
   );
 };
 

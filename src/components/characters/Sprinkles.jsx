@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/sprinkles1.png'
+import MovableCharacter from './MovableCharacter';
 
 const Sprinkles = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => {
   const [showDebugState, setShowDebugState] = useState(false)
@@ -14,15 +15,6 @@ const Sprinkles = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) 
     }, 1000)
   },[state])
 
-  const style = {
-    position: 'absolute',
-    bottom,
-    ...(right ? { right } : {left}),
-    width: '30vh',
-    height: '30vh',
-    zIndex
-  };
-
   const characterStyle = {
     position: 'block',
     width: '100%',
@@ -34,10 +26,10 @@ const Sprinkles = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) 
   };
 
   return (
-    <div id="player-character" style={style}>
+    <MovableCharacter id="sprinkles-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={characterStyle}></div>
       {showDebugState && <span id="state-debug">{state}</span>}
-    </div>
+    </MovableCharacter>
   );
 };
 
