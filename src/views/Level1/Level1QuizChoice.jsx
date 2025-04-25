@@ -2,16 +2,16 @@ import React, { useEffect } from 'react';
 import { useSpring, animated } from '@react-spring/web';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice';
-import Scene from '../components/Scene';
-import PlayerShip from '../components/characters/PlayerShip';
-import Lop from '../components/characters/Lop';
-import Player from '../components/characters/Player';
-import Sprinkles from '../components/characters/Sprinkles';
-import Enemy from '../components/characters/Enemy';
-import SpeechBubble from '../components/SpeechBubble';
-import starryBackground from '../assets/starry-background.jpg';
-import planetForeground from '../assets/planet-foreground.png';
+import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice';
+import Scene from '../../components/Scene';
+import PlayerShip from '../../components/characters/PlayerShip';
+import Lop from '../../components/characters/Lop';
+import Player from '../../components/characters/Player';
+import Sprinkles from '../../components/characters/Sprinkles';
+import Enemy from '../../components/characters/Enemy';
+import SpeechBubble from '../../components/SpeechBubble';
+import starryBackground from '../../assets/starry-background.jpg';
+import planetForeground from '../../assets/planet-foreground.png';
 import './Level1QuizChoice.css';
 
 const defaultAttributes = {

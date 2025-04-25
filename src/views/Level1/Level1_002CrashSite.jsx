@@ -1,20 +1,21 @@
 import React, { useEffect, useRef } from 'react'
 import { useSpring, animated } from '@react-spring/web'
-import { useTranslation } from 'react-i18next'
-import './CrashSite.css'
-import starryBackground from '../assets/starry-background.jpg'
-import planetForeground from '../assets/planet-foreground.png'
-import spaceship from '../assets/spaceship-crashed-2048.png'
-
-import player from '../assets/player-character-2.png'
-import spaceshipRustling from '../assets/spaceship-rustling.ogg'
-import Lop from '../components/characters/Lop'
-import SpeechBubble from '../components/SpeechBubble'
-import MultipleChoicePrompt from '../components/MultipleChoicePrompt'
-import Paragraph from '../components/Paragraph'
 import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 
-import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice'
+import './Level1_002CrashSite.css'
+import starryBackground from '../../assets/starry-background.jpg'
+import planetForeground from '../../assets/planet-foreground.png'
+import spaceship from '../../assets/spaceship-crashed-2048.png'
+
+import player from '../../assets/player-character-2.png'
+import spaceshipRustling from '../../assets/spaceship-rustling.ogg'
+import Lop from '../../components/characters/Lop'
+import SpeechBubble from '../../components/SpeechBubble'
+import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
+import Paragraph from '../../components/Paragraph'
+
+import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
 
 const defaultAttributes = {
   isPlaying: false,
