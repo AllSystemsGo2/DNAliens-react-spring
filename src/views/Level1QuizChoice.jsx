@@ -17,13 +17,18 @@ import './Level1QuizChoice.css';
 const defaultAttributes = {
   showEnemies: false,
   showUIOverlay: false,
-  showThreaten: false
+  showThreaten: false,
+  showFightText: false,
+  showEscapeText: false,
+  gotoFightStance: false,
+  gotoEscapeStance: false,
+  showReadyButton: false
 };
 
 const Level1QuizChoice = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { showEnemies, showUIOverlay, showThreaten } = useSelector(state => selectPageAttributes(state, 'level1quizchoice', defaultAttributes));
+  const { showEnemies, showUIOverlay, showThreaten, showFightText, showEscapeText, gotoEscapeStance, gotoFightStance, showReadyButton } = useSelector(state => selectPageAttributes(state, 'level1quizchoice', defaultAttributes));
 
 
   useEffect(() => {
@@ -44,16 +49,54 @@ const Level1QuizChoice = () => {
     return () => clearTimeout(timer);
   }, [dispatch]);
 
+  useEffect(() => {
+    if (showFightText) {
+      setTimeout(() => {
+        dispatch(setGotoFightStance(true));
+      }, 1500);
+    }
+    if (showEscapeText) {
+      setTimeout(() => {
+        dispatch(setGotoEscapeStance(true));
+      }, 1500);
+    }
+  }, [showFightText, showEscapeText, dispatch]);
+
+  useEffect(() => {
+    if (gotoFightStance || gotoEscapeStance) {
+      setTimeout(() => {
+        dispatch(setShowReadyButton(true));
+      }, 1500);
+    }
+  }, [gotoFightStance, gotoEscapeStance, dispatch]);
+
   const setShowEnemies = (value) => setPageAttribute({pageId: "level1quizchoice", key: "showEnemies", value})
   const setShowUIOverlay = (value) => setPageAttribute({pageId: "level1quizchoice", key: "showUIOverlay", value})
   const setShowThreaten = (value) => setPageAttribute({pageId: "level1quizchoice", key: "showThreaten", value})
+  const setShowFightText = (value) => setPageAttribute({pageId: "level1quizchoice", key: "showFightText", value})
+  const setShowEscapeText = (value) => setPageAttribute({pageId: "level1quizchoice", key: "showEscapeText", value})
+  const setGotoFightStance = (value) => setPageAttribute({pageId: "level1quizchoice", key: "gotoFightStance", value})
+  const setGotoEscapeStance = (value) => setPageAttribute({pageId: "level1quizchoice", key: "gotoEscapeStance", value})
+  const setShowReadyButton = (value) => setPageAttribute({pageId: "level1quizchoice", key: "showReadyButton", value})
 
   const handleFightChoice = () => {
-    navigate('/level1-fight');
+    dispatch(setShowUIOverlay(false))
+    dispatch(setShowThreaten(false))
+    dispatch(setShowFightText(true))
   };
 
   const handleEscapeChoice = () => {
-    navigate('/level1-escape');
+    dispatch(setShowUIOverlay(false))
+    dispatch(setShowThreaten(false))
+    dispatch(setShowEscapeText(true))
+  };
+
+  const handleReady = (choice) => {
+    if (choice === 'fight') {
+      navigate('/level1-fight');
+    } else if (choice === 'escape') {
+      navigate('/level1-escape');
+    }
   };
 
   return (
@@ -61,9 +104,12 @@ const Level1QuizChoice = () => {
       <Scene skyImage={starryBackground} terrainImage={planetForeground} transformTerrain="scaleX(-1)" />
       <div className="characters-group">
         <PlayerShip left="25vw" bottom="25vh" size="45vh" zIndex={1} character="cellina-spaceship" state="landed" />
-        <Player left="5vw" bottom="5vh" zIndex={2} state="idle" />
-        <Lop left="15vw" bottom="12vh" zIndex={2} state="idle" />
-        <Sprinkles left="30vw" bottom="10vh" zIndex={2} state="idle" />
+        <Player left={!gotoFightStance ? "5vw" : "25vw"} bottom="5vh" zIndex={2} state="idle">
+          {showFightText && <SpeechBubble subText={"I’d like to see you try!"} />}
+          {showEscapeText && <SpeechBubble subText={"Quick everyone on the ship!"} />}
+        </Player>
+        <Lop left={!gotoFightStance ? "15vw" : "15vw"} bottom="12vh" zIndex={2} state="idle" />
+        <Sprinkles left={!gotoFightStance ? "30vw" : "5vw"} bottom="10vh" zIndex={2} state="idle" />
         <Enemy id="baddies1" right={showEnemies ? '5vw' : '-30vw'} bottom="5vh" zIndex={2} state="idle" character="baddies1">
           {showThreaten && <SpeechBubble subText={"Hey! That's a cute creature you have there. Be a shame if anyone tried to take it."} />}
         </Enemy>
@@ -80,6 +126,26 @@ const Level1QuizChoice = () => {
             <button className="choice-button escape" onClick={handleEscapeChoice}>
               <h2>Escape</h2>
               <p>Try to outrun the alien ships!</p>
+            </button>
+          </div>
+        </div>
+      )}
+      {setShowReadyButton && gotoFightStance && (
+        <div id="challenge-choice" className="ui-overlay">
+          <div className="choice-buttons">
+            <button className="choice-button fight" onClick={() => handleReady('fight')}>
+              <h2>Ready?</h2>
+              <p>Fight!</p>
+            </button>
+          </div>
+        </div>
+      )}
+      {setShowReadyButton && gotoEscapeStance && (
+        <div id="challenge-choice" className="ui-overlay">
+          <div className="choice-buttons">
+            <button className="choice-button escape" onClick={() => handleReady('escape')}>
+              <h2>Ready?</h2>
+              <p>Run!</p>
             </button>
           </div>
         </div>
