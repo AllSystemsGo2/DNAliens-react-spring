@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/lop.png'
+import MovableCharacter from './MovableCharacter';
 
 
 const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state, children}) => {
@@ -14,18 +15,6 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state,
       setShowDebugState(false)
     }, 1000)
   },[state])
-
-  const style = {
-    position: 'absolute',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    bottom,
-    ...(right ? { right } : {left}),
-    width: '30vh',
-    height: '30vh',
-    zIndex,
-  };
 
   const blockStyle = {
     position: 'block',
@@ -49,13 +38,13 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state,
   };
 
   return (
-    <div id="lop-character" style={style}>
+    <MovableCharacter id="lop-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}></div>
       </div>
       {showDebugState && <span id="state-debug">{state}</span>}
       {children}
-    </div>
+    </MovableCharacter>
   );
 };
 

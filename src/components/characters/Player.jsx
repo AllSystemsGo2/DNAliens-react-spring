@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/player-character-2.png'
+import MovableCharacter from './MovableCharacter';
 
 const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => {
   const [showDebugState, setShowDebugState] = useState(false)
@@ -13,16 +14,6 @@ const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => 
       setShowDebugState(false)
     }, 1000)
   },[state])
-
-  const style = {
-    position: 'absolute',
-    bottom,
-    ...(right ? { right } : {left}),
-    width: '30vh',
-    height: '30vh',
-    animation: 'characterBounce 2s ease-in-out infinite',
-    zIndex
-  };
 
   const characterStyle = {
     position: 'block',
@@ -36,10 +27,10 @@ const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => 
   };
 
   return (
-    <div id="player-character" style={style}>
+    <MovableCharacter id="player-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={characterStyle}></div>
       {showDebugState && <span id="state-debug">{state}</span>}
-    </div>
+    </MovableCharacter>
   );
 };
 
