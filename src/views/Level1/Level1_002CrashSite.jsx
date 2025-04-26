@@ -14,6 +14,7 @@ import Lop from '../../components/characters/Lop'
 import SpeechBubble from '../../components/SpeechBubble'
 import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
 import Paragraph from '../../components/Paragraph'
+import DriftingText from '../../components/DriftingText'
 
 import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
 
@@ -21,6 +22,7 @@ const defaultAttributes = {
   isPlaying: false,
   volume: 0.5,
   isLoading: true,
+  showRustle: true,
   showPrompt: false,
   shownPrompt: false,
   showSpeechBubble: false,
@@ -30,6 +32,7 @@ const defaultAttributes = {
 const setIsPlaying = (value) => setPageAttribute({pageId: "crashSite", key: "isPlaying", value})
 const setVolume = (value) => setPageAttribute({pageId: "crashSite", key: "volume", value})
 const setIsLoading = (value) => setPageAttribute({pageId: "crashSite", key: "isLoading", value})
+const setShowRustle = (value) => setPageAttribute({pageId: "crashSite", key: "showRustle", value})
 const setShowPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "showPrompt", value})
 const setShownPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "shownPrompt", value})
 const setShowSpeechBubble = (value) => setPageAttribute({pageId: "crashSite", key: "showSpeechBubble", value})
@@ -47,6 +50,7 @@ const CrashSite = () => {
     isPlaying,
     volume,
     isLoading,
+    showRustle,
     showPrompt,
     shownPrompt,  
     showSpeechBubble,
@@ -109,7 +113,7 @@ const CrashSite = () => {
 
     const playAudio = async () => {
       try {
-        if (isPlaying) {
+        if (isPlaying && showRustle) {
           await audio.play()
         } else {
           audio.pause()
@@ -127,7 +131,7 @@ const CrashSite = () => {
       audio.pause()
       audio.currentTime = 0
     }
-  }, [isPlaying, volume, dispatch])
+  }, [isPlaying, showRustle, volume, dispatch])
 
   return (
     <div className="crash-site-view" style={{
@@ -179,7 +183,7 @@ const CrashSite = () => {
       <div id="spaceship" style={{
         position: 'absolute',
         bottom: '10vh',
-        left: '12vh',
+        left: '15vw',
         transform: 'rotateZ(185deg)',
         width: '60vh',
         height: '60vh',
@@ -190,6 +194,16 @@ const CrashSite = () => {
         zIndex: 2
       }} />
 
+      {/* Rustle */}
+      {showRustle && Array.from({ length: 3 }).map((_, i) => (
+        <DriftingText key={i} style={{
+          position: 'absolute',
+          bottom: '35vh',
+          left: `${22 + i }vw`,
+          zIndex: 4,
+          color: 'white'
+        }} distance={20} duration={2000} text="RUSTLE..." />
+      ))}
 
       {/* Lop foreground */}
       <animated.div id="player-character" style={{
@@ -239,6 +253,7 @@ const CrashSite = () => {
           onSubmit={(choice) => {
             console.log('Selected choice:', choice)
             dispatch(setShowPrompt(false))
+            dispatch(setShowRustle(false))
             dispatch(setShowEnd(true))
           }}
           style={{
