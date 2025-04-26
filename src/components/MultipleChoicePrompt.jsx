@@ -45,7 +45,7 @@ const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style,
 }
 
 MultipleChoicePrompt.propTypes = {
-  submitText: PropTypes.string.isRequired
+  submitText: PropTypes.string
 };
 
 

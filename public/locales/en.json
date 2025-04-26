@@ -7,6 +7,9 @@
     "level1Fight": "Level 1 Fight",
     "level1Escape": "Level 1 Escape"
   },
+  "ui" : {
+    "next":"Next"
+  },
   "auth": {
     "username": "Username",
     "password": "Password",
@@ -26,7 +29,17 @@
   },
   "frisbee": {
     "title": "Space Frisbee",
-    "instruction": "Click the frisbee to throw it!"
+    "instruction": "Click the frisbee to throw it!",
+    "lopQuestion": "What was that?!?",
+    "prompt": {
+      "question": "What was that?!?",
+      "choices": [
+        "I’m not sure.",
+        "A loud crash!",
+        "Something fell from the sky!"
+      ]
+    },
+    "investigate": "Let’s go investigate!"
   },
   "crashSite": {
     "speechBubble": {

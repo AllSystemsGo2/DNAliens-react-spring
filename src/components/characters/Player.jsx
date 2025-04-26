@@ -8,7 +8,6 @@ const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => 
   const [showDebugState, setShowDebugState] = useState(false)
 
   useEffect(() => {
-    console.error("Player state", state)
     setShowDebugState(true)
     setTimeout( () => {
       setShowDebugState(false)

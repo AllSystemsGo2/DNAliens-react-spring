@@ -1,19 +1,23 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect, useRef } from 'react'
-import Lop from '../../components/characters/Lop'
-import Player from '../../components/characters/Player'
-import Scene from '../../components/Scene'
+
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
+
 import './Level1_001Frisbee.css'
 import starryBackground from '../../assets/starry-background.jpg'
 import planetForeground from '../../assets/planet-foreground.png'
 import spaceship from '../../assets/spaceship-256.png'
 import spaceshipSound from '../../assets/spaceship-flight-crash.ogg'
 import crash from '../../assets/crash.png'
-import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
 
+import Lop from '../../components/characters/Lop'
+import Player from '../../components/characters/Player'
+import Scene from '../../components/Scene'
+import SpeechBubble from '../../components/SpeechBubble'
+import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
 
 const defaultAttributes = {
   isFlying: false,
@@ -21,6 +25,9 @@ const defaultAttributes = {
   showUfo: false,
   showText: true,
   showCrash: false,
+  showSpeechBubble: false,
+  showChoice: false,
+  showInvestigateBubble: false
 } 
 
 const setShowUfo = (value) => setPageAttribute({pageId: "frisbee", key: "showUfo", value})
@@ -28,6 +35,9 @@ const setIsFlying =  (value) => setPageAttribute({pageId: "frisbee", key: "isFly
 const setShowUfoTimer =  (value) => setPageAttribute({pageId: "frisbee", key: "showUfoTimer", value})
 const setShowText =  (value) => setPageAttribute({pageId: "frisbee", key: "showText", value})
 const setShowCrash =  (value) => setPageAttribute({pageId: "frisbee", key: "showCrash", value})
+const setShowSpeechBubble =  (value) => setPageAttribute({pageId: "frisbee", key: "showSpeechBubble", value})
+const setShowChoice =  (value) => setPageAttribute({pageId: "frisbee", key: "showChoice", value})
+const setShowInvestigateBubble =  (value) => setPageAttribute({pageId: "frisbee", key: "showInvestigateBubble", value})
 
 const Frisbee = () => {
   const dispatch = useDispatch()
@@ -45,7 +55,10 @@ const Frisbee = () => {
     showUfoTimer,
     showCrash,
     showText,
-    showUfo
+    showUfo,
+    showSpeechBubble,
+    showChoice,
+    showInvestigateBubble
   } = useSelector((state) => selectPageAttributes(state, "frisbee", defaultAttributes))
   const audioRef = useRef(new Audio(spaceshipSound))
 
@@ -61,7 +74,9 @@ const Frisbee = () => {
     if (showUfo) {
       dispatch(setShowText(false))
       setTimeout(() => {
+        dispatch(setShowUfo(false))
         dispatch(setShowCrash(true))
+        dispatch(setShowSpeechBubble(true))
       }, 3250)
     }
   }, [showUfo, dispatch])
@@ -71,7 +86,6 @@ const Frisbee = () => {
     if (isFlying && !showUfoTimer) {
       dispatch(setShowUfoTimer(true))
       setTimeout(() => {
-        console.log('showing ufo')
         dispatch(setShowUfo(true))
         audio.currentTime = 0
         audio.play()
@@ -108,10 +122,29 @@ const Frisbee = () => {
     }}>
       <Scene skyImage={starryBackground} terrainImage={planetForeground} />
 
-      {/* Lop foreground */}
-      <Lop right="5vh" />
+      {/* Multiple choice prompt */}
+      {showChoice && (
+        <MultipleChoicePrompt
+          question={t('frisbee.prompt.question')}
+          responseKey="frisbee.choice"
+          choices={t('frisbee.prompt.choices', { returnObjects: true })}
+          onSubmit={() => {
+            dispatch(setShowChoice(false))
+            dispatch(setShowInvestigateBubble(true))
+          }}
+          style={{
+            top: '5vh',
+            left: '50vh',
+            transform: 'translateX(-50%)',
+            zIndex: 3
+          }}
+        />
+      )}
 
-      {/* Player foreground */}
+      <Lop right="5vh">
+        {showSpeechBubble && <SpeechBubble showDismiss={true} onClick={() => { dispatch(setShowSpeechBubble(false)); dispatch(setShowChoice(true)) }} subText={t('frisbee.lopQuestion')} />}
+        { showInvestigateBubble && <SpeechBubble showDismiss={false} mainText={t('frisbee.investigate')} />}
+      </Lop>
       <Player />
 
       <animated.div
@@ -149,6 +182,7 @@ const Frisbee = () => {
       <animated.div
       id="spaceship"
         style={{
+          display: showUfo ? 'block' : 'none',
           ...ufoSpring,
           position: 'absolute',
           top: '0vh',
@@ -182,46 +216,21 @@ const Frisbee = () => {
         onClick={() => navigate('/crash-site')}
       />
 
-      {/* Content container */}
       <div style={{
-        position: 'relative',
-        zIndex: 3,
-        height: '100vh',
-        width: '100%',
+        display: showText ? 'block' : 'none',
+        position: 'absolute',
+        bottom: '10vh',
+        left: '40vh',
+        color: '#fff',
+        fontSize: '18px',
+        textShadow: '0 0 10px rgba(66, 220, 255, 0.7)',
+        background: 'rgba(13, 12, 34, 0.6)',
+        padding: '15px 20px',
+        borderRadius: '15px',
+        border: '1px solid rgba(66, 220, 255, 0.2)',
+        boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
       }}>
-        <h1 style={{ 
-          color: '#fff', 
-          textShadow: '0 0 10px rgba(255, 255, 255, 0.7), 0 0 20px rgba(255, 255, 255, 0.5)',
-          fontSize: '2.5em',
-          fontWeight: '600',
-          letterSpacing: '2px',
-          marginBottom: '30px'
-        }}>{t('frisbee.title')}</h1>
-      
-        <div style={{ 
-          position: 'relative', 
-          height: '85vh',
-          overflow: 'hidden',
-          borderRadius: '20px',
-          margin: '20px',        
-        }}>
-          <div style={{
-            display: showText ? 'block' : 'none',
-            position: 'absolute',
-            bottom: '10vh',
-            left: '40vh',
-            color: '#fff',
-            fontSize: '18px',
-            textShadow: '0 0 10px rgba(66, 220, 255, 0.7)',
-            background: 'rgba(13, 12, 34, 0.6)',
-            padding: '15px 20px',
-            borderRadius: '15px',
-            border: '1px solid rgba(66, 220, 255, 0.2)',
-            boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
-          }}>
-            {t('frisbee.instruction')}
-          </div>
-        </div>
+        {t('frisbee.instruction')}
       </div>
     </div>
   )
