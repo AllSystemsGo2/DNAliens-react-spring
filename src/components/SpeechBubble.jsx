@@ -2,12 +2,12 @@ import React from 'react'
 import './SpeechBubble.css'
 import { useTranslation } from 'react-i18next'
 
-const SpeechBubble = ({ mainText, subText, showDismiss=false, onClick, top = '-50%', left = '0vh', maxWidth="300px", right, style }) => {
+const SpeechBubble = ({ mainText, subText, showNext=false, onClick, top = '-50%',bottom, left = '0vh', maxWidth="300px", right, style }) => {
   const { t } = useTranslation()
   
   const bubbleStyle = {
     ...style,
-    top,
+    ...(bottom ? {bottom } : { top }),
     ...(right ? { right } : { left }),
     maxWidth
   }
@@ -24,7 +24,7 @@ const SpeechBubble = ({ mainText, subText, showDismiss=false, onClick, top = '-5
           {subText}
         </span>
       )}
-      {showDismiss && (
+      {showNext && (
         <span style={{
           position: 'absolute',
           bottom: '5px',

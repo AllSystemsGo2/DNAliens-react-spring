@@ -11,7 +11,7 @@ const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style,
   const handleSubmit = () => {
     dispatch(setResponse({ key: responseKey, value: choices[selectedChoice]}))
     if (selectedChoice !== null) {
-      onSubmit(choices[selectedChoice])
+      onSubmit(choices[selectedChoice], selectedChoice)
     }
   }
 

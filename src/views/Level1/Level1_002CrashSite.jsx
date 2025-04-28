@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { useSpring, animated } from '@react-spring/web'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -7,6 +8,8 @@ import './Level1_002CrashSite.css'
 import starryBackground from '../../assets/starry-background.jpg'
 import planetForeground from '../../assets/planet-foreground.png'
 import spaceship from '../../assets/spaceship-crashed-2048.png'
+import spoon1 from '../../assets/spoon-cookie-dough.png'
+import spoon2 from '../../assets/spoon.png'
 
 import player from '../../assets/player-character-2.png'
 import spaceshipRustling from '../../assets/spaceship-rustling.ogg'
@@ -23,24 +26,37 @@ const defaultAttributes = {
   volume: 0.5,
   isLoading: true,
   showRustle: true,
+  showMunching: false,
   showPrompt: false,
   shownPrompt: false,
+  showLopResponse: false,
+  showLopQuestion: false,
+  lopResponseNumber: 0,
+  showSpoon: false,
   showSpeechBubble: false,
-  showEnd: false,
+  lopPositionRight: "-25vh",
+  spoonImage: spoon1
 }
 
 const setIsPlaying = (value) => setPageAttribute({pageId: "crashSite", key: "isPlaying", value})
 const setVolume = (value) => setPageAttribute({pageId: "crashSite", key: "volume", value})
 const setIsLoading = (value) => setPageAttribute({pageId: "crashSite", key: "isLoading", value})
 const setShowRustle = (value) => setPageAttribute({pageId: "crashSite", key: "showRustle", value})
+const setShowMunching = (value) => setPageAttribute({pageId: "crashSite", key: "showMunching", value})
 const setShowPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "showPrompt", value})
 const setShownPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "shownPrompt", value})
+const setShowLopResponse = (value) => setPageAttribute({pageId: "crashSite", key: "showLopResponse", value})
+const setShowLopResponseNumber = (value) => setPageAttribute({pageId: "crashSite", key: "lopResponseNumber", value})
+const setShowSpoon = (value) => setPageAttribute({pageId: "crashSite", key: "showSpoon", value})
 const setShowSpeechBubble = (value) => setPageAttribute({pageId: "crashSite", key: "showSpeechBubble", value})
-const setShowEnd = (value) => setPageAttribute({pageId: "crashSite", key: "showEnd", value})
+const setLopPositionRight = (value) => setPageAttribute({pageId: "crashSite", key: "lopPositionRight", value})
+const setSpoonImage = (value) => setPageAttribute({pageId: "crashSite", key: "spoonImage", value})
+const setShowLopQuestion = (value) => setPageAttribute({pageId: "crashSite", key: "showLopQuestion", value})
 
 const CrashSite = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(initializePageAttributes({pageId: "crashSite", props: defaultAttributes}))
@@ -53,20 +69,36 @@ const CrashSite = () => {
     showRustle,
     showPrompt,
     shownPrompt,  
+    showLopResponse,
+    lopResponseNumber,
     showSpeechBubble,
-    showEnd,
+    showSpoon,
+    lopPositionRight,
+    spoonImage,
+    showMunching,
+    showLopQuestion
   } = useSelector((state) => selectPageAttributes(state, "crashSite", defaultAttributes))
 
   const audioRef = useRef(new Audio(spaceshipRustling))
 
-  const lopSpring = useSpring({
-    from: { right: '-30vh' },
-    to: { right: '5vh' },
-    delay: 500,
+  const spaceshipSpring = useSpring({
+    from: { 
+      transform: 'rotateZ(185deg) translate(0px, 0px)'
+    },
+    to: async (next) => {
+      if (showMunching) {
+        while (true) {
+          await next({ transform: 'rotateZ(185deg) translate(-2px, -2px)' })
+          await next({ transform: 'rotateZ(185deg) translate(2px, 2px)' })
+          await next({ transform: 'rotateZ(185deg) translate(2px, -2px)' })
+          await next({ transform: 'rotateZ(185deg) translate(-2px, 2px)' })
+        }
+      } else {
+        await next({ transform: 'rotateZ(185deg) translate(0px, 0px)' })
+      }
+    },
     config: {
-      mass: 2,
-      tension: 280,
-      friction: 24
+      duration: 50
     }
   })
 
@@ -82,11 +114,15 @@ const CrashSite = () => {
   })
 
   useEffect(() => {
+    if(lopPositionRight === "-25vh") dispatch(setLopPositionRight("25vh"))
+  }, [dispatch])
+
+  useEffect(() => {
     dispatch(setIsPlaying(true))
 
-    const speechTimer = setTimeout(() => {
+    const speechTimer = !shownPrompt ? setTimeout(() => {
       dispatch(setShowSpeechBubble(true))
-    }, 3000)
+    }, 3000) : null
 
     const promptTimer = !shownPrompt ? setTimeout(() => {
       dispatch(setShowPrompt(true))
@@ -102,6 +138,42 @@ const CrashSite = () => {
   useEffect(() => {
     if(!isLoading) dispatch(setIsPlaying(true))
   }, [isLoading, dispatch])
+
+  useEffect(() => {
+    const timer = showLopResponse ? setTimeout(() => { dispatch(setShowSpoon(true)) }, 2000) : null
+    return () => clearTimeout(timer)
+  }, [dispatch, showLopResponse])
+
+  const makeChoice = (choice, index) => {
+    dispatch(setShowSpeechBubble(false))
+    dispatch(setShowPrompt(false))
+    dispatch(setShowLopResponse(true))
+    dispatch(setShowLopResponseNumber(index + 1))            
+  }
+
+  const testWithSpoon = () => {
+    console.log("testWithSpoon")
+    dispatch(setShowLopResponse(false))
+    //move lop to ship
+    dispatch(setLopPositionRight("50vw"))
+    setTimeout(() => { 
+      dispatch(setShowSpoon(false)) 
+      dispatch(setShowRustle(false))
+      dispatch(setShowMunching(true))
+    }, 1000)
+    setTimeout(() => { 
+      dispatch(setShowSpoon(true)) 
+      dispatch(setSpoonImage(spoon2))
+      dispatch(setShowMunching(false))
+    }, 3000)
+    setTimeout(() => { 
+      dispatch(setShowLopQuestion(true))
+    }, 4000)
+  }
+
+  const gotoNextPage = () => {
+    navigate('/level1-quizchoice');
+  }
 
   useEffect(() => {
     const audio = audioRef.current
@@ -180,19 +252,52 @@ const CrashSite = () => {
       </div>
 
       {/* Spaceship */}
-      <div id="spaceship" style={{
+      <animated.div id="spaceship" style={{
         position: 'absolute',
         bottom: '10vh',
         left: '15vw',
-        transform: 'rotateZ(185deg)',
         width: '60vh',
         height: '60vh',
         backgroundImage: `url(${spaceship})`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        zIndex: 2
+        zIndex: 2,
+        transform: spaceshipSpring.transform
       }} />
+
+      {/* Magnified Spoon View */}
+      {showSpoon && spoonImage === spoon2 && (
+        <>
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '55vh',
+              left: '10vw',
+              width: '20vh',
+              height: '20vh',
+              borderRadius: '10vh',
+              backgroundImage: `url(${spoon2})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              border: '2px solid white',
+              zIndex: 5
+            }}
+          />
+          <svg
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 4,
+              pointerEvents: 'none'
+            }}
+          >
+          </svg>
+        </>
+      )}
 
       {/* Rustle */}
       {showRustle && Array.from({ length: 3 }).map((_, i) => (
@@ -204,19 +309,25 @@ const CrashSite = () => {
           color: 'white'
         }} distance={20} duration={2000} text="RUSTLE..." />
       ))}
+      {/* Rustle */}
+      {showMunching && Array.from({ length: 2 }).map((_, i) => (
+        <DriftingText key={i} style={{
+          position: 'absolute',
+          bottom: '35vh',
+          left: `${22 + i }vw`,
+          zIndex: 4,
+          color: 'white'
+        }} distance={10} duration={2000} text="MUNCH!!" />
+      ))}
 
       {/* Lop foreground */}
-      <animated.div id="player-character" style={{
-        position: 'absolute',
-        bottom: '0vh',
-        ...lopSpring}}>
-        <Lop bottom="15vh" right="25vh" zIndex={2} state="idle" >
+      <Lop bottom="15vh" right={lopPositionRight} zIndex={2} state="idle" >
           {/* Lop speech bubble */}
           {showSpeechBubble && (
             <SpeechBubble
               maxWidth='400px'
               left="-25%"
-              top="-30%"
+              bottom="100%"
               mainText={t('crashSite.speechBubble.mainText')}
               subText={t('crashSite.speechBubble.subText')}
               style={{
@@ -226,8 +337,54 @@ const CrashSite = () => {
               }}
             />
           )}
-        </Lop>
-      </animated.div>
+          {/* Lop response */}
+          {showLopResponse && (
+            <SpeechBubble
+              maxWidth='400px'
+              left="-25%"
+              bottom="100%"
+              subText={t(`crashSite.lopResponse${lopResponseNumber}.subText`)}
+              showNext={true}
+              onClick={testWithSpoon}
+              style={{
+                zIndex: 4,
+                minWidth: '200px',
+                boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
+              }}
+            />
+          )}
+          {/* Lop response */}
+          {showLopQuestion && (
+            <SpeechBubble
+              maxWidth='400px'
+              right="-50%"
+              bottom="100%"
+              subText={t(`crashSite.lopQuestion.subText`)}
+              showNext={true}
+              onClick={gotoNextPage}
+              style={{
+                zIndex: 4,
+                minWidth: '200px',
+                boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
+              }}
+            />
+          )}
+          {/* Spoon */}
+          {showSpoon && (
+            <img id="spoon"
+              src={spoonImage}
+              alt="Spoon"
+              style={{
+                position: 'absolute',
+                top: '0vh',
+                left: '0vh',
+                width: '10vh',
+                height: '10vh',
+                zIndex: 4
+              }}
+            />
+          )}  
+      </Lop>
 
       {/* Player foreground */}
       <animated.div id="player-character" style={{
@@ -250,12 +407,7 @@ const CrashSite = () => {
           question={t('crashSite.prompt.question')}
           responseKey="crashSite"
           choices={t('crashSite.prompt.choices', { returnObjects: true })}
-          onSubmit={(choice) => {
-            console.log('Selected choice:', choice)
-            dispatch(setShowPrompt(false))
-            dispatch(setShowRustle(false))
-            dispatch(setShowEnd(true))
-          }}
+          onSubmit={makeChoice}
           style={{
             top: '5vh',
             left: '50vh',
@@ -264,20 +416,7 @@ const CrashSite = () => {
           }}
         />
       )}
-      {/* End */}
-      {showEnd && (
-        <Paragraph
-          header={t('crashSite.end.header')}
-          body={t('crashSite.end.body')}
-          style={{
-            top: '20vh',
-            right: '40vh',
-            zIndex: 3,
-            minWidth: '200px',
-            boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
-          }}
-        />
-      )}
+    
 
       {/* Audio Control Button */}
       <div style={{

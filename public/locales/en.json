@@ -54,6 +54,18 @@
         "Eh, let's just leave."
       ]
     },
+    "lopQuestion": {
+      "subText": "It ate it all, and now all we have is this wet spoon! What do we do now?"
+    },
+    "lopResponse1": {
+      "subText": "Yeah! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+    },
+    "lopResponse2": {
+      "subText": "Wait! It could be dangerous, I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+    },
+    "lopResponse3": {
+      "subText": "It could be hurt! We have to help! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+    },
     "end": {
       "header": "The END",
       "body": "That's the end for now."
