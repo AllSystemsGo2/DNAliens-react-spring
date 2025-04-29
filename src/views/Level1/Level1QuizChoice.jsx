@@ -100,7 +100,7 @@ const Level1QuizChoice = () => {
   };
 
   return (
-    <div className="quiz-choice-container">
+    <div className="view quiz-choice-container">
       <Scene skyImage={starryBackground} terrainImage={planetForeground} transformTerrain="scaleX(-1)" />
       <div className="characters-group">
         <PlayerShip left="25vw" bottom="25vh" size="45vh" zIndex={1} character="cellina-spaceship" state="landed" />

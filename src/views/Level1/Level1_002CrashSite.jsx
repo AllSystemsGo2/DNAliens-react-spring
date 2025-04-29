@@ -206,10 +206,7 @@ const CrashSite = () => {
   }, [isPlaying, showRustle, volume, dispatch])
 
   return (
-    <div className="crash-site-view" style={{
-      position: 'relative',
-      minHeight: '100vh',
-      overflow: 'hidden',
+    <div className="view crash-site-view" style={{
       background: 'linear-gradient(to bottom, #1a1a2e, #16213e)'
     }}>
 
