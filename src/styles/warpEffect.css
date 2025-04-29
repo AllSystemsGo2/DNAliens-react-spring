@@ -1,0 +1,57 @@
+@keyframes warpIn {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+    filter: blur(20px) brightness(2);
+  }
+  50% {
+    transform: scale(1.5) rotate(180deg);
+    opacity: 0.7;
+    filter: blur(10px) brightness(1.5);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 1;
+    filter: blur(0) brightness(1);
+  }
+}
+
+@keyframes portalRing {
+  0% {
+    transform: scale(0.5) rotate(0deg);
+    border-color: rgba(128, 0, 255, 0);
+    box-shadow: 0 0 50px rgba(128, 0, 255, 0);
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    border-color: rgba(128, 0, 255, 0.8);
+    box-shadow: 0 0 50px rgba(128, 0, 255, 0.5);
+  }
+  100% {
+    transform: scale(0.5) rotate(360deg);
+    border-color: rgba(128, 0, 255, 0);
+    box-shadow: 0 0 50px rgba(128, 0, 255, 0);
+  }
+}
+
+.warp-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.warp-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 10px solid rgba(128, 0, 255, 0.8);
+  animation: portalRing 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.warp-character {
+  animation: warpIn 1s ease-out forwards;
+}
