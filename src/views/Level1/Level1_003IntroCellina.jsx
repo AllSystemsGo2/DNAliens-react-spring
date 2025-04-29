@@ -5,14 +5,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 // Character Components
-import { Lop } from '../../components/characters/Lop';
-import { Player } from '../../components/characters/Player';
+import Lop from '../../components/characters/Lop';
+import Player from '../../components/characters/Player';
 import starryBackground from '../../assets/starry-background.jpg'
 import planetForeground from '../../assets/planet-foreground.png'
 import Scene from '../../components/Scene'
 
 // Redux
-import { initializePageAttributes, selectPageAttributes } from '../../redux/pageSlice';
+import { initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice';
 
 const defaultAttributes = {
   // Add default state properties here

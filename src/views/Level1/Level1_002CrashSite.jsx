@@ -172,7 +172,7 @@ const CrashSite = () => {
   }
 
   const gotoNextPage = () => {
-    navigate('/level1-quizchoice');
+    navigate('/Level1/Level1QuizChoice');
   }
 
   useEffect(() => {

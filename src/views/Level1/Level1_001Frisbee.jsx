@@ -209,7 +209,7 @@ const Frisbee = () => {
           zIndex: 5,
           cursor: 'pointer'
         }}
-        onClick={() => navigate('/crash-site')}
+        onClick={() => navigate('/Level1/Level1_002CrashSite')}
       />
 
       <div style={{

@@ -93,9 +93,9 @@ const Level1QuizChoice = () => {
 
   const handleReady = (choice) => {
     if (choice === 'fight') {
-      navigate('/level1-fight');
+      navigate('/Level1/Level1Fight');
     } else if (choice === 'escape') {
-      navigate('/level1-escape');
+      navigate('/Level1/Level1Escape');
     }
   };
 
