@@ -142,8 +142,8 @@ const Frisbee = () => {
       )}
 
       <Lop right="5vh">
-        {showSpeechBubble && <SpeechBubble showDismiss={true} onClick={() => { dispatch(setShowSpeechBubble(false)); dispatch(setShowChoice(true)) }} subText={t('frisbee.lopQuestion')} />}
-        { showInvestigateBubble && <SpeechBubble showDismiss={false} mainText={t('frisbee.investigate')} />}
+        {showSpeechBubble && <SpeechBubble showNext={true} onClick={() => { dispatch(setShowSpeechBubble(false)); dispatch(setShowChoice(true)) }} subText={t('frisbee.lopQuestion')} />}
+        { showInvestigateBubble && <SpeechBubble showNext={false} mainText={t('frisbee.investigate')} />}
       </Lop>
       <Player />
 
