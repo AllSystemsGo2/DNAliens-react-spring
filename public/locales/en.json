@@ -76,5 +76,30 @@
       "soundOn": "Sound:On",
       "soundOff": "Sound:Off"
     }
+  },
+  "introCellina": {
+    "warp": {
+      "subText": "That's not just wet, there's saliva on that spoon. We can learn so much from that!"
+    },
+    "lopHelp": {
+      "subText": "Cellina, the Genehome guide, you think you can help us?"
+    },
+    "cellinaSaliva": {
+      "subText": "Of course, saliva has cells in it!"
+    },
+    "lopCells": {
+      "subText": "What are cells?"
+    },
+    "question": {
+      "prompt": "Respond to Lop, 'What are cells?'",
+      "choices": [
+        "Cells are the basic unit of life.",
+        "Cells are the basic unit of life.",
+        "Cells are the basic unit of life."
+      ]
+    },
+    "cellinaCells": {
+      "subText": "Here’s what I know. Cells make up all living things. They are like tiny building blocks that help organisms grow, survive, and function."
+    }
   }
 }

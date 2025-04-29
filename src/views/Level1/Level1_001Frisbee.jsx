@@ -121,7 +121,7 @@ const Frisbee = () => {
       {/* Multiple choice prompt */}
       {showChoice && (
         <MultipleChoicePrompt
-          question={t('frisbee.prompt.question')}
+          prompt={t('frisbee.prompt.question')}
           responseKey="frisbee.choice"
           choices={t('frisbee.prompt.choices', { returnObjects: true })}
           onSubmit={() => {

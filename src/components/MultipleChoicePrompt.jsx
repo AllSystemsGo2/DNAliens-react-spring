@@ -4,7 +4,7 @@ import './MultipleChoicePrompt.css'
 import { useDispatch } from 'react-redux'
 import { setResponse } from '../store/slices/responseSlice'
 
-const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style, submitText = "Submit" }) => {
+const MultipleChoicePrompt = ({ prompt, responseKey, choices, onSubmit, style, submitText = "Submit" }) => {
   const [selectedChoice, setSelectedChoice] = useState(null)
   const dispatch = useDispatch()
 
@@ -17,7 +17,7 @@ const MultipleChoicePrompt = ({ question, responseKey, choices, onSubmit, style,
 
   return (
     <div className="multiple-choice-prompt" style={style}>
-      <div className="question-text">{question}</div>
+      <div className="prompt-text">{prompt}</div>
       <div className="choices-container">
         {choices?.slice(0, choices?.length).map((choice, index) => (
           <label key={index} className="choice-label">

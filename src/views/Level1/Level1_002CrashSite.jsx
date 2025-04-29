@@ -401,7 +401,7 @@ const CrashSite = () => {
       {/* Multiple choice prompt */}
       {showPrompt && (
         <MultipleChoicePrompt
-          question={t('crashSite.prompt.question')}
+          prompt={t('crashSite.prompt.question')}
           responseKey="crashSite"
           choices={t('crashSite.prompt.choices', { returnObjects: true })}
           onSubmit={makeChoice}
