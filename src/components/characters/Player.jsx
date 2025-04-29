@@ -39,9 +39,9 @@ const Player = ({ bottom = '10vh', left = '5vh', right, faceDirection = 'right',
     <MovableCharacter id="player-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}></div>
+        {children} 
       </div>
       {showDebugState && <span id="state-debug">{state}</span>}
-      {children}
     </MovableCharacter>
   );
 };

@@ -38,9 +38,9 @@ const Sprinkles = ({ bottom = '10vh', left = '5vh', right, faceDirection = 'left
     <MovableCharacter id="sprinkles-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}></div>
+        {children}
       </div>
       {showDebugState && <span id="state-debug">{state}</span>}
-      {children}
     </MovableCharacter>
   );
 };

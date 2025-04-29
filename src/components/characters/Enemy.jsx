@@ -56,9 +56,9 @@ const Enemy = ({ id, character, bottom = '10vh', left = '5vh', right, faceDirect
     <MovableCharacter id={`${id}-character`} bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}/>
+        {children}
       </div>
       {showDebugState && <div id="state-debug">{state}</div>}
-      {children}
     </MovableCharacter>
   );
 };

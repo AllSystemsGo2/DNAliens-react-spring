@@ -40,9 +40,9 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'r
     <MovableCharacter id="lop-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}></div>
+        {children}
       </div>
       {showDebugState && <span id="state-debug">{state}</span>}
-      {children}
     </MovableCharacter>
   );
 };
