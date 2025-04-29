@@ -5,13 +5,13 @@ import { animated, useSpring } from '@react-spring/web';
 import { initializeCharacter, updateCharacterPosition, selectCharacterById } from '../../store/slices/movableCharacterSlice';
 
 
-const MovableCharacter = ({ id, bottom = '10vh', left = '5vh', right, zIndex = 2, style, children }) => {  
+const MovableCharacter = ({ id, bottom = '10vh', left = '5vh', right, zIndex = 2, width = '30vh', height = '30vh', style, children }) => {  
   const dispatch = useDispatch();
   const character = useSelector(state => selectCharacterById(state, id));
 
   useEffect(() => {
-    dispatch(initializeCharacter({ id, bottom, left, right, zIndex }));
-  }, [dispatch, id, bottom, left, right, zIndex]);
+    dispatch(initializeCharacter({ id, bottom, left, right, zIndex, width, height }));
+  }, [dispatch, id, bottom, left, right, zIndex, width, height]);
 
   useEffect(() => {
     if (right !== undefined) {
@@ -37,8 +37,8 @@ const MovableCharacter = ({ id, bottom = '10vh', left = '5vh', right, zIndex = 2
   const blockStyle = {
     position: 'absolute',
     bottom: character?.bottom || bottom,
-    width: '30vh',
-    height: '30vh',
+    width: character?.width || width,
+    height: character?.height || height,
     zIndex: character?.zIndex || zIndex,
     ...style,
     ...translateSpring
@@ -57,6 +57,8 @@ MovableCharacter.propTypes = {
   left: PropTypes.string,
   right: PropTypes.string,
   zIndex: PropTypes.number,
+  width: PropTypes.string,
+  height: PropTypes.string,
   style: PropTypes.object,
   children: PropTypes.node
 };
