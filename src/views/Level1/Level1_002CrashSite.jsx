@@ -394,7 +394,7 @@ const CrashSite = () => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         zIndex: 2,
-        animation: 'lopBounceFlip 2s ease-in-out infinite',
+        animation: 'lopBounce 2s ease-in-out infinite',
         ...playerSpring
       }} />
 

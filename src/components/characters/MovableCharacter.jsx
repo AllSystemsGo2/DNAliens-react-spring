@@ -1,38 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
 import { animated, useSpring } from '@react-spring/web';
+import { initializeCharacter, updateCharacterPosition, selectCharacterById } from '../../store/slices/movableCharacterSlice';
 
 
-const MovableCharacter = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, style, children}) => {  
-
-  const [_prevLeft, setPrevLeft] = useState(left);
-  const [_left, setLeft] = useState(left);
-
-  const [_prevRight, setPrevRight] = useState(right);
-  const [_right, setRight] = useState(right);
+const MovableCharacter = ({ id, bottom = '10vh', left = '5vh', right, zIndex = 2, style, children }) => {  
+  const dispatch = useDispatch();
+  const character = useSelector(state => selectCharacterById(state, id));
 
   useEffect(() => {
-    setPrevRight(_right);
-    setRight(right);
-  }, [right]);
+    dispatch(initializeCharacter({ id, bottom, left, right, zIndex }));
+  }, [dispatch, id, bottom, left, right, zIndex]);
 
   useEffect(() => {
-    setPrevLeft(_left);
-    setLeft(left);
-  }, [left]);
+    if (right !== undefined) {
+      dispatch(updateCharacterPosition({ id, right }));
+    }
+  }, [dispatch, id, right]);
+
+  useEffect(() => {
+    if (left !== undefined) {
+      dispatch(updateCharacterPosition({ id, left }));
+    }
+  }, [dispatch, id, left]);
 
   const translateSpring = useSpring({
     position: 'absolute',
-    ...(right? {right: (right != _prevRight) ? _right : _prevRight} : { left: (left != _prevLeft) ? left : _prevLeft} ),
+    ...(right !== undefined 
+      ? { right: character?.currentRight !== character?.prevRight ? character?.currentRight : character?.prevRight }
+      : { left: character?.currentLeft !== character?.prevLeft ? character?.currentLeft : character?.prevLeft }
+    ),
     config: { tension: 60, friction: 14 }
   });
      
   const blockStyle = {
     position: 'absolute',
-    bottom,
+    bottom: character?.bottom || bottom,
     width: '30vh',
     height: '30vh',
-    zIndex,
+    zIndex: character?.zIndex || zIndex,
     ...style,
     ...translateSpring
   };
@@ -45,12 +52,13 @@ const MovableCharacter = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, st
 };
 
 MovableCharacter.propTypes = {
-  characterImage: PropTypes.string,
+  id: PropTypes.string.isRequired,
   bottom: PropTypes.string,
   left: PropTypes.string,
   right: PropTypes.string,
   zIndex: PropTypes.number,
-  state: PropTypes.string
+  style: PropTypes.object,
+  children: PropTypes.node
 };
 
 export default MovableCharacter;

@@ -5,7 +5,7 @@ import baddies1 from '../../assets/baddies1.png'
 import baddies2 from '../../assets/baddies2.png'
 import MovableCharacter from './MovableCharacter';
 
-const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, state, children }) => {
+const Enemy = ({ id, character, bottom = '10vh', left = '5vh', right, faceDirection = 'left', zIndex = 2, state, children }) => {
   const characterUrl = ()=> {
     if(character === 'baddies1') {
       return baddies1;
@@ -49,11 +49,11 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
     } : {
       backgroundColor: '#FF00FF' // Fuchsia fallback
     }),   
-    transform: 'scaleX(-1)',
+    transform: faceDirection === 'left' ? 'scaleX(-1)' : faceDirection === 'right' ? 'scaleX(1)' : '',
   };
 
   return (
-    <MovableCharacter id="enemy-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
+    <MovableCharacter id={`${id}-character`} bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}/>
       </div>
@@ -64,12 +64,15 @@ const Enemy = ({ character, bottom = '10vh', left = '5vh', right, zIndex = 2, st
 };
 
 Enemy.propTypes = {
-  characterImage: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  character: PropTypes.string,
   bottom: PropTypes.string,
   left: PropTypes.string,
   right: PropTypes.string,
+  faceDirection: PropTypes.string,
   zIndex: PropTypes.number,
-  state: PropTypes.string
+  state: PropTypes.string,
+  children: PropTypes.node
 };
 
 export default Enemy;

@@ -10,6 +10,7 @@ import Player from '../../components/characters/Player';
 import starryBackground from '../../assets/starry-background.jpg'
 import planetForeground from '../../assets/planet-foreground.png'
 import Scene from '../../components/Scene'
+import spaceship from '../../assets/spaceship-crashed-2048.png'
 
 // Redux
 import { initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice';
@@ -35,7 +36,29 @@ const IntroCellina = () => {
     <div className="view intro-cellina">
       {/* Add your view content here */}
       <Scene skyImage={starryBackground} terrainImage={planetForeground} transformTerrain="scaleX(-1)" />
+      
+      {/* Crashed Spaceship */}
+      <div 
+        style={{
+          position: 'absolute',
+          bottom: '10vh',
+          left: '15vw',
+          width: '60vh',
+          height: '60vh',
+          backgroundImage: `url(${spaceship})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 2,
+          transform: 'rotateZ(185deg)'
+        }}
+      />
+
+      <Lop bottom="15vh" right="50vw"/>
+      <Player bottom="5vh" right="15vh"/>
+
     </div>
+
   );
 };
 

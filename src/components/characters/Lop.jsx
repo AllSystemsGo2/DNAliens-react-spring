@@ -5,7 +5,7 @@ import characterImage from '../../assets/lop.png'
 import MovableCharacter from './MovableCharacter';
 
 
-const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state, children}) => {
+const LopCharacter = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'right', zIndex = 2, state, children}) => {
   const [showDebugState, setShowDebugState] = useState(false)
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state,
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    transform: 'scaleX(-1)',
+    transform: faceDirection === 'left' ? 'scaleX(-1)' : faceDirection === 'right' ? 'scaleX(1)' : '',
   };
 
   return (
@@ -52,7 +52,8 @@ LopCharacter.propTypes = {
   right: PropTypes.string,
   left: PropTypes.string,
   zIndex: PropTypes.number,
-  state: PropTypes.string
+  state: PropTypes.string,
+  faceDirection: PropTypes.string
 };
 
 export default LopCharacter;
