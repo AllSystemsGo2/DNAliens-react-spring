@@ -4,6 +4,7 @@ import { animated, useSpring } from '@react-spring/web';
 import baddies1 from '../../assets/baddies1.png'
 import baddies2 from '../../assets/baddies2.png'
 import MovableCharacter from './MovableCharacter';
+import { characterChildrenHelper } from '../../helpers/characterChildrenHelper';
 
 const Enemy = ({ id, character, bottom = '10vh', left = '5vh', right, faceDirection = 'left', zIndex = 2, state, children }) => {
   const characterUrl = ()=> {
@@ -18,6 +19,8 @@ const Enemy = ({ id, character, bottom = '10vh', left = '5vh', right, faceDirect
 
 
   const [showDebugState, setShowDebugState] = useState(false)
+
+  const { speechBubbles, itemChildren, otherChildren } = characterChildrenHelper(children)
 
   useEffect(() => {
     setShowDebugState(true)
@@ -56,8 +59,10 @@ const Enemy = ({ id, character, bottom = '10vh', left = '5vh', right, faceDirect
     <MovableCharacter id={`${id}-character`} bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}/>
-        {children}
+        {itemChildren}
       </div>
+      {speechBubbles}
+      {otherChildren}
       {showDebugState && <div id="state-debug">{state}</div>}
     </MovableCharacter>
   );

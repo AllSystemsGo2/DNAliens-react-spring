@@ -4,10 +4,13 @@ import { useSpring, animated } from '@react-spring/web';
 import characterImage from '../../assets/cellina1.png'
 import MovableCharacter from './MovableCharacter';
 import '../../styles/warpEffect.css';
+import { characterChildrenHelper } from '../../helpers/characterChildrenHelper';
 
 // state: idle, warp,
 
 const Cellina = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'right', zIndex = 2, state, children }) => {
+  const { speechBubbles, itemChildren, otherChildren } = characterChildrenHelper(children)
+  
   const [showDebugState, setShowDebugState] = useState(false);
   const [isWarping, setIsWarping] = useState(true);
 
@@ -63,12 +66,14 @@ const Cellina = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'right'
           transform: warpSpring.scale.to(s => `scale(${s}) rotate(${warpSpring.rotate.get()}deg)`)
         }}>
           <div style={characterStyle}></div>
-          {children}
+          {itemChildren}
         </animated.div>
         {isWarping && (
           <div className="warp-effect" />
         )}
       </div>
+      {speechBubbles}
+      {otherChildren}
       {showDebugState && <span id="state-debug">{state}</span>}
     </MovableCharacter>
   );

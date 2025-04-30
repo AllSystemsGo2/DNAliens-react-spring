@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/lop.png'
 import MovableCharacter from './MovableCharacter';
+import { characterChildrenHelper } from '../../helpers/characterChildrenHelper';
 
 
 const LopCharacter = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'right', zIndex = 2, state, children}) => {
   const [showDebugState, setShowDebugState] = useState(false)
+
+  const { speechBubbles, itemChildren, otherChildren } = characterChildrenHelper(children)
 
   useEffect(() => {
     setShowDebugState(true)
@@ -40,8 +43,10 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'r
     <MovableCharacter id="lop-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}></div>
-        {children}
+        {itemChildren}
       </div>
+      {speechBubbles}
+      {otherChildren}
       {showDebugState && <span id="state-debug">{state}</span>}
     </MovableCharacter>
   );
