@@ -1,0 +1,113 @@
+{
+  "nav": {
+    "home": "Home",
+    "frisbeeGame": "Frisbee Game",
+    "crashSite": "Crash Site",
+    "introCellina": "Intro Cellina",
+    "level1QuizChoice": "Level 1 Quiz",
+    "level1Fight": "Level 1 Fight",
+    "level1Escape": "Level 1 Escape"
+  },
+  "ui" : {
+    "next":"Next"
+  },
+  "auth": {
+    "username": "Username",
+    "password": "Password",
+    "login": "Login",
+    "loggingIn": "Logging in...",
+    "logout": "Logout",
+    "welcome": "Welcome, {{username}}!"
+  },
+  "home": {
+    "intro": "This is a simple app demonstrating a combination of tools & technologies. All pages have sound effects.",
+    "instructions": "Click 'Frisbee Game' to begin. You will be led to Crash Site through narrative interaction.",
+    "sections": {
+      "codebase": "Code base",
+      "artTools": "Art Tools & Resources",
+      "codeGenTools": "Code Gen Tools"
+    }
+  },
+  "frisbee": {
+    "title": "Space Frisbee",
+    "instruction": "Click the frisbee to throw it!",
+    "lopQuestion": "What was that?!?",
+    "prompt": {
+      "question": "What was that?!?",
+      "choices": [
+        "I’m not sure.",
+        "A loud crash!",
+        "Something fell from the sky!"
+      ]
+    },
+    "investigate": "Let’s go investigate!"
+  },
+  "crashSite": {
+    "speechBubble": {
+      "mainText": "Something's in there...",
+      "subText": ""
+    },
+    "prompt": {
+      "question": "What should we do?",
+      "choices": [
+        "It could be dangerous, we should be careful.",
+        "Let's reach in and find out!",
+        "Eh, let's just leave."
+      ]
+    },
+    "lopQuestion": {
+      "subText": "It ate it all, and now all we have is this wet spoon! What do we do now?"
+    },
+    "lopResponse1": {
+      "subText": "Yeah! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+    },
+    "lopResponse2": {
+      "subText": "Wait! It could be dangerous, I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+    },
+    "lopResponse3": {
+      "subText": "It could be hurt! We have to help! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+    },
+    "end": {
+      "header": "The END",
+      "body": "That's the end for now."
+    },
+    "audio": {
+      "loading": "Loading...",
+      "soundOn": "Sound:On",
+      "soundOff": "Sound:Off"
+    }
+  },
+  "introCellina": {
+    "warp": {
+      "subText": "That's not just wet, there's saliva on that spoon. We can learn so much from that!"
+    },
+    "lopHelp": {
+      "subText": "Cellina, the Genehome guide, you think you can help us?"
+    },
+    "cellinaSaliva": {
+      "subText": "Of course, saliva has cells in it!"
+    },
+    "lopCells": {
+      "subText": "What are cells?"
+    },
+    "question": {
+      "prompt": "Respond to Lop, 'What are cells?'",
+      "placeholder": "I think that..."
+    },
+    "cellinaCells": {
+      "subText": "Here’s what I know. Cells make up all living things. They are like tiny building blocks that help organisms grow, survive, and function."
+    },
+    "cellinaExamineCells": {
+      "subText": "We can use that saliva to take a closer look at the cells of what is in that rocket!"
+    },
+    "lopExamineSpoon": {
+      "subText": "I just see the saliva, how can we see the cells?"
+    },
+    "cellinaExamineSpoon": {
+      "subText": "Microscopes help us see small things, give me a minute."
+    },
+    "cellinaMicroscope": {
+      "subText": "WAIT! We need to transfer the saliva to a microscope slide."
+    }
+  }
+}
