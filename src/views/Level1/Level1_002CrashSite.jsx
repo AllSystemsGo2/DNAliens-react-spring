@@ -14,7 +14,8 @@ import spoon2 from '../../assets/spoon.png'
 import player from '../../assets/player-character-2.png'
 import spaceshipRustling from '../../assets/spaceship-rustling.ogg'
 import Lop from '../../components/characters/Lop'
-import SpeechBubble from '../../components/SpeechBubble'
+import SpeechBubble from '../../components/SpeechBubble';
+import Item from '../../components/Item';
 import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
 import Paragraph from '../../components/Paragraph'
 import DriftingText from '../../components/DriftingText'
@@ -368,18 +369,23 @@ const CrashSite = () => {
           )}
           {/* Spoon */}
           {showSpoon && (
-            <img id="spoon"
-              src={spoonImage}
-              alt="Spoon"
-              style={{
-                position: 'absolute',
-                top: '0vh',
-                left: '0vh',
-                width: '10vh',
-                height: '10vh',
-                zIndex: 4
-              }}
-            />
+            <Item style={{
+              position: 'absolute',
+              top: '0vh',
+              left: '0vh',
+              width: '10vh',
+              height: '10vh',
+              zIndex: 4
+            }}>
+              <img id="spoon"
+                src={spoonImage}
+                alt="Spoon"
+                style={{
+                  width: '100%',
+                  height: '100%'
+                }}
+              />
+            </Item>
           )}  
       </Lop>
 

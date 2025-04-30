@@ -10,6 +10,7 @@ import Player from '../../components/characters/Player';
 import Cellina from '../../components/characters/Cellina';
 import SpeechBubble, {setSpeechBubbleShow} from '../../components/SpeechBubble';
 import MultipleChoicePrompt from '../../components/MultipleChoicePrompt';
+import Item from '../../components/Item';
 import starryBackground from '../../assets/starry-background.jpg'
 import planetForeground from '../../assets/planet-foreground.png'
 import Scene from '../../components/Scene'
@@ -22,6 +23,7 @@ import { initializePageAttributes, selectPageAttributes, setPageAttribute } from
 const defaultAttributes = {
   showSpoon: true,
   showCellina: false,
+  startDialogAtStep: 0,
   showQuestion: false
   // Add default state properties here
 };
@@ -29,6 +31,7 @@ const defaultAttributes = {
 // const setShowSpoon = (show) => setPageAttribute({pageId: "introCellina", key: "showSpoon", value: show }) 
 const setShowCellina = (show) =>  setPageAttribute({pageId: "introCellina", key: "showCellina", value: show }) 
 const setShowQuestion = (show) => setPageAttribute({pageId: "introCellina", key: "showQuestion", value: show })
+const setShowStartDialogAtStep = (show) => setPageAttribute({pageId: "introCellina", key: "startDialogAtStep", value: show })
 
 const IntroCellina = () => {
   const dispatch = useDispatch();
@@ -39,6 +42,7 @@ const IntroCellina = () => {
     // Add state properties here
     showSpoon,
     showCellina,
+    startDialogAtStep,
     showQuestion
   } = useSelector((state) => selectPageAttributes(state, "introCellina", defaultAttributes));
 
@@ -47,27 +51,33 @@ const IntroCellina = () => {
 
     if(!showCellina) {
       setTimeout(() => dispatch(setShowCellina(true)), 1000)
+    }
+  }, [dispatch, showCellina]);
+
+  useEffect(()=> {
+    if(startDialogAtStep === 0) { 
       setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "warp", true)), 3000)
     }
-  }, [dispatch]);
-
-  const stepDialog = (step) => {
-    if(step === 1) {
+    if(startDialogAtStep === 1) {
       dispatch(setSpeechBubbleShow("introCellina", "warp", false))
       setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "lopHelp", true)), 500)
     }
-    else if (step === 2) {
+    else if (startDialogAtStep === 2) {
       dispatch(setSpeechBubbleShow("introCellina", "lopHelp", false))
       setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "cellinaSaliva", true)), 500)
     }
-    else if (step === 3) {
+    else if (startDialogAtStep === 3) {
       dispatch(setSpeechBubbleShow("introCellina", "cellinaSaliva", false))
       setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "lopCells", true)), 500)
     }
-    else if (step === 4) {
+    else if (startDialogAtStep === 4) {
       dispatch(setSpeechBubbleShow("introCellina", "lopCells", false))
       setTimeout(() => dispatch(setShowQuestion(true)), 500)
     }
+  }, [dispatch, startDialogAtStep])
+
+  const stepDialog = (step) => {
+    dispatch(setShowStartDialogAtStep(step))
   }
 
   const handleResponse = () => {
@@ -101,18 +111,23 @@ const IntroCellina = () => {
       <Lop bottom="15vh" right="50vw"> 
         {/* Spoon */}
         {showSpoon && (
+          <Item style={{
+            position: 'absolute',
+            top: '0vh',
+            left: '0vh',
+            width: '10vh',
+            height: '10vh',
+            zIndex: 4
+          }}>
             <img id="spoon"
               src={spoonImage}
               alt="Spoon"
               style={{
-                position: 'absolute',
-                top: '0vh',
-                left: '0vh',
-                width: '10vh',
-                height: '10vh',
-                zIndex: 4
+                width: '100%',
+                height: '100%'
               }}
-          />
+            />
+          </Item>
         )}
         <SpeechBubble pageId="introCellina" id="lopHelp" subText={t("introCellina.lopHelp.subText")} showNext={true} onClick={() => stepDialog(2)} />
         <SpeechBubble pageId="introCellina" id="lopCells" subText={t("introCellina.lopCells.subText")} showNext={true} onClick={() => stepDialog(4)}/>
