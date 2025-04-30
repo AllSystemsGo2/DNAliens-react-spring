@@ -93,23 +93,23 @@ const Level1QuizChoice = () => {
 
   const handleReady = (choice) => {
     if (choice === 'fight') {
-      navigate('/level1-fight');
+      navigate('/Level1/Level1Fight');
     } else if (choice === 'escape') {
-      navigate('/level1-escape');
+      navigate('/Level1/Level1Escape');
     }
   };
 
   return (
-    <div className="quiz-choice-container">
+    <div className="view quiz-choice-container">
       <Scene skyImage={starryBackground} terrainImage={planetForeground} transformTerrain="scaleX(-1)" />
       <div className="characters-group">
         <PlayerShip left="25vw" bottom="25vh" size="45vh" zIndex={1} character="cellina-spaceship" state="landed" />
-        <Player left={!gotoFightStance ? "5vw" : "25vw"} bottom={!gotoFightStance ? "5vh" : "12vh"} zIndex={2} state="idle">
+        <Player left={!gotoFightStance ? "5vw" : "25vw"} faceDirection='right' bottom={!gotoFightStance ? "5vh" : "12vh"} zIndex={2} state="idle">
           {showFightText && <SpeechBubble subText={"I’d like to see you try!"} />}
           {showEscapeText && <SpeechBubble subText={"Quick everyone on the ship!"} />}
         </Player>
-        <Lop left={!gotoFightStance ? "15vw" : "15vw"} bottom={!gotoFightStance ? "12vh" : "10vh"} zIndex={2} state="idle" />
-        <Sprinkles left={!gotoFightStance ? "30vw" : "5vw"} bottom={!gotoFightStance ? "10vh" : "5vh"} zIndex={2} state="idle" />
+        <Lop left={!gotoFightStance ? "15vw" : "15vw"} faceDirection='right' bottom={!gotoFightStance ? "12vh" : "10vh"} zIndex={2} state="idle" />
+        <Sprinkles left={!gotoFightStance ? "30vw" : "5vw"} faceDirection='right' bottom={!gotoFightStance ? "10vh" : "5vh"} zIndex={2} state="idle" />
         <Enemy id="baddies1" right={showEnemies ? '5vw' : '-30vw'} bottom="5vh" zIndex={2} state="idle" character="baddies1">
           {showThreaten && <SpeechBubble subText={"Hey! That's a cute creature you have there. Be a shame if anyone tried to take it."} />}
         </Enemy>

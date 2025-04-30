@@ -49,6 +49,35 @@
   border-top-color: rgba(66, 220, 255, 0.4);
   transform: translateX(-50%);
   filter: drop-shadow(0 0 5px rgba(66, 220, 255, 0.3));
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.dialog-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.dialog-choice-button {
+  background: rgba(66, 220, 255, 0.1);
+  border: 1px solid rgba(66, 220, 255, 0.3);
+  border-radius: 4px;
+  color: white;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dialog-choice-button:hover {
+  background: rgba(66, 220, 255, 0.2);
+  border-color: rgba(66, 220, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.dialog-choice-button:active {
+  transform: translateY(0);
 }
 
 @keyframes fadeIn {

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './MultipleChoicePrompt.css'; // Reuse the same styles for consistency
+import './Prompt.css'; // Reuse the same styles for consistency
 
 /**
  * DialogPrompt

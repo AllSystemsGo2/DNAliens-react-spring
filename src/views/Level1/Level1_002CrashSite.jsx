@@ -14,7 +14,8 @@ import spoon2 from '../../assets/spoon.png'
 import player from '../../assets/player-character-2.png'
 import spaceshipRustling from '../../assets/spaceship-rustling.ogg'
 import Lop from '../../components/characters/Lop'
-import SpeechBubble from '../../components/SpeechBubble'
+import SpeechBubble from '../../components/SpeechBubble';
+import Item from '../../components/Item';
 import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
 import Paragraph from '../../components/Paragraph'
 import DriftingText from '../../components/DriftingText'
@@ -172,7 +173,7 @@ const CrashSite = () => {
   }
 
   const gotoNextPage = () => {
-    navigate('/level1-quizchoice');
+    navigate('/Level1/Level1QuizChoice');
   }
 
   useEffect(() => {
@@ -206,10 +207,7 @@ const CrashSite = () => {
   }, [isPlaying, showRustle, volume, dispatch])
 
   return (
-    <div className="crash-site-view" style={{
-      position: 'relative',
-      minHeight: '100vh',
-      overflow: 'hidden',
+    <div className="view crash-site-view" style={{
       background: 'linear-gradient(to bottom, #1a1a2e, #16213e)'
     }}>
 
@@ -371,18 +369,23 @@ const CrashSite = () => {
           )}
           {/* Spoon */}
           {showSpoon && (
-            <img id="spoon"
-              src={spoonImage}
-              alt="Spoon"
-              style={{
-                position: 'absolute',
-                top: '0vh',
-                left: '0vh',
-                width: '10vh',
-                height: '10vh',
-                zIndex: 4
-              }}
-            />
+            <Item style={{
+              position: 'absolute',
+              top: '0vh',
+              left: '0vh',
+              width: '10vh',
+              height: '10vh',
+              zIndex: 4
+            }}>
+              <img id="spoon"
+                src={spoonImage}
+                alt="Spoon"
+                style={{
+                  width: '100%',
+                  height: '100%'
+                }}
+              />
+            </Item>
           )}  
       </Lop>
 
@@ -397,14 +400,14 @@ const CrashSite = () => {
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
         zIndex: 2,
-        animation: 'lopBounceFlip 2s ease-in-out infinite',
+        animation: 'lopBounce 2s ease-in-out infinite',
         ...playerSpring
       }} />
 
       {/* Multiple choice prompt */}
       {showPrompt && (
         <MultipleChoicePrompt
-          question={t('crashSite.prompt.question')}
+          prompt={t('crashSite.prompt.question')}
           responseKey="crashSite"
           choices={t('crashSite.prompt.choices', { returnObjects: true })}
           onSubmit={makeChoice}

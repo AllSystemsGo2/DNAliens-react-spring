@@ -115,17 +115,13 @@ const Frisbee = () => {
   })
 
   return (
-    <div className="frisbee-view" style={{
-      position: 'relative',
-      minHeight: '100vh',
-      overflow: 'hidden'
-    }}>
+    <div className="view frisbee-view" >
       <Scene skyImage={starryBackground} terrainImage={planetForeground} />
 
       {/* Multiple choice prompt */}
       {showChoice && (
         <MultipleChoicePrompt
-          question={t('frisbee.prompt.question')}
+          prompt={t('frisbee.prompt.question')}
           responseKey="frisbee.choice"
           choices={t('frisbee.prompt.choices', { returnObjects: true })}
           onSubmit={() => {
@@ -213,7 +209,7 @@ const Frisbee = () => {
           zIndex: 5,
           cursor: 'pointer'
         }}
-        onClick={() => navigate('/crash-site')}
+        onClick={() => navigate('/Level1/Level1_002CrashSite')}
       />
 
       <div style={{

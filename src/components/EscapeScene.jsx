@@ -116,7 +116,7 @@ const EscapeScene = ({ pageId, player, enemy, questionBank, playerHealth, enemyH
 
   return (
     <div className="escape-scene">
-      {showMCPrompt() && <MultipleChoicePrompt key={questionIndex} style={{ position: 'absolute', top: '5vh', left: '25%', width: '50%' }} question={questionBank?.questions[questionIndex]?.question} responseKey={questionBank?.questions[questionIndex]?.responseKey} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>}      
+      {showMCPrompt() && <MultipleChoicePrompt responseKey={questionIndex} style={{ position: 'absolute', top: '5vh', left: '25%', width: '50%' }} prompt={questionBank?.questions[questionIndex]?.question} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>}      
       <div className="escape-container">
           <PlayerShip left={`${(25+5*_playerHeath)}vh`} bottom="25vh" size="10vh" zIndex={3} character={player}state={playerState}/>
           <EnemyShip left={`${(10+5*_enemyHealth)}vh`} bottom="10vh" size="15vh" zIndex={3} character={enemy} state={enemyState}/>

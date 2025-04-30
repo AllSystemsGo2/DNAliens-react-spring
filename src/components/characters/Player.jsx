@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/player-character-2.png'
 import MovableCharacter from './MovableCharacter';
+import { characterChildrenHelper } from '../../helpers/characterChildrenHelper';
 
-const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => {
+const Player = ({ bottom = '10vh', left = '5vh', right, faceDirection = 'right', zIndex = 2, state, children }) => {
+  const { speechBubbles, itemChildren, otherChildren } = characterChildrenHelper(children)
   const [showDebugState, setShowDebugState] = useState(false)
 
   useEffect(() => {
@@ -14,6 +16,16 @@ const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => 
     }, 1000)
   },[state])
 
+  const blockStyle = {
+    position: 'block',
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    animation: 'characterBounce 2s ease-in-out infinite'
+  };
+
   const characterStyle = {
     position: 'block',
     width: '100%',
@@ -22,12 +34,17 @@ const Player = ({ bottom = '10vh', left = '5vh', right, zIndex = 2, state }) => 
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    transform: 'scaleX(-1)',
+    transform: faceDirection === 'left' ? 'scaleX(-1)' : faceDirection === 'right' ? 'scaleX(1)' : '',
   };
 
   return (
     <MovableCharacter id="player-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
-      <div style={characterStyle}></div>
+      <div style={blockStyle}>
+        <div style={characterStyle}></div>
+        {itemChildren}
+      </div>
+      {speechBubbles}
+      {otherChildren}
       {showDebugState && <span id="state-debug">{state}</span>}
     </MovableCharacter>
   );
@@ -38,7 +55,9 @@ Player.propTypes = {
   left: PropTypes.string,
   right: PropTypes.string,
   zIndex: PropTypes.number,
-  state: PropTypes.string
+  state: PropTypes.string,
+  faceDirection: PropTypes.string,
+  children: PropTypes.node
 };
 
 export default Player;

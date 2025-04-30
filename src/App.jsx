@@ -1,7 +1,7 @@
-import { Link, MemoryRouter, Routes, Route } from 'react-router-dom'
+import { Link, MemoryRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, logout, fetchUser, refreshAuth } from './store/slices/authSlice'
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import { setStoreDispatch } from './graphql/client'
 import { useTranslation } from 'react-i18next'
 import LanguageSelector from './components/LanguageSelector'
@@ -11,11 +11,50 @@ import './App.css'
 import './styles/animations.css'
 import './styles/nav.css'
 
-import Frisbee from './views/Level1/Level1_001Frisbee'
-import CrashSite from './views/Level1/Level1_002CrashSite'
-import Level1Fight from './views/Level1/Level1Fight'
-import Level1Escape from './views/Level1/Level1Escape'
-import Level1QuizChoice from './views/Level1/Level1QuizChoice'
+
+// Import all view components dynamically
+const viewsContext = import.meta.glob('./views/**/*.jsx', { eager: true })
+
+// Convert view paths to route paths and components
+const routes = Object.entries(viewsContext).map(([path, module]) => {
+  const routePath = path
+    .replace('./views/', '/')
+    .replace('.jsx', '')
+  return { 
+    path: routePath,
+    component: module.default
+  }
+})
+
+function Navigation() {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const location = useLocation()
+  return (
+    <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
+      <Link to="/" className="nav-link">{t('nav.home')}</Link>
+      <select 
+        onChange={(e) => navigate(e.target.value)}
+        value={location.pathname}
+        style={{
+          background: '#2a2a2a',
+          color: 'white',
+          padding: '8px',
+          border: '1px solid #3a3a3a',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}
+      >
+        <option value="/">Select View</option>
+        {routes.map(({ path }) => (
+          <option key={path} value={path}>
+            {path.split('/').pop().replace(/([A-Z])/g, ' $1').trim()}
+          </option>
+        ))}
+      </select>
+    </div>
+  )
+}
 
 function App() {
   const { t } = useTranslation()
@@ -60,6 +99,7 @@ function App() {
       <div className="App" style={{
         minHeight: '100vh',
         minWidth: '120vh',
+        width: '160vh',
         position: 'relative'
       }}>
         <nav style={{
@@ -70,24 +110,7 @@ function App() {
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
-          <div style={{ display: 'flex', gap: '20px' }}>
-            {[
-                { to: '/', label: t('nav.home') },
-                { to: '/frisbee', label: t('nav.frisbeeGame') },
-                { to: '/crash-site', label: t('nav.crashSite') },
-                { to: '/level1-quizchoice', label: t('nav.level1QuizChoice') },
-                { to: '/level1-fight', label: t('nav.level1Fight') },
-                { to: '/level1-escape', label: t('nav.level1Escape') }
-            ].map(({ to, label }) => (
-              <Link 
-                key={to}
-                to={to} 
-                className="nav-link"
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
+          <Navigation />
           <span></span>
           {!isLoggedIn ? (
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
@@ -133,6 +156,7 @@ function App() {
           )}
           <LanguageSelector selected="en" />
         </nav>
+        <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={
             <div>
@@ -162,12 +186,15 @@ function App() {
               </div>
             </div>
           } />
-          <Route path="/frisbee" element={<Frisbee />} />
-          <Route path="/crash-site" element={<CrashSite />} />
-          <Route path="/level1-quizchoice" element={<Level1QuizChoice />} />
-          <Route path="/level1-fight" element={<Level1Fight />} />
-          <Route path="/level1-escape" element={<Level1Escape />} />
-        </Routes>
+          {routes.map(({ path, component }) => (
+            <Route
+              key={path}
+              path={path}
+              element={React.createElement(component)}
+            />
+          ))}
+          </Routes>
+        </Suspense>
       </div>
     </MemoryRouter>
   )

@@ -148,7 +148,7 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
 
   return (
     <div className="fight-scene">
-      {showMCPrompt() && <MultipleChoicePrompt key={questionIndex} style={{ position: 'absolute', top: '5vh', left: '25%', width: '50%' }} question={questionBank?.questions[questionIndex]?.question} responseKey={questionBank?.questions[questionIndex]?.responseKey} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>}
+      {showMCPrompt() && <MultipleChoicePrompt prompt={questionBank?.questions[questionIndex]?.question} responseKey={questionBank?.questions[questionIndex]?.responseKey} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>}
       <div className="health-row">
         <div className="health-container">
           <div className="health-bar">
@@ -176,7 +176,7 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
         </div>
         <div className="enemies-container">
           {enemies.map((enemy, index) => (
-          <Enemy key={index} character={enemy} right={`${10*index+5}vh`} zIndex={enemies.length-index} state={enemyState} />
+          <Enemy id={`baddies${index+1}`} key={index} character={enemy} right={`${10*index+5}vh`} zIndex={enemies.length-index} state={enemyState} />
         ))}
         </div>
       </div>

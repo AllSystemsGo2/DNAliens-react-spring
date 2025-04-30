@@ -121,7 +121,7 @@ const Level1Fight = () => {
   };
 
   return (
-    <div className="level1-fight">
+    <div className="view level1-fight">
       <Scene skyImage={starryBackground} terrainImage={planetForeground} transformTerrain="scaleX(-1)" />
       
       {showFight  && <FightScene 

@@ -3,10 +3,13 @@ import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/lop.png'
 import MovableCharacter from './MovableCharacter';
+import { characterChildrenHelper } from '../../helpers/characterChildrenHelper';
 
 
-const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state, children}) => {
+const LopCharacter = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'right', zIndex = 2, state, children}) => {
   const [showDebugState, setShowDebugState] = useState(false)
+
+  const { speechBubbles, itemChildren, otherChildren } = characterChildrenHelper(children)
 
   useEffect(() => {
     setShowDebugState(true)
@@ -33,16 +36,18 @@ const LopCharacter = ({ bottom = '20vh', left = '5vh', right, zIndex = 2, state,
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
-    transform: 'scaleX(-1)',
+    transform: faceDirection === 'left' ? 'scaleX(-1)' : faceDirection === 'right' ? 'scaleX(1)' : '',
   };
 
   return (
     <MovableCharacter id="lop-character" bottom={bottom} left={left} right={right} zIndex={zIndex}>
       <div style={blockStyle}>
         <div style={characterStyle}></div>
+        {itemChildren}
       </div>
+      {speechBubbles}
+      {otherChildren}
       {showDebugState && <span id="state-debug">{state}</span>}
-      {children}
     </MovableCharacter>
   );
 };
@@ -52,7 +57,8 @@ LopCharacter.propTypes = {
   right: PropTypes.string,
   left: PropTypes.string,
   zIndex: PropTypes.number,
-  state: PropTypes.string
+  state: PropTypes.string,
+  faceDirection: PropTypes.string
 };
 
 export default LopCharacter;

@@ -113,7 +113,7 @@ const Level1Escape = () => {
   };
 
   return (
-    <div className="level1-escape">
+    <div className="view level1-escape">
       <Scene skyImage={starryBackground} terrainImage="" transformTerrain="scaleX(-1)" />
       
       {showEscape  && <EscapeScene 
