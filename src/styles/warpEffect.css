@@ -48,7 +48,7 @@
   height: 100%;
   border-radius: 50%;
   border: 10px solid rgba(128, 0, 255, 0.8);
-  animation: portalRing 3s ease-in-out infinite;
+  animation: portalRing 2s ease-in-out infinite;
   pointer-events: none;
 }
 

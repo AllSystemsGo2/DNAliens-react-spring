@@ -92,11 +92,7 @@
     },
     "question": {
       "prompt": "Respond to Lop, 'What are cells?'",
-      "choices": [
-        "Cells are the basic unit of life.",
-        "Cells are the basic unit of life.",
-        "Cells are the basic unit of life."
-      ]
+      "placeholder": "I think that..."
     },
     "cellinaCells": {
       "subText": "Here’s what I know. Cells make up all living things. They are like tiny building blocks that help organisms grow, survive, and function."

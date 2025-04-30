@@ -9,13 +9,15 @@ import Lop from '../../components/characters/Lop';
 import Player from '../../components/characters/Player';
 import Cellina from '../../components/characters/Cellina';
 import SpeechBubble, {setSpeechBubbleShow} from '../../components/SpeechBubble';
-import MultipleChoicePrompt from '../../components/MultipleChoicePrompt';
+import WrittenResponsePrompt from '../../components/WrittenResponsePrompt';
 import Item from '../../components/Item';
 import starryBackground from '../../assets/starry-background.jpg'
 import planetForeground from '../../assets/planet-foreground.png'
 import Scene from '../../components/Scene'
 import spaceship from '../../assets/spaceship-crashed-2048.png'
 import spoonImage from '../../assets/spoon.png'
+import animalCell from '../../assets/animal-cell1-512.png'
+import plantCell from '../../assets/plant-cell1-512.png'
 
 // Redux
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice';
@@ -24,7 +26,8 @@ const defaultAttributes = {
   showSpoon: true,
   showCellina: false,
   startDialogAtStep: 0,
-  showQuestion: false
+  showQuestion: false,
+  playerCellsExplanation: ""
   // Add default state properties here
 };
 
@@ -32,6 +35,7 @@ const defaultAttributes = {
 const setShowCellina = (show) =>  setPageAttribute({pageId: "introCellina", key: "showCellina", value: show }) 
 const setShowQuestion = (show) => setPageAttribute({pageId: "introCellina", key: "showQuestion", value: show })
 const setShowStartDialogAtStep = (show) => setPageAttribute({pageId: "introCellina", key: "startDialogAtStep", value: show })
+const setPlayerCellsExplanation = (value) => setPageAttribute({pageId: "introCellina", key: "playerCellsExplanation", value })
 
 const IntroCellina = () => {
   const dispatch = useDispatch();
@@ -43,7 +47,8 @@ const IntroCellina = () => {
     showSpoon,
     showCellina,
     startDialogAtStep,
-    showQuestion
+    showQuestion,
+    playerCellsExplanation
   } = useSelector((state) => selectPageAttributes(state, "introCellina", defaultAttributes));
 
   useEffect(() => {
@@ -74,15 +79,20 @@ const IntroCellina = () => {
       dispatch(setSpeechBubbleShow("introCellina", "lopCells", false))
       setTimeout(() => dispatch(setShowQuestion(true)), 500)
     }
+    else if (startDialogAtStep === 5) {
+      dispatch(setSpeechBubbleShow("introCellina", "playerCellsExplanation", false))
+    }
   }, [dispatch, startDialogAtStep])
 
   const stepDialog = (step) => {
     dispatch(setShowStartDialogAtStep(step))
   }
 
-  const handleResponse = () => {
+  const handleResponse = (response) => {
     dispatch(setShowQuestion(false))
-    setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "cellinaCells", true)), 500)
+    dispatch(setPlayerCellsExplanation(response))
+    dispatch(setSpeechBubbleShow("introCellina", "playerCellsExplanation", true))
+    setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "cellinaCells", true)), 1500)
     //show the hologram board
   }
 
@@ -132,19 +142,22 @@ const IntroCellina = () => {
         <SpeechBubble pageId="introCellina" id="lopHelp" subText={t("introCellina.lopHelp.subText")} showNext={true} onClick={() => stepDialog(2)} />
         <SpeechBubble pageId="introCellina" id="lopCells" subText={t("introCellina.lopCells.subText")} showNext={true} onClick={() => stepDialog(4)}/>
       </Lop>
-      <Player bottom="5vh" right="15vh" faceDirection='left'/>
+      <Player bottom="5vh" right="15vh" faceDirection='left' zIndex={3}>
+        <SpeechBubble pageId="introCellina" id="playerCellsExplanation" subText={playerCellsExplanation} showNext={true} onClick={() => stepDialog(5)} />
+      </Player>
       {showCellina && (
         <Cellina bottom="35vh" right="30vh" faceDirection='left' state="warp">
           <SpeechBubble pageId="introCellina" id="warp" subText={t("introCellina.warp.subText")} showNext={true} onClick={() => stepDialog(1)} />
           <SpeechBubble pageId="introCellina" id="cellinaSaliva" subText={t("introCellina.cellinaSaliva.subText")} showNext={true} onClick={() => stepDialog(3)} />
-          <SpeechBubble pageId="introCellina" id="cellinaCells" subText={t("introCellina.cellinaCells.subText")} showNext={true} onClick={()=>{}} />
+          <SpeechBubble pageId="introCellina" id="cellinaCells" subText={t("introCellina.cellinaCells.subText")} showNext={false} />
         </Cellina>
       )}
 
       {showQuestion && (
-        <MultipleChoicePrompt responseKey="introCellina.whatAreCells" prompt={t("introCellina.question.prompt")} 
-          choices={t("introCellina.question.choices", {returnObjects: true})} 
+        <WrittenResponsePrompt responseKey="introCellina.whatAreCells" prompt={t("introCellina.question.prompt")} 
+          multiline={false} 
           onSubmit={handleResponse} 
+          placeholder={t("introCellina.question.placeholder")}
           style={{
             position: 'absolute',
             top: '5vh',
@@ -155,8 +168,53 @@ const IntroCellina = () => {
         / >
       )}
 
+      <div id='holoboard' className="holoboard-prompt" style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        top: '5vh',
+        left: '30vh',
+        transform: 'translateX(-50%)',
+        width: '40vh',
+        height: '30vh',
+        zIndex: 3
+      }}>
+        <h1>Cells</h1> 
+        <div id='holoboard-body' style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gridTemplateRows: '10vh 1fr',
+          alignItems: 'center',
+          justifyItems: 'center',
+          width: '100%',
+          height: '100%'
+        }}>
+          <Item style={{
+            width: '10vh',
+            height: '10vh',
+            zIndex: 4,
+            backgroundImage: `url(${animalCell})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}>
+          </Item>
+          
+          <Item style={{
+            width: '10vh',
+            height: '10vh',
+            zIndex: 4,
+            backgroundImage: `url(${plantCell})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat'
+          }}>
+          </Item>
+          <p>Animal Cell</p>
+          <p>Plant Cell</p>
+        </div>
+      </div>
     </div>
-
   );
 };
 

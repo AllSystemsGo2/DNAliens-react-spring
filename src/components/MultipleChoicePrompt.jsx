@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types';
-import './MultipleChoicePrompt.css'
+import './Prompt.css'
 import { useDispatch } from 'react-redux'
 import { setResponse } from '../store/slices/responseSlice'
 

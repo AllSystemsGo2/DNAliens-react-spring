@@ -1,3 +1,38 @@
+
+@keyframes prompt-glowPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(66, 220, 255, 0.2),
+                0 0 20px rgba(66, 220, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(66, 220, 255, 0.3),
+                0 0 30px rgba(66, 220, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 10px rgba(66, 220, 255, 0.2),
+                0 0 20px rgba(66, 220, 255, 0.1);
+  }
+}
+
+.holoboard-prompt {
+  position: absolute;
+  background: rgba(13, 12, 34, 0.4);
+  border: 2px solid rgba(66, 220, 255, 0.4);
+  border-radius: 15px;
+  padding: 20px 25px;
+  color: #fff;
+  font-family: monospace;
+  text-align: left;
+  animation: fadeIn 1.2s cubic-bezier(0.4, 0, 0.2, 1), prompt-glowPulse 3s ease-in-out infinite;
+  text-shadow: 0 0 10px rgba(66, 220, 255, 0.3);
+  letter-spacing: 1px;
+  backdrop-filter: blur(5px);
+  min-width: 250px;
+  box-shadow: 0 0 20px rgba(66, 220, 255, 0.1);
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
 .multiple-choice-prompt {
   position: absolute;
   background: rgba(13, 12, 34, 0.9);
@@ -107,6 +142,28 @@
   transition: all 0.3s ease;
   animation: fadeIn 0.5s ease-out;
   width: 100%;
+}
+
+.submit-button:hover {
+  background-color: #4a4a4a;
+}
+
+.written-response-input {
+  width: auto;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 4px;
+  color: white;
+  font-size: 1em;
+  resize: vertical;
+}
+
+.written-response-input:focus {
+  outline: none;
+  border-color: #4a4a4a;
+  box-shadow: 0 0 5px rgba(74, 74, 74, 0.5);
 }
 
 .submit-button:hover {
