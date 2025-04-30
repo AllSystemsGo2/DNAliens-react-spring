@@ -8,7 +8,9 @@ import { useTranslation } from 'react-i18next';
 import Lop from '../../components/characters/Lop';
 import Player from '../../components/characters/Player';
 import Cellina from '../../components/characters/Cellina';
-import SpeechBubble, {setSpeechBubbleShow} from '../../components/SpeechBubble';
+import SpeechBubble from '../../components/SpeechBubble';
+import DialogBubble from '../../components/DialogBubble';
+import {setBubbleShow} from '../../helpers/bubbleHelper'
 import WrittenResponsePrompt from '../../components/WrittenResponsePrompt';
 import Item from '../../components/Item';
 import starryBackground from '../../assets/starry-background.jpg'
@@ -27,7 +29,9 @@ const defaultAttributes = {
   showCellina: false,
   startDialogAtStep: 0,
   showQuestion: false,
-  playerCellsExplanation: ""
+  playerCellsExplanation: "",
+  showHoloboard: false,
+  cellinaState: "idle",
   // Add default state properties here
 };
 
@@ -36,11 +40,13 @@ const setShowCellina = (show) =>  setPageAttribute({pageId: "introCellina", key:
 const setShowQuestion = (show) => setPageAttribute({pageId: "introCellina", key: "showQuestion", value: show })
 const setShowStartDialogAtStep = (show) => setPageAttribute({pageId: "introCellina", key: "startDialogAtStep", value: show })
 const setPlayerCellsExplanation = (value) => setPageAttribute({pageId: "introCellina", key: "playerCellsExplanation", value })
+const setShowHoloboard = (show) => setPageAttribute({pageId: "introCellina", key: "showHoloboard", value: show })
+const setCellinaState = (state) => setPageAttribute({pageId: "introCellina", key: "cellinaState", value: state })
 
 const IntroCellina = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   
   const {
     // Add state properties here
@@ -48,7 +54,9 @@ const IntroCellina = () => {
     showCellina,
     startDialogAtStep,
     showQuestion,
-    playerCellsExplanation
+    playerCellsExplanation,
+    showHoloboard,
+    cellinaState,
   } = useSelector((state) => selectPageAttributes(state, "introCellina", defaultAttributes));
 
   useEffect(() => {
@@ -61,28 +69,52 @@ const IntroCellina = () => {
 
   useEffect(()=> {
     if(startDialogAtStep === 0) { 
-      setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "warp", true)), 3000)
+      setTimeout(() => dispatch(setBubbleShow("introCellina", "warp", true)), 3000)
     }
     if(startDialogAtStep === 1) {
-      dispatch(setSpeechBubbleShow("introCellina", "warp", false))
-      setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "lopHelp", true)), 500)
+      dispatch(setBubbleShow("introCellina", "warp", false))
+      setTimeout(() => dispatch(setBubbleShow("introCellina", "lopHelp", true)), 500)
     }
     else if (startDialogAtStep === 2) {
-      dispatch(setSpeechBubbleShow("introCellina", "lopHelp", false))
-      setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "cellinaSaliva", true)), 500)
+      dispatch(setBubbleShow("introCellina", "lopHelp", false))
+      setTimeout(() => dispatch(setBubbleShow("introCellina", "cellinaSaliva", true)), 500)
     }
     else if (startDialogAtStep === 3) {
-      dispatch(setSpeechBubbleShow("introCellina", "cellinaSaliva", false))
-      setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "lopCells", true)), 500)
+      dispatch(setBubbleShow("introCellina", "cellinaSaliva", false))
+      setTimeout(() => dispatch(setBubbleShow("introCellina", "lopCells", true)), 500)
     }
     else if (startDialogAtStep === 4) {
-      dispatch(setSpeechBubbleShow("introCellina", "lopCells", false))
+      dispatch(setBubbleShow("introCellina", "lopCells", false))
       setTimeout(() => dispatch(setShowQuestion(true)), 500)
     }
     else if (startDialogAtStep === 5) {
-      dispatch(setSpeechBubbleShow("introCellina", "playerCellsExplanation", false))
+      dispatch(setBubbleShow("introCellina", "playerCellsExplanation", false))
+      dispatch(setBubbleShow("introCellina", "cellinaCells", true))
+      dispatch(setShowHoloboard(true))
     }
-  }, [dispatch, startDialogAtStep])
+    else if (startDialogAtStep === 6) {
+      dispatch(setBubbleShow("introCellina", "playerCellsExplanation", false))
+      dispatch(setBubbleShow("introCellina", "cellinaCells", false))
+      dispatch(setShowHoloboard(false))
+      dispatch(setBubbleShow("introCellina", "cellinaExamineCells", true))
+    }
+    else if (startDialogAtStep === 7) {
+      dispatch(setBubbleShow("introCellina", "cellinaExamineCells", false))
+      dispatch(setBubbleShow("introCellina", "lopExamineSpoon", true))
+    }
+    else if (startDialogAtStep === 8) {
+      dispatch(setBubbleShow("introCellina", "lopExamineSpoon", false))
+      dispatch(setBubbleShow("introCellina", "cellinaExamineSpoon", true))
+    }
+    else if (startDialogAtStep === 9) {
+      dispatch(setBubbleShow("introCellina", "cellinaExamineSpoon", false))
+      dispatch(setCellinaState("microscope"))
+      setTimeout(() => dispatch(setBubbleShow("introCellina", "cellinaMicroscope", true)), 2000)
+    }
+    else if (startDialogAtStep === 10) {
+      navigate("/level1/004Microscope")
+    }
+  }, [dispatch, startDialogAtStep, navigate])
 
   const stepDialog = (step) => {
     dispatch(setShowStartDialogAtStep(step))
@@ -91,10 +123,19 @@ const IntroCellina = () => {
   const handleResponse = (response) => {
     dispatch(setShowQuestion(false))
     dispatch(setPlayerCellsExplanation(response))
-    dispatch(setSpeechBubbleShow("introCellina", "playerCellsExplanation", true))
-    setTimeout(() => dispatch(setSpeechBubbleShow("introCellina", "cellinaCells", true)), 1500)
-    //show the hologram board
+    dispatch(setBubbleShow("introCellina", "playerCellsExplanation", true))
+
+    setTimeout(() => {
+      dispatch(setBubbleShow("introCellina", "cellinaCells", true))
+      dispatch(setShowHoloboard(true))
+    }, 1500)
+    
+    setTimeout(() => {
+      dispatch(setShowStartDialogAtStep(5))
+      dispatch(setBubbleShow("introCellina", "playerCellsExplanation", false))
+    }, 4000)
   }
+
 
   return (
     <div className="view intro-cellina">
@@ -141,15 +182,19 @@ const IntroCellina = () => {
         )}
         <SpeechBubble pageId="introCellina" id="lopHelp" subText={t("introCellina.lopHelp.subText")} showNext={true} onClick={() => stepDialog(2)} />
         <SpeechBubble pageId="introCellina" id="lopCells" subText={t("introCellina.lopCells.subText")} showNext={true} onClick={() => stepDialog(4)}/>
+        <SpeechBubble pageId="introCellina" id="lopExamineSpoon" subText={t("introCellina.lopExamineSpoon.subText")} showNext={true} onClick={() => stepDialog(8)}/>
       </Lop>
       <Player bottom="5vh" right="15vh" faceDirection='left' zIndex={3}>
-        <SpeechBubble pageId="introCellina" id="playerCellsExplanation" subText={playerCellsExplanation} showNext={true} onClick={() => stepDialog(5)} />
+        <SpeechBubble pageId="introCellina" id="playerCellsExplanation" subText={playerCellsExplanation} showNext={false} onClick={() => stepDialog(5)} />
       </Player>
       {showCellina && (
-        <Cellina bottom="35vh" right="30vh" faceDirection='left' state="warp">
-          <SpeechBubble pageId="introCellina" id="warp" subText={t("introCellina.warp.subText")} showNext={true} onClick={() => stepDialog(1)} />
-          <SpeechBubble pageId="introCellina" id="cellinaSaliva" subText={t("introCellina.cellinaSaliva.subText")} showNext={true} onClick={() => stepDialog(3)} />
-          <SpeechBubble pageId="introCellina" id="cellinaCells" subText={t("introCellina.cellinaCells.subText")} showNext={false} />
+        <Cellina bottom="35vh" right="30vh" faceDirection='left' state={cellinaState}>
+          <SpeechBubble top="-15vh" pageId="introCellina" id="warp" subText={t("introCellina.warp.subText")} showNext={true} onClick={() => stepDialog(1)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaSaliva" subText={t("introCellina.cellinaSaliva.subText")} showNext={true} onClick={() => stepDialog(3)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaCells" subText={t("introCellina.cellinaCells.subText")} showNext={true} onClick={() => stepDialog(6)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineCells" subText={t("introCellina.cellinaExamineCells.subText")} showNext={true} onClick={() => stepDialog(7)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineSpoon" subText={t("introCellina.cellinaExamineSpoon.subText")} showNext={true} onClick={() => stepDialog(9)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaMicroscope" subText={t("introCellina.cellinaMicroscope.subText")} showNext={true} onClick={() => stepDialog(10)} />
         </Cellina>
       )}
 
@@ -168,7 +213,7 @@ const IntroCellina = () => {
         / >
       )}
 
-      <div id='holoboard' className="holoboard-prompt" style={{
+      {showHoloboard && <div id='holoboard' className="holoboard-prompt" style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -213,7 +258,7 @@ const IntroCellina = () => {
           <p>Animal Cell</p>
           <p>Plant Cell</p>
         </div>
-      </div>
+      </div>}
     </div>
   );
 };

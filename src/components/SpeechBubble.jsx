@@ -2,13 +2,11 @@ import React, { useEffect } from 'react'
 import './SpeechBubble.css'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux';
-import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../store/slices/pageSlice';
+import { initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice';
 
 const defaultAttributes = {
   show: false
 }
-
-export const setSpeechBubbleShow = (pageId, bubbleId, show) => setPageAttribute({pageId: `${pageId}:${bubbleId}`, key: 'show', value: show })
 
 const SpeechBubble = ({ pageId="", id="", mainText, subText, showNext=false, onClick, top = '-50%',bottom, left = '0vh', maxWidth="300px", right, style }) => {
   const { t } = useTranslation()
