@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
+import { setBubbleShow as setShowSpeechBubbleHelper } from '../../helpers/bubbleHelper'
 
 import './Level1_001Frisbee.css'
 import starryBackground from '../../assets/starry-background.jpg'
@@ -25,9 +26,7 @@ const defaultAttributes = {
   showUfo: false,
   showText: true,
   showCrash: false,
-  showSpeechBubble: false,
   showChoice: false,
-  showInvestigateBubble: false
 } 
 
 const setShowUfo = (value) => setPageAttribute({pageId: "frisbee", key: "showUfo", value})
@@ -35,9 +34,7 @@ const setIsFlying =  (value) => setPageAttribute({pageId: "frisbee", key: "isFly
 const setShowUfoTimer =  (value) => setPageAttribute({pageId: "frisbee", key: "showUfoTimer", value})
 const setShowText =  (value) => setPageAttribute({pageId: "frisbee", key: "showText", value})
 const setShowCrash =  (value) => setPageAttribute({pageId: "frisbee", key: "showCrash", value})
-const setShowSpeechBubble =  (value) => setPageAttribute({pageId: "frisbee", key: "showSpeechBubble", value})
 const setShowChoice =  (value) => setPageAttribute({pageId: "frisbee", key: "showChoice", value})
-const setShowInvestigateBubble =  (value) => setPageAttribute({pageId: "frisbee", key: "showInvestigateBubble", value})
 
 const Frisbee = () => {
   const dispatch = useDispatch()
@@ -56,9 +53,7 @@ const Frisbee = () => {
     showCrash,
     showText,
     showUfo,
-    showSpeechBubble,
-    showChoice,
-    showInvestigateBubble
+    showChoice
   } = useSelector((state) => selectPageAttributes(state, "frisbee", defaultAttributes))
   const audioRef = useRef(new Audio(spaceshipSound))
 
@@ -76,7 +71,7 @@ const Frisbee = () => {
       setTimeout(() => {
         dispatch(setShowUfo(false))
         dispatch(setShowCrash(true))
-        dispatch(setShowSpeechBubble(true))
+        dispatch(setShowSpeechBubbleHelper("frisbee", "lopQuestion", true))
       }, 3250)
     }
   }, [showUfo, dispatch])
@@ -126,7 +121,7 @@ const Frisbee = () => {
           choices={t('frisbee.prompt.choices', { returnObjects: true })}
           onSubmit={() => {
             dispatch(setShowChoice(false))
-            dispatch(setShowInvestigateBubble(true))
+            dispatch(setShowSpeechBubbleHelper("frisbee", "investigate", true))
           }}
           style={{
             top: '5vh',
@@ -137,9 +132,9 @@ const Frisbee = () => {
         />
       )}
 
-      <Lop right="5vh">
-        {showSpeechBubble && <SpeechBubble showNext={true} onClick={() => { dispatch(setShowSpeechBubble(false)); dispatch(setShowChoice(true)) }} subText={t('frisbee.lopQuestion')} />}
-        { showInvestigateBubble && <SpeechBubble showNext={false} mainText={t('frisbee.investigate')} />}
+      <Lop right="35vh">
+        <SpeechBubble pageId="frisbee" id="lopQuestion" showNext={true} onClick={() => { dispatch(setShowSpeechBubbleHelper("frisbee", "lopQuestion", false)); dispatch(setShowChoice(true)) }} subText={t('frisbee.lopQuestion')} />
+        <SpeechBubble pageId="frisbee" id="investigate" showNext={false} mainText={t('frisbee.investigate')} />
       </Lop>
       <Player />
 

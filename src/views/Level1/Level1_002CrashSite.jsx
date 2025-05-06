@@ -20,6 +20,8 @@ import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
 import Paragraph from '../../components/Paragraph'
 import DriftingText from '../../components/DriftingText'
 
+import { setBubbleShow, selectBubbleShowAttribute } from '../../helpers/bubbleHelper'
+
 import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
 
 const defaultAttributes = {
@@ -30,11 +32,8 @@ const defaultAttributes = {
   showMunching: false,
   showPrompt: false,
   shownPrompt: false,
-  showLopResponse: false,
-  showLopQuestion: false,
   lopResponseNumber: 0,
   showSpoon: false,
-  showSpeechBubble: false,
   lopPositionRight: "-25vh",
   spoonImage: spoon1
 }
@@ -46,13 +45,10 @@ const setShowRustle = (value) => setPageAttribute({pageId: "crashSite", key: "sh
 const setShowMunching = (value) => setPageAttribute({pageId: "crashSite", key: "showMunching", value})
 const setShowPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "showPrompt", value})
 const setShownPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "shownPrompt", value})
-const setShowLopResponse = (value) => setPageAttribute({pageId: "crashSite", key: "showLopResponse", value})
 const setShowLopResponseNumber = (value) => setPageAttribute({pageId: "crashSite", key: "lopResponseNumber", value})
 const setShowSpoon = (value) => setPageAttribute({pageId: "crashSite", key: "showSpoon", value})
-const setShowSpeechBubble = (value) => setPageAttribute({pageId: "crashSite", key: "showSpeechBubble", value})
 const setLopPositionRight = (value) => setPageAttribute({pageId: "crashSite", key: "lopPositionRight", value})
 const setSpoonImage = (value) => setPageAttribute({pageId: "crashSite", key: "spoonImage", value})
-const setShowLopQuestion = (value) => setPageAttribute({pageId: "crashSite", key: "showLopQuestion", value})
 
 const CrashSite = () => {
   const dispatch = useDispatch()
@@ -70,15 +66,14 @@ const CrashSite = () => {
     showRustle,
     showPrompt,
     shownPrompt,  
-    showLopResponse,
     lopResponseNumber,
-    showSpeechBubble,
     showSpoon,
     lopPositionRight,
     spoonImage,
-    showMunching,
-    showLopQuestion
+    showMunching
   } = useSelector((state) => selectPageAttributes(state, "crashSite", defaultAttributes))
+
+  const showLopResponse = useSelector((state) => selectBubbleShowAttribute(state, "crashSite", "lopResponse", false))
 
   const audioRef = useRef(new Audio(spaceshipRustling))
 
@@ -116,13 +111,13 @@ const CrashSite = () => {
 
   useEffect(() => {
     if(lopPositionRight === "-25vh") dispatch(setLopPositionRight("25vh"))
-  }, [dispatch])
+  }, [dispatch, lopPositionRight])
 
   useEffect(() => {
     dispatch(setIsPlaying(true))
 
     const speechTimer = !shownPrompt ? setTimeout(() => {
-      dispatch(setShowSpeechBubble(true))
+      dispatch(setBubbleShow("crashSite", "speechBubble", true))
     }, 3000) : null
 
     const promptTimer = !shownPrompt ? setTimeout(() => {
@@ -145,16 +140,17 @@ const CrashSite = () => {
     return () => clearTimeout(timer)
   }, [dispatch, showLopResponse])
 
-  const makeChoice = (choice, index) => {
-    dispatch(setShowSpeechBubble(false))
+  const makeChoice = (_, index) => {
+    dispatch(setBubbleShow("crashSite", "speechBubble", false))
+    
     dispatch(setShowPrompt(false))
-    dispatch(setShowLopResponse(true))
+    dispatch(setBubbleShow("crashSite", "lopResponse", true))
     dispatch(setShowLopResponseNumber(index + 1))            
   }
 
   const testWithSpoon = () => {
     console.log("testWithSpoon")
-    dispatch(setShowLopResponse(false))
+    dispatch(setBubbleShow("crashSite", "lopResponse", false))
     //move lop to ship
     dispatch(setLopPositionRight("50vw"))
     setTimeout(() => { 
@@ -168,12 +164,12 @@ const CrashSite = () => {
       dispatch(setShowMunching(false))
     }, 3000)
     setTimeout(() => { 
-      dispatch(setShowLopQuestion(true))
+      dispatch(setBubbleShow("crashSite", "lopQuestion", true))
     }, 4000)
   }
 
   const gotoNextPage = () => {
-    navigate('/Level1/Level1QuizChoice');
+    navigate('/Level1/Level1_003IntroCellina');
   }
 
   useEffect(() => {
@@ -321,8 +317,9 @@ const CrashSite = () => {
       {/* Lop foreground */}
       <Lop bottom="15vh" right={lopPositionRight} zIndex={2} state="idle" >
           {/* Lop speech bubble */}
-          {showSpeechBubble && (
             <SpeechBubble
+              pageId="crashSite"
+              id="speechBubble"
               maxWidth='400px'
               left="-25%"
               bottom="100%"
@@ -334,10 +331,10 @@ const CrashSite = () => {
                 boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
               }}
             />
-          )}
           {/* Lop response */}
-          {showLopResponse && (
             <SpeechBubble
+              pageId="crashSite"
+              id="lopResponse"
               maxWidth='400px'
               left="-25%"
               bottom="100%"
@@ -350,10 +347,11 @@ const CrashSite = () => {
                 boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
               }}
             />
-          )}
+          
           {/* Lop response */}
-          {showLopQuestion && (
             <SpeechBubble
+              pageId="crashSite"
+              id="lopQuestion"
               maxWidth='400px'
               right="-50%"
               bottom="100%"
@@ -366,7 +364,6 @@ const CrashSite = () => {
                 boxShadow: '0 0 20px rgba(66, 220, 255, 0.1)'
               }}
             />
-          )}
           {/* Spoon */}
           {showSpoon && (
             <Item style={{
