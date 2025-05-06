@@ -33,12 +33,12 @@ const Level1_004SlidePrep = () => {
 
   return (
     <div className="view">
-      <Draggable id="drag1" style={{ position: "absolute", left: "5vw", top: "25vh", width: "45vh", height: "45vh" }} dropArea="" tryDropOn={(areaId) => areaId === 'area1'}>
+      <Draggable id="drag1" style={{ position: "absolute", left: "15vw", top: "30vh", width: "45vh", height: "45vh" }} dropArea="" tryDropOn={(areaId) => areaId === 'area1'}
+        onDrop={({dropAreaId, draggableId}) => console.log(`${draggableId} was dropped in ${dropAreaId}`)}>
         <Item style={{ transform: "rotateZ(-120deg) scaleY(-1) rotateY(25deg)" }} src={spoon1} />
       </Draggable>
       <DropArea id="area1" 
-        style={{ position: "absolute", right: "25vw", top: "45vh", width: "25vh", height: "25vh"}}
-        onDrop={(draggableId) => console.log(`${draggableId} was dropped!`)}>
+        style={{ position: "absolute", right: "25vw", top: "45vh", width: "25vh", height: "25vh"}}>
         <Item style={{ transform: "rotateZ(-90deg) rotateY(45deg)" }} src={slide1} />
       </DropArea>
     </div>
