@@ -52,3 +52,36 @@ Add a Lop component with the following props:
 - zIndex: 2
 - state: idle
 ```
+
+
+
+# Components
+
+## Draggable & DropArea
+Draggable component features:
+- Tracks mouse movement for dragging
+- Returns to original position if not dropped on valid area
+- Calls tryDropOn when dropped on a DropArea
+- Maintains its dropArea ID
+- Supports custom styling
+
+DropArea component features:
+- Tracks when new Draggable children are added
+- Fires onDrop event with draggable ID when new draggable is mounted
+- Supports custom styling
+- Maintains unique area ID for identification
+
+To use these components, you would do something like this:
+```jsx
+<DropArea id="area1" onDrop={(draggableId) => console.log(`${draggableId} was dropped!`)}>
+  {/* Dropped items will appear here */}
+</DropArea>
+
+<Draggable 
+  id="drag1" 
+  dropArea="area1"
+  tryDropOn={(areaId) => areaId === 'area1'}
+>
+  <YourContent />
+</Draggable>
+```
