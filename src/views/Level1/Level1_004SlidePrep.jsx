@@ -13,7 +13,9 @@ import Item from '../../components/Item'
 import Draggable from '../../components/Draggable'
 import DropArea from '../../components/DropArea'
 
-const defaultAttributes = {}
+const defaultAttributes = {
+  dropSpoon: ""
+}
 
 const Level1_004SlidePrep = () => {
   const dispatch = useDispatch()
@@ -21,22 +23,32 @@ const Level1_004SlidePrep = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    dispatch(initializePageAttributes({
-      pageId: "slidePrep",
-      props: defaultAttributes
-    }))
-  }, [dispatch])
+    dispatch(initializePageAttributes({pageId: "slidePrep", props: defaultAttributes}));
+  }, [dispatch]);
 
-  const pageAttributes = useSelector((state) => 
+  const {dropSpoon} = useSelector((state) => 
     selectPageAttributes(state, "slidePrep", defaultAttributes)
   )
 
+  const handleDrop = ({dropAreaId}) => {
+    console.log("handleDrop", dropAreaId)
+    dispatch(setPageAttribute({
+      pageId: "slidePrep",
+      key: "dropSpoon",
+      value: dropAreaId
+    }))
+    console.log("dropSpoon", dropSpoon === "")
+  }
+
   return (
     <div className="view">
-      <Draggable id="drag1" style={{ position: "absolute", left: "15vw", top: "30vh", width: "45vh", height: "45vh" }} dropArea="" tryDropOn={(areaId) => areaId === 'area1'}
-        onDrop={({dropAreaId, draggableId}) => console.log(`${draggableId} was dropped in ${dropAreaId}`)}>
-        <Item style={{ transform: "rotateZ(-120deg) scaleY(-1) rotateY(25deg)" }} src={spoon1} />
-      </Draggable>
+      <div style={{ position: "absolute", left: "15vw", top: "30vh", width: "45vh", height: "45vh" }}>
+        <Draggable id="drag1" dropArea={dropSpoon} 
+          draggable={dropSpoon === ""} tryDropOn={(areaId) => areaId === 'area1'}
+          onDrop={handleDrop}>
+          <Item style={{ transform: "rotateZ(-120deg) scaleY(-1) rotateY(25deg)" }} src={spoon1} />
+        </Draggable>
+      </div>
       <DropArea id="area1" 
         style={{ position: "absolute", right: "25vw", top: "45vh", width: "25vh", height: "25vh"}}>
         <Item style={{ transform: "rotateZ(-90deg) rotateY(45deg)" }} src={slide1} />

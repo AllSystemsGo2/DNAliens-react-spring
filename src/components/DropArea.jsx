@@ -1,14 +1,11 @@
-import React, { useRef } from 'react'
+import React from 'react'
 
 const DropArea = ({ children, id, style }) => {
-  const containerRef = useRef(null)
-
   return (
     <div
-      ref={containerRef}
       style={{
-        position: 'block',
         ...style,
+        position: style?.position || 'relative'
       }}
       data-drop-area="true"
       data-area-id={id}
