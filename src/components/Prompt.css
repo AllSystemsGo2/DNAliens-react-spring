@@ -148,6 +148,31 @@
   background-color: #4a4a4a;
 }
 
+.submit-button.dark {
+  background: rgba(13, 12, 34, 0.9);
+  border: 1px solid rgba(13, 12, 34, 0.8);
+  color: #42dcff;
+  text-shadow: 0 0 5px rgba(66, 220, 255, 0.5);
+  box-shadow: 0 0 10px rgba(13, 12, 34, 0.3);
+}
+
+.submit-button.dark:hover {
+  background-color: rgba(13, 12, 34, 1);
+  box-shadow: 0 0 15px rgba(13, 12, 34, 0.5);
+  text-shadow: 0 0 8px rgba(66, 220, 255, 0.7);
+}
+
+.submit-button.large {
+  font-size: 1.25em;
+  padding: 12px 24px;
+}
+
+.submit-button.xlarge {
+  font-size: 1.5em;
+  padding: 15px 30px;
+  font-weight: 600;
+}
+
 .written-response-input {
   width: auto;
   padding: 10px;

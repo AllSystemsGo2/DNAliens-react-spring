@@ -112,7 +112,7 @@ const IntroCellina = () => {
       setTimeout(() => dispatch(setBubbleShow("introCellina", "cellinaMicroscope", true)), 2000)
     }
     else if (startDialogAtStep === 10) {
-      navigate("/level1/004Microscope")
+      navigate("/level1/Level1_004SlidePrep")
     }
   }, [dispatch, startDialogAtStep, navigate])
 
