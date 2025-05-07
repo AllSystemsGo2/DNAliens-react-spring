@@ -8,7 +8,7 @@ import { setBubbleShow } from '../../helpers/bubbleHelper'
 
 import Paragraph from '../../components/Paragraph'
 
-
+import cellinaSmall from '../../assets/cellina-microscope-2-256.png'
 import spoon1 from '../../assets/spoon.png'
 import slide1 from '../../assets/blank-slide1.png'
 
@@ -20,8 +20,9 @@ import SpeechBubble from '../../components/SpeechBubble'
 const defaultAttributes = {
   dropSpoon: "",
   showParagraph: false,
-  shakeSpoon: 0,
-  showShake: false,
+  showShakeButton: false,
+  shakeSpoonCount: 0,
+  shakingSpoon: false,
   showOpenMicroscope: false
 }
 
@@ -30,6 +31,34 @@ const Level1_004SlidePrep = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
+  const shakeSpoonSpring = useSpring({
+    from: { 
+      transform: 'translate(0px, 0px)'
+    },
+    to: async (next) => {
+      if (shakingSpoon) {
+        await next({ transform: 'translate(0px, -5px)' })
+        await next({ transform: 'translate(0px, 5px)' })
+        await next({ transform: 'translate(0px, -5px)' })
+        await next({ transform: 'translate(0px, 5px)' })
+      } else {
+        await next({ transform: 'translate(0px, 0px)' })
+      }
+    },
+    onRest: () => {
+      if(shakingSpoon) {
+        dispatch(setPageAttribute({
+          pageId: "slidePrep",
+          key: "shakingSpoon",
+          value: false
+        }))
+      }
+    },
+    config: {
+      duration: 100
+    }
+  })
+
   useEffect(() => {
     dispatch(initializePageAttributes({pageId: "slidePrep", props: defaultAttributes}));
   }, [dispatch]);
@@ -37,9 +66,10 @@ const Level1_004SlidePrep = () => {
   const {
     dropSpoon,
     showParagraph,
-    shakeSpoon,
-    showShake,
-    showOpenMicroscope
+    showShakeButton,
+    shakeSpoonCount,
+    shakingSpoon,
+    showOpenMicroscope,
   } = useSelector((state) => 
     selectPageAttributes(state, "slidePrep", defaultAttributes)
   )
@@ -52,10 +82,10 @@ const Level1_004SlidePrep = () => {
         value: false
       }))
     }
-    if(shakeSpoon >= 5) {
+    if(shakeSpoonCount >= 5) {
       dispatch(setPageAttribute({
         pageId: "slidePrep",
-        key: "showShake",
+        key: "showShakeButton",
         value: false
       }))
       dispatch(setPageAttribute({
@@ -91,24 +121,29 @@ const Level1_004SlidePrep = () => {
       }))
       setTimeout(() => dispatch(setPageAttribute({
         pageId: "slidePrep",
-        key: "showShake",
+        key: "showShakeButton",
         value: true
       })), 1000)
     }    
   }
 
   const handleShake = () => {
-    if(shakeSpoon < 5) {
+    if(shakeSpoonCount < 5) {
       dispatch(setPageAttribute({
         pageId: "slidePrep",
-        key: "shakeSpoon",
-        value: shakeSpoon+1
+        key: "shakeSpoonCount",
+        value: shakeSpoonCount+1
+      }))
+      dispatch(setPageAttribute({
+        pageId: "slidePrep",
+        key: "shakingSpoon",
+        value: true
       }))
     }
     else {
       dispatch(setPageAttribute({
         pageId: "slidePrep",
-        key: "showShake",
+        key: "showShakeButton",
         value: false
       }))
       setTimeout(() => {
@@ -129,23 +164,32 @@ const Level1_004SlidePrep = () => {
 
   return (
     <div className="view">
-      {showParagraph && <Paragraph header="Cellina" body="Drag the spoon to the slide" style={{ position: "absolute", left: "15vw", top: "5vh" }}/>}
-      
-      {showShake && <button style={{ position: "absolute", right: "25vw", top: "25vh", width: "10vh"}} className="submit-button" onClick={handleShake}>Shake</button>}
-      <div style={{ position: "absolute", left: "15vw", top: "30vh", width: "45vh", height: "45vh" }}>
+      {showParagraph && 
+      <div style={{ position: "absolute", left: "15vw", top: "5vh" }}>
+        <img src={cellinaSmall} style={{position: "absolute", left: "-10vh", top: "0vh", width: "15vh", zIndex: 2}} />
+        <Paragraph header="Cellina" body="Drag the spoon to the slide" />
+      </div>
+      }
+            
+      <div style={{ position: "absolute", left: "15vw", top: "30vh", width: "45vh", height: "45vh", zIndex: 2 }}>
         <Draggable id="drag1" dropArea={dropSpoon} 
           draggable={dropSpoon === ""} 
           tryDropOn={(areaId) => areaId === 'area1'}
           onDrop={handleDrop}>
-          <Item style={{ transform: "rotateZ(-120deg) scaleY(-1) rotateY(25deg)" }} src={spoon1} />
+          <animated.div style={{ transform: shakeSpoonSpring.transform, transformOrigin: "center" }}>
+            <Item style={{ transform: "rotateZ(-120deg) scaleY(-1) rotateY(25deg)" }} src={spoon1} />
+          </animated.div>
         </Draggable>
       </div>
-      <DropArea id="area1" 
-        style={{ position: "absolute", right: "25vw", top: "45vh", width: "25vh", height: "25vh"}}>
-        <Item style={{ transform: "rotateZ(-90deg) rotateY(45deg)" }} src={slide1} />
+      <DropArea id="area1" style={{ position: "absolute", right: "25vw", top: "25vh", width: "45vh", height: "45vh"}} enabled={dropSpoon === ""}>
+        <Item style={{position: "absolute", right: "0vh", top: "20vh", width: "25vh", height: "25vh", transform: "rotateZ(-90deg) rotateY(45deg)" }} src={slide1} />
       </DropArea>
+      {showShakeButton && <button style={{ position: "absolute", right: "15vw", top: "25vh", width: "10vh"}} className="submit-button dark large" onClick={handleShake}>Shake</button>}
       <SpeechBubble pageId="slidePrep" id="speechBubble" mainText="Ok. That's probably enough." style={{ position: "absolute", right: "5vw", bottom: "35vh" }}/>
-      {showOpenMicroscope && <button style={{ position: "absolute", right: "3vw", bottom: "3vh", width: "20vh"}} className="submit-button" onClick={handleOpenMicroscope}>Open Microscope **debug:small photo of Cellina** </button>}
+      {showOpenMicroscope && <div style={{ position: "absolute", right: "3vw", bottom: "8vh"}}>
+        <img src={cellinaSmall} style={{position: "absolute", left: "-50%", top: "-75%", width: "15vh"}} />
+        <button  style={{ width: "20vh"}} className="submit-button dark" onClick={handleOpenMicroscope}>Let's take a look!</button>
+      </div>}
     </div>
   )
 }
