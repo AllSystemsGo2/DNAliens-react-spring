@@ -193,11 +193,26 @@ function App() {
                 element={React.createElement(component)}
               />
             ))}
+            <Route path="*" element={
+              <NotFound />
+            } />
+
           </Routes>
         </Suspense>
       </div>
     </MemoryRouter>
   )
+}
+
+
+function NotFound() {
+  const location = useLocation();
+  return (
+    <div className="view">
+      <h2>Page Not Found</h2>
+      <p>The path <code>{location.pathname}</code> does not exist.</p>
+    </div>
+  );
 }
 
 export default App
