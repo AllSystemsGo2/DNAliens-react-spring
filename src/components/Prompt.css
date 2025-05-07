@@ -162,6 +162,17 @@
   text-shadow: 0 0 8px rgba(66, 220, 255, 0.7);
 }
 
+.submit-button.large {
+  font-size: 1.25em;
+  padding: 12px 24px;
+}
+
+.submit-button.xlarge {
+  font-size: 1.5em;
+  padding: 15px 30px;
+  font-weight: 600;
+}
+
 .written-response-input {
   width: auto;
   padding: 10px;

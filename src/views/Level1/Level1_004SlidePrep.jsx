@@ -31,6 +31,29 @@ const Level1_004SlidePrep = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
+  //Initialize the page attributes
+  useEffect(() => {
+    dispatch(initializePageAttributes({pageId: "slidePrep", props: defaultAttributes}));
+  }, [dispatch]);
+
+  //Select the page attributes
+  const {
+    dropSpoon,
+    showParagraph,
+    showShakeButton,
+    shakeSpoonCount,
+    shakingSpoon,
+    showOpenMicroscope,
+  } = useSelector((state) => 
+    selectPageAttributes(state, "slidePrep", defaultAttributes)
+  )
+
+  const circleSpring = useSpring({
+    from: { r: 0 },
+    to: { r: Math.min(10 * shakeSpoonCount, 50) },
+    config: { tension: 300, friction: 20 }
+  })
+
   const shakeSpoonSpring = useSpring({
     from: { 
       transform: 'translate(0px, 0px)'
@@ -58,21 +81,6 @@ const Level1_004SlidePrep = () => {
       duration: 100
     }
   })
-
-  useEffect(() => {
-    dispatch(initializePageAttributes({pageId: "slidePrep", props: defaultAttributes}));
-  }, [dispatch]);
-
-  const {
-    dropSpoon,
-    showParagraph,
-    showShakeButton,
-    shakeSpoonCount,
-    shakingSpoon,
-    showOpenMicroscope,
-  } = useSelector((state) => 
-    selectPageAttributes(state, "slidePrep", defaultAttributes)
-  )
 
   useEffect(() => {
     if(dropSpoon == "area1") {
@@ -181,10 +189,23 @@ const Level1_004SlidePrep = () => {
           </animated.div>
         </Draggable>
       </div>
-      <DropArea id="area1" style={{ position: "absolute", right: "25vw", top: "25vh", width: "45vh", height: "45vh"}} enabled={dropSpoon === ""}>
-        <Item style={{position: "absolute", right: "0vh", top: "20vh", width: "25vh", height: "25vh", transform: "rotateZ(-90deg) rotateY(45deg)" }} src={slide1} />
+      <DropArea id="area1" style={{ position: "absolute", right: "15vw", top: "25vh", width: "45vh", height: "45vh"}} enabled={dropSpoon === ""}>        
+        <Item id="slide1" style={{position: "absolute", right: "0vh", top: "20vh", width: "25vh", height: "25vh", transform: "rotateZ(-90deg) rotateY(45deg)" }} src={slide1} >
+          <div id ="droplet" style={{ position: "absolute", left:"0px", top:"0px", width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <svg width="200" height="200" style={{ position: "absolute", zIndex: 1 }}>
+              <animated.circle
+                cx="100"
+                cy="100"
+                fill="rgba(66, 220, 255, 0.15)"
+                stroke="rgba(66, 220, 255, 0.3)"
+                strokeWidth="2"
+                r={circleSpring.r}
+              />
+            </svg>
+          </div>
+        </Item>
       </DropArea>
-      {showShakeButton && <button style={{ position: "absolute", right: "15vw", top: "25vh", width: "10vh"}} className="submit-button dark large" onClick={handleShake}>Shake</button>}
+      {showShakeButton && <button style={{ position: "absolute", right: "5vw", top: "25vh", width: "20vh"}} className="submit-button dark xlarge" onClick={handleShake}>Shake</button>}
       <SpeechBubble pageId="slidePrep" id="speechBubble" mainText="Ok. That's probably enough." style={{ position: "absolute", right: "5vw", bottom: "35vh" }}/>
       {showOpenMicroscope && <div style={{ position: "absolute", right: "3vw", bottom: "8vh"}}>
         <img src={cellinaSmall} style={{position: "absolute", left: "-50%", top: "-75%", width: "15vh"}} />
