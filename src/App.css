@@ -43,6 +43,9 @@
 
 .view {
   position: relative;
-  min-height: 100vh;
+  height: 95vh;
+  width: 159.9vh;
+  aspect-ratio: 160/95;
   overflow: hidden;
+  border: 1px solid black;
 }
