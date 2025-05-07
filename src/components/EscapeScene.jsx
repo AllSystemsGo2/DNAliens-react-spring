@@ -103,7 +103,7 @@ const EscapeScene = ({ pageId, player, enemy, questionBank, playerHealth, enemyH
       onPlayerBoost(true);
       setEscapeState("playerBoost")
     } else {
-      onEnemyBoost(true);
+      onPlayerStall(true);
       setEscapeState("enemyBoost");
     }
 
