@@ -147,7 +147,7 @@ const IntroCellina = () => {
         style={{
           position: 'absolute',
           bottom: '10vh',
-          left: '15vw',
+          left: '25vh',
           width: '60vh',
           height: '60vh',
           backgroundImage: `url(${spaceship})`,
@@ -159,7 +159,7 @@ const IntroCellina = () => {
         }}
       />
 
-      <Lop bottom="15vh" right="50vw"> 
+      <Lop bottom="15vh" right="70vh"> 
         {/* Spoon */}
         {showSpoon && (
           <Item style={{
