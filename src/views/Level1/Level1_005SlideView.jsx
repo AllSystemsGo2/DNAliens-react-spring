@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
 import {setBubbleShow} from '../../helpers/bubbleHelper'
 
-import NarrativeBubble from '../../components/NarrativeBubble'
+import NarrativeBubble from '../../components/bubbles/NarrativeBubble'
 import WrittenResponsePrompt from '../../components/WrittenResponsePrompt'
 
 import cellinaSmall from '../../assets/cellina-microscope-2-256.png'

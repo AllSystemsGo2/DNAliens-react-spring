@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Bubble.css'
 import { useSelector, useDispatch } from 'react-redux';
-import { initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice';
+import { initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice';
 
 const defaultAttributes = {
   show: false

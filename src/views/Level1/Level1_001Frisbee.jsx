@@ -17,7 +17,7 @@ import crash from '../../assets/crash.png'
 import Lop from '../../components/characters/Lop'
 import Player from '../../components/characters/Player'
 import Scene from '../../components/Scene'
-import SpeechBubble from '../../components/SpeechBubble'
+import SpeechBubble from '../../components/bubbles/SpeechBubble'
 import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
 
 const defaultAttributes = {

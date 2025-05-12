@@ -8,8 +8,8 @@ import { useTranslation } from 'react-i18next';
 import Lop from '../../components/characters/Lop';
 import Player from '../../components/characters/Player';
 import Cellina from '../../components/characters/Cellina';
-import SpeechBubble from '../../components/SpeechBubble';
-import DialogBubble from '../../components/DialogBubble';
+import SpeechBubble from '../../components/bubbles/SpeechBubble';
+import DialogBubble from '../../components/bubbles/DialogBubble'; 
 import {setBubbleShow} from '../../helpers/bubbleHelper'
 import WrittenResponsePrompt from '../../components/WrittenResponsePrompt';
 import Item from '../../components/Item';

@@ -9,7 +9,7 @@ import Lop from '../../components/characters/Lop';
 import Player from '../../components/characters/Player';
 import Sprinkles from '../../components/characters/Sprinkles';
 import Enemy from '../../components/characters/Enemy';
-import SpeechBubble from '../../components/SpeechBubble';
+import SpeechBubble from '../../components/bubbles/SpeechBubble';
 import starryBackground from '../../assets/starry-background.jpg';
 import planetForeground from '../../assets/planet-foreground.png';
 import './Level1QuizChoice.css';

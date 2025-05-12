@@ -14,7 +14,7 @@ import spoon2 from '../../assets/spoon.png'
 import player from '../../assets/player-character-2.png'
 import spaceshipRustling from '../../assets/spaceship-rustling.ogg'
 import Lop from '../../components/characters/Lop'
-import SpeechBubble from '../../components/SpeechBubble';
+import SpeechBubble from '../../components/bubbles/SpeechBubble';
 import Item from '../../components/Item';
 import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
 import Paragraph from '../../components/Paragraph'

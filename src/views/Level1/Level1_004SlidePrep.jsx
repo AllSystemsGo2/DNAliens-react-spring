@@ -15,7 +15,7 @@ import slide1 from '../../assets/blank-slide1.png'
 import Item from '../../components/Item'
 import Draggable from '../../components/Draggable'
 import DropArea from '../../components/DropArea'
-import SpeechBubble from '../../components/SpeechBubble'
+import SpeechBubble from '../../components/bubbles/SpeechBubble'
 
 const defaultAttributes = {
   dropSpoon: "",
