@@ -4,7 +4,7 @@ import './Prompt.css'
 import { useDispatch } from 'react-redux'
 import { setResponse } from '../store/slices/responseSlice'
 
-const WrittenResponsePrompt = ({ prompt, responseKey, placeholder = '', multiline = false, onSubmit, style, submitText = "Submit" }) => {
+const WrittenResponsePrompt = ({ prompt, responseKey, placeholder = 'I think that...', multiline = false, onSubmit, style, submitText = "Submit" }) => {
   const [response, setResponseText] = useState('')
   const dispatch = useDispatch()
 

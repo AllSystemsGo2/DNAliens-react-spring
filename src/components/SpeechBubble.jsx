@@ -8,7 +8,7 @@ const defaultAttributes = {
   show: false
 }
 
-const SpeechBubble = ({ pageId="", id="", mainText, subText, showNext=false, onClick, top = '-50%',bottom, left = '0vh', maxWidth="300px", right, style }) => {
+const SpeechBubble = ({ pageId="", id="", mainText, subText, characterSrc, showNext=false, onClick, top = '-50%',bottom, left = '0vh', maxWidth="300px", right, style }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch();
   const { show } = useSelector(state => selectPageAttributes(state, `${pageId}:${id}`));
@@ -25,6 +25,7 @@ const SpeechBubble = ({ pageId="", id="", mainText, subText, showNext=false, onC
   }
   return show ? (
     <div className="speech-bubble" style={bubbleStyle} onClick={onClick}>
+      {characterSrc && <img src={characterSrc} style={{position: "absolute", left: "-40%", top: "-50%", width: "15vh"}} />}
       <span style={{ display: 'block' }}>{mainText}</span>
       {subText && (
         <span style={{
