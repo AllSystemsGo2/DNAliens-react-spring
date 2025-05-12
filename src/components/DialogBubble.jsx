@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './SpeechBubble.css'
+import './Bubble.css'
 import { useSelector, useDispatch } from 'react-redux';
 import { initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice';
 
@@ -24,7 +24,7 @@ const DialogBubble = ({ pageId="", id="", mainText, subText, choices=[], onSubmi
   }
 
   return show ? (
-    <div className="speech-bubble" style={bubbleStyle}>
+    <div className="speech-bubble bubble" style={bubbleStyle}>
       <span style={{ display: 'block' }}>{mainText}</span>
       {subText && (
         <span style={{

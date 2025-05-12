@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
 import {setBubbleShow} from '../../helpers/bubbleHelper'
 
-import SpeechBubble from '../../components/SpeechBubble'
+import NarrativeBubble from '../../components/NarrativeBubble'
 import WrittenResponsePrompt from '../../components/WrittenResponsePrompt'
 
 import cellinaSmall from '../../assets/cellina-microscope-2-256.png'
@@ -69,7 +69,7 @@ const SlideView = () => {
 
   return (
     <div className="view">
-      <SpeechBubble
+      <NarrativeBubble
         top="20%"
         left="30%"
         pageId="slideView"
@@ -79,7 +79,7 @@ const SlideView = () => {
         showNext={true}
         onClick={() => setDialogStep(1)}
       />
-      <SpeechBubble
+      <NarrativeBubble
         top="20%"
         left="30%"
         pageId="slideView"
@@ -105,7 +105,7 @@ const SlideView = () => {
           console.log("Submitted response:", response)
         }}
       />}
-      <SpeechBubble
+      <NarrativeBubble
         bottom="20%"
         right="5%"
         pageId="slideView"

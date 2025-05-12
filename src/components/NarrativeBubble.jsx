@@ -4,11 +4,15 @@ import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux';
 import { initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice';
 
+/**
+ * Like SpeechBubble but it doesn't bounce and glow.
+ */
+
 const defaultAttributes = {
   show: false
 }
 
-const SpeechBubble = ({ pageId="", id="", mainText, subText, characterSrc, showNext=false, onClick, top = '-50%',bottom, left = '0vh', maxWidth="300px", right, style }) => {
+const NarrativeBubble = ({ pageId="", id="", mainText, subText, characterSrc, showNext=false, onClick, top = '-50%',bottom, left = '0vh', maxWidth="300px", right, style }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch();
   const { show } = useSelector(state => selectPageAttributes(state, `${pageId}:${id}`));
@@ -24,7 +28,7 @@ const SpeechBubble = ({ pageId="", id="", mainText, subText, characterSrc, showN
     maxWidth
   }
   return show ? (
-    <div className="speech-bubble bubble" style={bubbleStyle} onClick={onClick}>
+    <div className="narrative-bubble bubble" style={bubbleStyle} onClick={onClick}>
       {characterSrc && <img src={characterSrc} style={{position: "absolute", left: "-40%", top: "-50%", width: "15vh"}} />}
       <span style={{ display: 'block' }}>{mainText}</span>
       {subText && (
@@ -54,4 +58,4 @@ const SpeechBubble = ({ pageId="", id="", mainText, subText, characterSrc, showN
   ) : null
 }
 
-export default SpeechBubble
+export default NarrativeBubble

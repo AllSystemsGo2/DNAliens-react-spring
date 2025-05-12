@@ -1,4 +1,4 @@
-.speech-bubble {
+.bubble {
   position: absolute;
   background: rgba(13, 12, 34, 0.9);
   border: 2px solid rgba(66, 220, 255, 0.4);
@@ -7,9 +7,6 @@
   color: #fff;
   font-size: 1.2em;
   text-align: center;
-  animation: fadeIn 1s ease-out,
-             glowPulse 3s ease-in-out infinite,
-             float 4s ease-in-out infinite;
   text-shadow: 0 0 10px rgba(66, 220, 255, 0.5);
   letter-spacing: 1px;
   backdrop-filter: blur(5px);
@@ -18,25 +15,35 @@
   cursor: help;
 }
 
-.speech-bubble:hover {
+.speech-bubble {
+  animation: fadeIn 1s ease-out,
+             glowPulse 3s ease-in-out infinite,
+             float 4s ease-in-out infinite;
+}
+
+.narrative-bubble {
+  animation: fadeIn 1s ease-out;
+}
+
+.bubble:hover {
   transform: scale(1.05);
   background: rgba(13, 12, 34, 0.95);
   border-color: rgba(66, 220, 255, 0.6);
   box-shadow: 0 0 30px rgba(66, 220, 255, 0.3);
 }
 
-.speech-bubble span:first-child {
+.bubble span:first-child {
   animation: typing 2s steps(20, end);
   white-space: nowrap;
   overflow: hidden;
   display: block;
 }
 
-.speech-bubble span:last-child {
+.bubble span:last-child {
   transition: opacity 0.3s ease;
 }
 
-.speech-bubble:hover span:last-child {
+.bubble:hover span:last-child {
   opacity: 1 !important;
 }
 
