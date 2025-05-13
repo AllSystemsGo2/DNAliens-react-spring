@@ -12,6 +12,8 @@ import Item from '../../components/Item'
 import Lop from '../../components/characters/Lop';
 import Player from '../../components/characters/Player';
 import Cellina from '../../components/characters/Cellina';
+
+import SpeechBubble from '../../components/bubbles/SpeechBubble'
 import NarrativeBubble from '../../components/bubbles/NarrativeBubble'
 import WrittenResponsePrompt from '../../components/WrittenResponsePrompt'
 
@@ -24,7 +26,8 @@ import plantCell from '../../assets/plant-cell1-512.png'
 
 
 const defaultState = {
-  cellinaState: "idle",
+  cellinaState: "microscope",
+  puzzleChoice: ""
 }
 
 const SlideView = () => {
@@ -32,15 +35,56 @@ const SlideView = () => {
   const { t } = useTranslation()
   const navigate = useNavigate()
 
+  // trigger effect on view mounted
   useEffect(() => {
     dispatch(initializePageAttributes({
       pageId: "slideView", 
       props: defaultState
     }))
-  }, [dispatch])
+  }, [])
+
+  // trigger effect on view mounted 
+  useEffect(() => {
+    setTimeout(() => dispatch(setBubbleShow("learnCells", "cellina", true)), 1000)
+    setTimeout(() => setCellinaState("idle") , 500)
+  }, [])
+
+  const holoboardSpring = useSpring({
+    from: {
+      left: '30vh',
+      width: '40vh',
+      height: '30vh'
+    },
+    to: async (next) => {
+      await next({
+        left: '30vh',
+        width: '40vh',
+        height: '30vh'
+      })
+      await next({
+        left: '5vh',
+        width: '80vh',
+        height: '60vh'
+      })
+    },
+    config: { duration: 500 }
+  })
 
   const { cellinaState } = useSelector((state) => selectPageAttributes(state, "slideView", defaultState))
 
+  const setPuzzleChoice = (value) => dispatch(setPageAttribute({pageId: "slideView", key: "puzzleChoice", value}))
+  const setCellinaState = (value) => dispatch(setPageAttribute({pageId: "slideView", key: "cellinaState", value}))
+
+  const goto = (pageId) => {
+    console.log("goto", pageId)
+    setPuzzleChoice(pageId)
+    if (pageId === "animal-cell") {
+      navigate("/level1/007_AnimalCellPuzzle")
+    }
+    else if (pageId === "plant-cell") {
+      navigate("/level1/007_PlantCellPuzzle")
+    }
+  }
 
   return (
     <div className="view">
@@ -87,32 +131,32 @@ const SlideView = () => {
       <Player bottom="5vh" right="15vh" faceDirection='left' zIndex={3}>
       </Player>
       <Cellina bottom="35vh" right="30vh" faceDirection='left' state={cellinaState}>
+        <SpeechBubble pageId="learnCells" id="cellina" showNext={false} subText="Choose a plant or animal cell to start!" top="-25%" right="-50%"/>
       </Cellina>
     
-      <div id='holoboard' className="holoboard-prompt" style={{
+      <animated.div id='holoboard' className="holoboard-prompt" style={{
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         top: '5vh',
-        left: '30vh',
-        transform: 'translateX(-50%)',
-        width: '40vh',
-        height: '30vh',
+        left: holoboardSpring.left,
+        width: holoboardSpring.width,
+        height: holoboardSpring.height,
         zIndex: 3
       }}>
         <h1>Cells</h1> 
         <div id='holoboard-body' style={{
           display: 'grid',
           gridTemplateColumns: '1fr 1fr',
-          gridTemplateRows: '10vh 1fr',
+          gridTemplateRows: '6fr 1fr',
           alignItems: 'center',
           justifyItems: 'center',
           width: '100%',
           height: '100%'
         }}>
           <Item style={{
-            width: '10vh',
-            height: '10vh',
+            width: '100%',
+            height: '100%',
             zIndex: 4,
             backgroundImage: `url(${animalCell})`,
             backgroundSize: 'cover',
@@ -122,8 +166,8 @@ const SlideView = () => {
           </Item>
           
           <Item style={{
-            width: '10vh',
-            height: '10vh',
+            width: '100%',
+            height: '100%',
             zIndex: 4,
             backgroundImage: `url(${plantCell})`,
             backgroundSize: 'cover',
@@ -131,10 +175,10 @@ const SlideView = () => {
             backgroundRepeat: 'no-repeat'
           }}>
           </Item>
-          <p>Animal Cell</p>
-          <p>Plant Cell</p>
+          <button style={{width: '50%'}} className="submit-button" onClick={()=> goto("animal-cell") }>Animal Cell</button>
+          <button style={{width: '50%'}} className="submit-button" onClick={()=> goto("plant-cell") }>Plant Cell</button>
         </div>
-      </div>  
+      </animated.div>  
     </div>
   )
 }

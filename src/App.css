@@ -1,8 +1,4 @@
-#root {
-  max-width: 1280px;
-  padding: 2rem;
-  text-align: center;
-}
+
 
 .logo {
   height: 6em;
@@ -40,11 +36,29 @@
   color: #888;
 }
 
-.view {
+
+#root {
+  width: 159.9vh;
+  padding: 2rem;
+  text-align: center;
+}
+.App {
+  position: relative;
+  width: 100%;
+}
+.superview {
   position: relative;
   height: 95vh;
   width: 159.9vh;
   aspect-ratio: 160/95;
   overflow: hidden;
   border: 1px solid black;
+}
+
+
+.view {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }

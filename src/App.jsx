@@ -96,14 +96,9 @@ function App() {
 
   return (
     <MemoryRouter>
-      <div className="App" style={{
-        minHeight: '100vh',
-        minWidth: '120vh',
-        width: '160vh',
-        position: 'relative'
-      }}>
+      <div className="App">
         <nav style={{
-          padding: '20px',
+          width: '100%',
           background: '#1a1a1a',
           boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           display: 'flex',
@@ -156,49 +151,51 @@ function App() {
           )}
           <LanguageSelector selected="en" />
         </nav>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/" element={
-              <div className='view'>
-                <h3>{t('home.intro')}</h3>
-                <h3>{t('home.instructions')}</h3>
-                <div>
-                  <h2>{t('home.sections.codebase')}</h2>
-                  <li>React SPA in JSX</li>
-                  <li>React Spring</li>
-                  <li>Simple CSS Animations</li>
-                  <li>React Audio</li>
-                  <li>Lottie</li>
+        <div className='superview'>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes >
+              <Route path="/" element={
+                <div className='view'>
+                  <h3>{t('home.intro')}</h3>
+                  <h3>{t('home.instructions')}</h3>
+                  <div>
+                    <h2>{t('home.sections.codebase')}</h2>
+                    <li>React SPA in JSX</li>
+                    <li>React Spring</li>
+                    <li>Simple CSS Animations</li>
+                    <li>React Audio</li>
+                    <li>Lottie</li>
+                  </div>
+                  <div>
+                    <h2>{t('home.sections.artTools')}</h2>
+                    <li>Gemini Flash 2.0 - static image generation</li>
+                    <li>PixelBay - open source, royalty-free sound library </li>
+                    <li>Krita - open source image editor</li>
+                    <li>Audacity - open source audio editor</li>
+                  </div>
+                  <div>
+                    <h2>{t('home.sections.codeGenTools')}</h2>
+                    <li>Claude 3.5 Sonnet</li>
+                  </div>
+                  <div>
+                    <button onClick={handleResetGameData} disabled={disableReset}>Reset Game Data</button>
+                  </div>
                 </div>
-                <div>
-                  <h2>{t('home.sections.artTools')}</h2>
-                  <li>Gemini Flash 2.0 - static image generation</li>
-                  <li>PixelBay - open source, royalty-free sound library </li>
-                  <li>Krita - open source image editor</li>
-                  <li>Audacity - open source audio editor</li>
-                </div>
-                <div>
-                  <h2>{t('home.sections.codeGenTools')}</h2>
-                  <li>Claude 3.5 Sonnet</li>
-                </div>
-                <div>
-                  <button onClick={handleResetGameData} disabled={disableReset}>Reset Game Data</button>
-                </div>
-              </div>
-            } />
-            {routes.map(({ path, component }) => (
-              <Route
-                key={path}
-                path={path}
-                element={React.createElement(component)}
-              />
-            ))}
-            <Route path="*" element={
-              <NotFound />
-            } />
+              } />
+              {routes.map(({ path, component }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={React.createElement(component)}
+                />
+              ))}
+              <Route path="*" element={
+                <NotFound />
+              } />
 
-          </Routes>
-        </Suspense>
+            </Routes>
+          </Suspense>
+        </div>
       </div>
     </MemoryRouter>
   )
