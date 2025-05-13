@@ -109,5 +109,23 @@
     "cellinaMicroscope": {
       "subText": "WAIT! We need to transfer the saliva to a microscope slide."
     }
+  },
+  "level1-008quiz": {
+    "speech1-lop": "Wait, is there an organelle only animal cells have?",
+    "prompt1": {
+      "prompt": "Animal cells have a ________________ that plant cells do not have.",
+      "choices": [
+        "Lysosome",
+        "Mitochondria",
+        "Chloroplast",
+        "Nucleus"
+      ],
+      "responses": [
+        "Animal cells have a lysosome that plant cells do not have.",
+        "Animal cells have a mitochondria that plant cells do not have.",
+        "Animal cells have a chloroplast that plant cells do not have.",
+        "Animal cells have a nucleus that plant cells do not have."
+      ]
+    }
   }
 }
