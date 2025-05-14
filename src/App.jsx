@@ -1,4 +1,4 @@
-import { Link, MemoryRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { Link, MemoryRouter, Routes, Route, useNavigate, useLocation, useOutlet } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, logout, fetchUser, refreshAuth } from './store/slices/authSlice'
 import React, { useEffect, useState, Suspense } from 'react'
@@ -6,6 +6,7 @@ import { setStoreDispatch } from './graphql/client'
 import { useTranslation } from 'react-i18next'
 import LanguageSelector from './components/LanguageSelector'
 import { resetPageAttributes } from './store/slices/pageSlice'
+import { setPageId } from './store/slices/appSlice'
 import './store/i18n'
 import './App.css'
 import './styles/animations.css'
@@ -97,6 +98,7 @@ function App() {
   return (
     <MemoryRouter>
       <div className="App">
+        <LocationTracker />
         <nav style={{
           width: '100%',
           background: '#1a1a1a',
@@ -153,7 +155,7 @@ function App() {
         </nav>
         <div className='superview'>
           <Suspense fallback={<div>Loading...</div>}>
-            <Routes >
+            <Routes>
               <Route path="/" element={
                 <div className='view'>
                   <h3>{t('home.intro')}</h3>
@@ -201,6 +203,18 @@ function App() {
   )
 }
 
+// Create a LocationTracker component to handle location changes
+const LocationTracker = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    console.log('Location changed:', location.pathname);
+    dispatch(setPageId(location.pathname));
+  }, [location, dispatch]);
+  
+  return null;
+};
 
 function NotFound() {
   const location = useLocation();
