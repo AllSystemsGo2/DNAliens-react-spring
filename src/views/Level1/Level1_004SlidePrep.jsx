@@ -155,7 +155,7 @@ const Level1_004SlidePrep = () => {
         value: false
       }))
       setTimeout(() => {
-        dispatch(setBubbleShow("slidePrep", "speechBubble", false))
+        dispatch(setBubbleShow({pageId: "slidePrep", bubbleId: "speechBubble", show: false}))
         dispatch(setPageAttribute({
           pageId: "slidePrep",
           key: "showOpenMicroscope",
@@ -167,7 +167,7 @@ const Level1_004SlidePrep = () => {
   }
 
   const handleOpenMicroscope = () => {
-    navigate("/level1/005Microscope")
+    navigate("/level1/Level1_005SlideView")
   }
 
   return (

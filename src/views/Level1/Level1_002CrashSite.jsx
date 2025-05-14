@@ -73,7 +73,7 @@ const CrashSite = () => {
     showMunching
   } = useSelector((state) => selectPageAttributes(state, "crashSite", defaultAttributes))
 
-  const showLopResponse = useSelector((state) => selectBubbleShowAttribute(state, "crashSite", "lopResponse", false))
+  const showLopResponse = useSelector((state) => selectBubbleShowAttribute({state, pageId: "crashSite", bubbleId: "lopResponse", defaultValue: false}))
 
   const audioRef = useRef(new Audio(spaceshipRustling))
 
@@ -117,7 +117,7 @@ const CrashSite = () => {
     dispatch(setIsPlaying(true))
 
     const speechTimer = !shownPrompt ? setTimeout(() => {
-      dispatch(setBubbleShow("crashSite", "speechBubble", true))
+      dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "speechBubble", show: true}))
     }, 3000) : null
 
     const promptTimer = !shownPrompt ? setTimeout(() => {
@@ -141,16 +141,16 @@ const CrashSite = () => {
   }, [dispatch, showLopResponse])
 
   const makeChoice = (_, index) => {
-    dispatch(setBubbleShow("crashSite", "speechBubble", false))
+    dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "speechBubble", show: false}))
     
     dispatch(setShowPrompt(false))
-    dispatch(setBubbleShow("crashSite", "lopResponse", true))
+    dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "lopResponse", show: true}))
     dispatch(setShowLopResponseNumber(index + 1))            
   }
 
   const testWithSpoon = () => {
     console.log("testWithSpoon")
-    dispatch(setBubbleShow("crashSite", "lopResponse", false))
+    dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "lopResponse", show: false}))
     //move lop to ship
     dispatch(setLopPositionRight("50vw"))
     setTimeout(() => { 
@@ -164,7 +164,7 @@ const CrashSite = () => {
       dispatch(setShowMunching(false))
     }, 3000)
     setTimeout(() => { 
-      dispatch(setBubbleShow("crashSite", "lopQuestion", true))
+      dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "lopQuestion", show: true}))
     }, 4000)
   }
 

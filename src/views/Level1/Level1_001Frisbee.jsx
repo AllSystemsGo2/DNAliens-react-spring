@@ -71,7 +71,7 @@ const Frisbee = () => {
       setTimeout(() => {
         dispatch(setShowUfo(false))
         dispatch(setShowCrash(true))
-        dispatch(setShowSpeechBubbleHelper("frisbee", "lopQuestion", true))
+        dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "lopQuestion", show: true}))
       }, 3250)
     }
   }, [showUfo, dispatch])
@@ -121,7 +121,7 @@ const Frisbee = () => {
           choices={t('frisbee.prompt.choices', { returnObjects: true })}
           onSubmit={() => {
             dispatch(setShowChoice(false))
-            dispatch(setShowSpeechBubbleHelper("frisbee", "investigate", true))
+            dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "investigate", show: true}))
           }}
           style={{
             top: '5vh',
@@ -133,7 +133,7 @@ const Frisbee = () => {
       )}
 
       <Lop right="35vh">
-        <SpeechBubble pageId="frisbee" id="lopQuestion" showNext={true} onClick={() => { dispatch(setShowSpeechBubbleHelper("frisbee", "lopQuestion", false)); dispatch(setShowChoice(true)) }} subText={t('frisbee.lopQuestion')} />
+        <SpeechBubble pageId="frisbee" id="lopQuestion" showNext={true} onClick={() => { dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "lopQuestion", show: false})); dispatch(setShowChoice(true)) }} subText={t('frisbee.lopQuestion')} />
         <SpeechBubble pageId="frisbee" id="investigate" showNext={false} mainText={t('frisbee.investigate')} />
       </Lop>
       <Player />

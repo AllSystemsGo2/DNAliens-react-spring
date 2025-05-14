@@ -45,7 +45,7 @@ const SlideView = () => {
 
   // trigger effect on view mounted 
   useEffect(() => {
-    setTimeout(() => dispatch(setBubbleShow("learnCells", "cellina", true)), 1000)
+    setTimeout(() => dispatch(setBubbleShow({pageId: "learnCells", bubbleId: "cellina", show: true})), 1000)
     setTimeout(() => setCellinaState("idle") , 500)
   }, [])
 

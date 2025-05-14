@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './Bubble.css'
 import { useSelector, useDispatch } from 'react-redux';
-import { initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice';
+import { initializePageAttributes } from '../../store/slices/pageSlice';
+import { selectBubbleShowAttribute } from '../../helpers/bubbleHelper';
+
 
 const defaultAttributes = {
   show: false
@@ -10,11 +12,12 @@ const defaultAttributes = {
 
 const DialogBubble = ({ pageId="", id="", mainText, subText, choices=[], onSubmit, top = '-50%', bottom, left = '0vh', maxWidth="300px", right, style }) => {
   const dispatch = useDispatch();
-  const { show } = useSelector(state => selectPageAttributes(state, `${pageId}:${id}`));
-
+  const { show } = useSelector(state => selectBubbleShowAttribute({state, pageId, bubbleId: id, defaultValue: false}))
+  const {_pageId } = useSelector(state => pageId ? {_pageId: pageId} : {_pageId: state.app.pageId})
+  
   React.useEffect(() => {
-    dispatch(initializePageAttributes({pageId: `${pageId}:${id}`, id: 'show', props: defaultAttributes}));
-  }, [dispatch, pageId, id]);
+    dispatch(initializePageAttributes({pageId: `${_pageId}:${id}`, id: 'show', props: defaultAttributes}));
+  }, [dispatch, _pageId, id]);
 
   const bubbleStyle = {
     ...style,

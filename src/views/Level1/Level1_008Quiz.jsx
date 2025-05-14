@@ -1,6 +1,6 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
@@ -26,48 +26,49 @@ const defaultAttributes = {
 }
 
 const Quiz = () => {
+  const location = useLocation();
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
 
-  
-
   useEffect(() => {
     dispatch(initializePageAttributes({
-      pageId: "quiz", 
+      pageId: location.pathname, 
       props: defaultAttributes
     }))
-  }, [dispatch])
+  }, [dispatch, location.pathname])
 
   const {
     dialogCounter,
     playerResponse
   } = useSelector((state) => 
-    selectPageAttributes(state, "level1-008quiz", defaultAttributes)
+    selectPageAttributes(state, location.pathname, defaultAttributes)
   )
-  const setDialogCounter = (counter) => { dispatch(setPageAttribute({pageId: "level1-008quiz", key: "dialogCounter", value: counter}))}
-  const setPlayerResponse = (response) => { dispatch(setPageAttribute({pageId: "level1-008quiz", key: "playerResponse", value: response}))}
+  const dispatch_setDialogCounter = (counter) => { dispatch(setPageAttribute({key: "dialogCounter", value: counter}))}
+  const dispatch_setPlayerResponse = (response) => { dispatch(setPageAttribute({key: "playerResponse", value: response}))}
 
   useEffect(() => {
     if (dialogCounter === 0) {
-      setTimeout(() => dispatch(setBubbleShow("level1-008quiz", "speech1", true)), 1000)
+      console.log("show speech1");
+      setTimeout(() => dispatch(setBubbleShow({bubbleId: "speech1", show: true})), 1000)
     }
     else {
-      dispatch(setBubbleShow("level1-008quiz", "speech1", false))
+      dispatch(setBubbleShow({bubbleId: "speech1", show: false}))
     }
-
-    if (dialogCounter === 1) {
-      // setTimeout(() => dispatch(setBubbleShow("level1-008quiz", "speech2", true)), 1000)
-    }
-    else {
-      // dispatch(setBubbleShow("level1-008quiz", "speech2", false))
-    }
-
+    // dialogCounter === 1 -> show MC Prompt
+    // if (dialogCounter === 1) {
+    // }
+    // else {
+    // }
+  
+    // dialogCounter === 2 -> show Player & Cellina Response
     if (dialogCounter === 2) {
-      // setTimeout(() => dispatch(setBubbleShow("level1-008quiz", "speech3", true)), 1000)
+      // setTimeout(() => dispatch(setBubbleShow({pageId: location.pathname, bubbleId: "speech3", show: true})), 1000)
     }
     else {
-      // dispatch(setBubbleShow("level1-008quiz", "speech3", false))
+      dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
+      dispatch(setBubbleShow({bubbleId: "cellina-right", show: false}))
+      dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: false}))
     }
 
 
@@ -82,7 +83,7 @@ const Quiz = () => {
       />
       
       <Player
-        left="45vw"
+        left="70vh"
         bottom="5vh"
         zIndex={2}
         state="idle"
@@ -90,7 +91,7 @@ const Quiz = () => {
         >
         <SpeechBubble
           showNext={false}
-          pageId="level1-008quiz" id="player-response" top="10vh" subText={t("level1-008quiz.prompt1.responses", { returnObjects: true })[playerResponse]}
+          pageId={location.pathname} id="player-response" top="-15vh" subText={t("level1-008quiz.prompt1.responses", { returnObjects: true })[playerResponse]}
         />
       </Player>
       
@@ -102,8 +103,8 @@ const Quiz = () => {
         faceDirection="right"
       >
         <SpeechBubble
-          pageId="level1-008quiz" id="speech1" top="-15vh" subText={t("level1-008quiz.speech1-lop")} showNext={true}
-          onClick={() => {setDialogCounter(1)}}
+          pageId={location.pathname} id="speech1" top="-15vh" mainText={t("level1-008quiz.speech1-lop")} showNext={true}
+          onClick={() => {dispatch_setDialogCounter(1)}}
         />
       </Lop>
       
@@ -115,26 +116,33 @@ const Quiz = () => {
         faceDirection="left"
       >
         <SpeechBubble
-          pageId="level1-008quiz" id="cellina-right" top="10vh" subText={"That's right!"} showNext={true}
-          onClick={() => {setDialogCounter(2)}}
+          pageId={location.pathname} id="cellina-right" top="-10vh" left="10vw" subText={"That's right!"} showNext={true}
+          onClick={() => {dispatch_setDialogCounter(3)}}
         />
         <SpeechBubble
-          pageId="level1-008quiz" id="cellina-wrong" top="10vh" subText={"Try again!"} showNext={true}
+          pageId={location.pathname} id="cellina-wrong" top="-10vh" left="10vw" subText={"Try again!"} showNext={true}
+          onClick={() => {dispatch_setDialogCounter(1)}}
         />
       </Cellina>
 
       {dialogCounter === 1 && <MultipleChoicePrompt
+        style={{
+          bottom: "50vh",
+          left: "15vh"
+        }}
         prompt={t("level1-008quiz.prompt1.prompt")}
         responseKey="level1-008quiz1"
         choices={t("level1-008quiz.prompt1.choices", { returnObjects: true })}
         onSubmit={(answer, index) => {
-          setPlayerResponse(index)
-          setBubbleShow({pageId: "level1-008quiz", id: "player-response", show: true})
+          console.log("onSubmit", answer, index)
+          dispatch_setDialogCounter(2)
+          dispatch_setPlayerResponse(index)
+          dispatch(setBubbleShow({bubbleId: "player-response", show: true}))
           if (answer === "Lysosome") {
-            setBubbleShow({pageId: "level1-008quiz", id: "cellina-right", show: true})
+            setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-right", show: true})), 1500)
           }
           else {
-            setBubbleShow({pageId: "level1-008quiz", id: "cellina-wrong", show: true})
+            setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: true})), 1500)
           }
         }}
       />}

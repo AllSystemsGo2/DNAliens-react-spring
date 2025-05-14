@@ -43,16 +43,16 @@ const SlideView = () => {
 
   useEffect(() => {
     if (dialogStep === 0) {
-      setTimeout(() => dispatch(setBubbleShow("slideView", "cellina", true)), 1000)
+      setTimeout(() => dispatch(setBubbleShow({pageId: "slideView", bubbleId: "cellina", show: true})), 1000)
     }
     else {
-      dispatch(setBubbleShow("slideView", "cellina", false))
+      dispatch(setBubbleShow({pageId: "slideView", bubbleId: "cellina", show: false}))
     }
     if (dialogStep === 1) {
-      setTimeout(() => dispatch(setBubbleShow("slideView", "lop", true)), 1000)
+      setTimeout(() => dispatch(setBubbleShow({pageId: "slideView", bubbleId: "lop", show: true})), 1000)
     }
     if (dialogStep !== 1 && dialogStep !== 2) {
-      dispatch(setBubbleShow("slideView", "lop", false))
+      dispatch(setBubbleShow({pageId: "slideView", bubbleId: "lop", show: false}))
     }
 
     if (dialogStep === 2) {
@@ -63,7 +63,7 @@ const SlideView = () => {
     }
 
     if (dialogStep === 3) {
-      setTimeout(() => dispatch(setBubbleShow("slideView", "cellinaNext", true)), 1000)
+      setTimeout(() => dispatch(setBubbleShow({pageId: "slideView", bubbleId: "cellinaNext", show: true})), 1000)
     }
   }, [dialogStep])
 
@@ -110,7 +110,7 @@ const SlideView = () => {
         right="5%"
         pageId="slideView"
         id="cellinaNext"
-        subText="Let’s explore the differences between plant and animal cells."
+        subText="Let's explore the differences between plant and animal cells."
         characterSrc={cellinaSmall}
         onClick={() => navigate("/level1/006")}
       />

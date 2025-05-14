@@ -69,47 +69,47 @@ const IntroCellina = () => {
 
   useEffect(()=> {
     if(startDialogAtStep === 0) { 
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "warp", true)), 3000)
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "warp", show: true})), 3000)
     }
     if(startDialogAtStep === 1) {
-      dispatch(setBubbleShow("introCellina", "warp", false))
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "lopHelp", true)), 500)
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "warp", show: false}))
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopHelp", show: true})), 500)
     }
     else if (startDialogAtStep === 2) {
-      dispatch(setBubbleShow("introCellina", "lopHelp", false))
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "cellinaSaliva", true)), 500)
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopHelp", show: false}))
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaSaliva", show: true})), 500)
     }
     else if (startDialogAtStep === 3) {
-      dispatch(setBubbleShow("introCellina", "cellinaSaliva", false))
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "lopCells", true)), 500)
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaSaliva", show: false}))
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopCells", show: true})), 500)
     }
     else if (startDialogAtStep === 4) {
-      dispatch(setBubbleShow("introCellina", "lopCells", false))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopCells", show: false}))
       setTimeout(() => dispatch(setShowQuestion(true)), 500)
     }
     else if (startDialogAtStep === 5) {
-      dispatch(setBubbleShow("introCellina", "playerCellsExplanation", false))
-      dispatch(setBubbleShow("introCellina", "cellinaCells", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "playerCellsExplanation", show: false}))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaCells", show: true}))
       dispatch(setShowHoloboard(true))
     }
     else if (startDialogAtStep === 6) {
-      dispatch(setBubbleShow("introCellina", "playerCellsExplanation", false))
-      dispatch(setBubbleShow("introCellina", "cellinaCells", false))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "playerCellsExplanation", show: false}))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaCells", show: false}))
       dispatch(setShowHoloboard(false))
-      dispatch(setBubbleShow("introCellina", "cellinaExamineCells", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaExamineCells", show: true}))
     }
     else if (startDialogAtStep === 7) {
-      dispatch(setBubbleShow("introCellina", "cellinaExamineCells", false))
-      dispatch(setBubbleShow("introCellina", "lopExamineSpoon", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaExamineCells", show: false}))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopExamineSpoon", show: true}))
     }
     else if (startDialogAtStep === 8) {
-      dispatch(setBubbleShow("introCellina", "lopExamineSpoon", false))
-      dispatch(setBubbleShow("introCellina", "cellinaExamineSpoon", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopExamineSpoon", show: false}))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaExamineSpoon", show: true}))
     }
     else if (startDialogAtStep === 9) {
-      dispatch(setBubbleShow("introCellina", "cellinaExamineSpoon", false))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaExamineSpoon", show: false}))
       dispatch(setCellinaState("microscope"))
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "cellinaMicroscope", true)), 2000)
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaMicroscope", show: true})), 2000)
     }
     else if (startDialogAtStep === 10) {
       navigate("/level1/Level1_004SlidePrep")
@@ -123,16 +123,16 @@ const IntroCellina = () => {
   const handleResponse = (response) => {
     dispatch(setShowQuestion(false))
     dispatch(setPlayerCellsExplanation(response))
-    dispatch(setBubbleShow("introCellina", "playerCellsExplanation", true))
+    dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "playerCellsExplanation", show: true}))
 
     setTimeout(() => {
-      dispatch(setBubbleShow("introCellina", "cellinaCells", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaCells", show: true}))
       dispatch(setShowHoloboard(true))
     }, 1500)
     
     setTimeout(() => {
       dispatch(setShowStartDialogAtStep(5))
-      dispatch(setBubbleShow("introCellina", "playerCellsExplanation", false))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "playerCellsExplanation", show: false}))
     }, 4000)
   }
 

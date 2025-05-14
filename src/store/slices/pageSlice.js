@@ -3,6 +3,8 @@ import { client } from '../../graphql/client'
 import { WRITE_GAME_DATA } from '../../graphql/mutations/gameData'
 import { GET_USER } from '../../graphql/queries/user'
 
+import { setBubbleShow } from '../../helpers/bubbleHelper'
+
 export const resetPageAttributes = createAsyncThunk(
   'page/resetPageAttributes',
   async (_, { getState }) => {
@@ -56,9 +58,10 @@ const writePageAttribute = createAsyncThunk(
 
 export const setPageAttribute = createAsyncThunk(
   'page/setPageAttribute',
-  async ({pageId, key, value}, { dispatch }) => {
-    dispatch(writePageAttribute({pageId, key, value}))
-    return { pageId, key, value }
+  async ({pageId, key, value}, {getState, dispatch }) => {
+    const _pageId = pageId ?? getState().app.pageId
+    dispatch(writePageAttribute({pageId: _pageId, key, value}))
+    return { pageId: _pageId, key, value }
   }
 )
 
@@ -83,11 +86,11 @@ export const getPages = createAsyncThunk(
 export const initializePageAttributes = createAsyncThunk(
   'page/initializePageAttributes',
   async ({pageId, props}, { getState }) => {
-    // console.error(pageId, props)
+    const _pageId = pageId ?? getState().app.pageId
     return { 
-      pageId, 
+      pageId: _pageId, 
       props: Object.keys(props).map((k) => ({
-        [k]: selectPageAttribute(getState(), pageId, k, props[k])
+        [k]: selectPageAttribute(getState(), _pageId, k, props[k])
       }))
       .reduce((p,c) => { return Object.assign(p, c) }, {})
     }
@@ -134,6 +137,13 @@ export const pageSlice = createSlice({
       .addCase(setPageAttribute.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
+      })
+      .addCase(setBubbleShow.fulfilled, (state, action) => {
+        state.loading = false        
+        if (!state.pages[action.payload.pageId]) {
+          state.pages[action.payload.pageId] = {}
+        }
+        state.pages[action.payload.pageId][action.payload.key] = action.payload.value
       })
       .addCase(writePageAttribute.rejected, (state, action) => {
         state.error = action.error.message

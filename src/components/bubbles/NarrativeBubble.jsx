@@ -2,7 +2,9 @@ import React, { useEffect } from 'react'
 import './Bubble.css'
 import { useTranslation } from 'react-i18next'
 import { useSelector, useDispatch } from 'react-redux';
-import { initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice';
+import { initializePageAttributes } from '../../store/slices/pageSlice';
+import { selectBubbleShowAttribute } from '../../helpers/bubbleHelper';
+
 
 /**
  * Like SpeechBubble but it doesn't bounce and glow.
@@ -15,11 +17,12 @@ const defaultAttributes = {
 const NarrativeBubble = ({ pageId="", id="", mainText, subText, characterSrc, showNext=false, onClick, top = '-50%',bottom, left = '0vh', maxWidth="300px", right, style }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch();
-  const { show } = useSelector(state => selectPageAttributes(state, `${pageId}:${id}`));
+  const { show } = useSelector(state => selectBubbleShowAttribute({state, pageId, bubbleId: id, defaultValue: false}))
+  const {_pageId } = useSelector(state => pageId ? {_pageId: pageId} : {_pageId: state.app.pageId})
 
   useEffect(() => {
-    dispatch(initializePageAttributes({pageId: `${pageId}:${id}`, id: 'show', props: defaultAttributes}));
-  }, [dispatch, pageId, id]);
+    dispatch(initializePageAttributes({pageId: `${_pageId}:${id}`, id: 'show', props: defaultAttributes}));
+  }, [dispatch, _pageId, id]);
 
   const bubbleStyle = {
     ...style,
