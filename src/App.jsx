@@ -1,4 +1,4 @@
-import { Link, MemoryRouter, Routes, Route, useNavigate, useLocation, useOutlet } from 'react-router-dom'
+import { Link, MemoryRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, logout, fetchUser, refreshAuth } from './store/slices/authSlice'
 import React, { useEffect, useState, Suspense } from 'react'
@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import LanguageSelector from './components/LanguageSelector'
 import { resetPageAttributes } from './store/slices/pageSlice'
 import { setPageId } from './store/slices/appSlice'
+import { getPageId } from './helpers/locationHelper'
 import './store/i18n'
 import './App.css'
 import './styles/animations.css'
@@ -209,8 +210,7 @@ const LocationTracker = () => {
   const dispatch = useDispatch();
   
   useEffect(() => {
-    console.log('Location changed:', location.pathname);
-    dispatch(setPageId(location.pathname));
+    dispatch(setPageId(getPageId(location.pathname)))
   }, [location, dispatch]);
   
   return null;

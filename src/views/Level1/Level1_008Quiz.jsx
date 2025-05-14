@@ -1,6 +1,7 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { getPageId } from '../../helpers/locationHelper'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
@@ -26,14 +27,14 @@ const defaultAttributes = {
 }
 
 const Quiz = () => {
-  const location = useLocation();
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     dispatch(initializePageAttributes({
-      pageId: location.pathname, 
+      pageId: getPageId(location.pathname), 
       props: defaultAttributes
     }))
   }, [dispatch, location.pathname])
@@ -42,7 +43,7 @@ const Quiz = () => {
     dialogCounter,
     playerResponse
   } = useSelector((state) => 
-    selectPageAttributes(state, location.pathname, defaultAttributes)
+    selectPageAttributes(state, state.app.pageId, defaultAttributes)
   )
   const dispatch_setDialogCounter = (counter) => { dispatch(setPageAttribute({key: "dialogCounter", value: counter}))}
   const dispatch_setPlayerResponse = (response) => { dispatch(setPageAttribute({key: "playerResponse", value: response}))}
@@ -63,7 +64,7 @@ const Quiz = () => {
   
     // dialogCounter === 2 -> show Player & Cellina Response
     if (dialogCounter === 2) {
-      // setTimeout(() => dispatch(setBubbleShow({pageId: location.pathname, bubbleId: "speech3", show: true})), 1000)
+      ;
     }
     else {
       dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
@@ -90,8 +91,7 @@ const Quiz = () => {
         faceDirection="left"
         >
         <SpeechBubble
-          showNext={false}
-          pageId={location.pathname} id="player-response" top="-15vh" subText={t("level1-008quiz.prompt1.responses", { returnObjects: true })[playerResponse]}
+          showNext={false} id="player-response" top="-15vh" subText={t("level1-008quiz.prompt1.responses", { returnObjects: true })[playerResponse]}
         />
       </Player>
       
@@ -102,8 +102,7 @@ const Quiz = () => {
         state="idle"
         faceDirection="right"
       >
-        <SpeechBubble
-          pageId={location.pathname} id="speech1" top="-15vh" mainText={t("level1-008quiz.speech1-lop")} showNext={true}
+        <SpeechBubble id="speech1" top="-15vh" subText={t("level1-008quiz.speech1-lop")} showNext={true}
           onClick={() => {dispatch_setDialogCounter(1)}}
         />
       </Lop>
@@ -115,12 +114,10 @@ const Quiz = () => {
         state="idle"
         faceDirection="left"
       >
-        <SpeechBubble
-          pageId={location.pathname} id="cellina-right" top="-10vh" left="10vw" subText={"That's right!"} showNext={true}
+        <SpeechBubble id="cellina-right" top="-10vh" left="10vw" subText={"That's right!"} showNext={true}
           onClick={() => {dispatch_setDialogCounter(3)}}
         />
-        <SpeechBubble
-          pageId={location.pathname} id="cellina-wrong" top="-10vh" left="10vw" subText={"Try again!"} showNext={true}
+        <SpeechBubble id="cellina-wrong" top="-10vh" left="10vw" subText={"Try again!"} showNext={true}
           onClick={() => {dispatch_setDialogCounter(1)}}
         />
       </Cellina>

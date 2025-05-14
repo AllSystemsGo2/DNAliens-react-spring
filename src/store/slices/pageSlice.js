@@ -39,7 +39,7 @@ const writePageAttribute = createAsyncThunk(
         mutation: WRITE_GAME_DATA,
         variables: {
           username: getState().auth.username,
-          documentPath: `DNAliens/pages/${pageId}/${key}`,
+          documentPath: `${getState().app.name}/pages/${pageId}/${key}`,
           value: value
         }
       })
