@@ -31,12 +31,22 @@ const writeResponse = createAsyncThunk(
 
 export const setResponse = createAsyncThunk(
   'response/setResponse',
-  async ({ key, value }, { dispatch, getState }) => {
+  async ({ key, value, attempts }, { dispatch, getState }) => {
     dispatch(writeResponse({ key, value}))
-    return { lesson: getState().app.lesson, key, value, delivered:false }
+    
+    if(attempts){
+      dispatch(writeResponse({ key:`${key}_attempts`, value:attempts}))
+      return { lesson: getState().app.lesson, key, value:{value, attempts}, delivered:false }
+    }
+    else {
+      return { lesson: getState().app.lesson, key, value, delivered:true }
+    }
   }
 )
 
+export const selectResponse = (state, key) => {
+  return state.response.responses[state.app.lesson]?.[key]
+}
 
 const initialState = {
   loading: false,
