@@ -1,5 +1,5 @@
 import { useSpring, animated } from '@react-spring/web'
-import { useEffect } from 'react'
+import {useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { getPageId } from '../../helpers/locationHelper'
 import { useSelector, useDispatch } from 'react-redux'
@@ -39,6 +39,12 @@ const Quiz = () => {
     }))
   }, [dispatch, location.pathname])
 
+  const [disableOnSubmit, setDisableOnSubmit] = useState(true)
+  const toggleDisableOnSubmit = () => {
+    setDisableOnSubmit(!disableOnSubmit)
+    setDisableOnSubmit(!disableOnSubmit)
+  }
+
   const {
     dialogCounter,
     playerResponse
@@ -50,7 +56,6 @@ const Quiz = () => {
 
   useEffect(() => {
     if (dialogCounter === 0) {
-      console.log("show speech1");
       setTimeout(() => dispatch(setBubbleShow({bubbleId: "speech1", show: true})), 1000)
     }
     else {
@@ -118,7 +123,7 @@ const Quiz = () => {
           onClick={() => {dispatch_setDialogCounter(3)}}
         />
         <SpeechBubble id="cellina-wrong" top="-10vh" left="10vw" subText={"Try again!"} showNext={true}
-          onClick={() => {dispatch_setDialogCounter(1)}}
+          onClick={() => {dispatch_setDialogCounter(1); toggleDisableOnSubmit()}}
         />
       </Cellina>
 
@@ -130,6 +135,7 @@ const Quiz = () => {
         prompt={t("level1-008quiz.prompt1.prompt")}
         responseKey="level1-008quiz1"
         choices={t("level1-008quiz.prompt1.choices", { returnObjects: true })}
+        disableOnSubmit={disableOnSubmit}
         onSubmit={(answer, index) => {
           console.log("onSubmit", answer, index)
           dispatch_setDialogCounter(2)

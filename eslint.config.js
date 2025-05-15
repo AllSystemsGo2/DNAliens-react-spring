@@ -23,6 +23,7 @@ export default [
     rules: {
       ...js.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
+      'react-hooks/exhaustive-deps': 'off',
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]|^(animated|a|useSpring|navigate|setPageAttribute|t)$' }],
       'react-refresh/only-export-components': [
         'warn',
