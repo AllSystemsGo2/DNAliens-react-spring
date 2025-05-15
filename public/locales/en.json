@@ -121,10 +121,10 @@
         "Nucleus"
       ],
       "responses": [
-        "Animal cells have a <b>lysosome</b> that plant cells do not have.",
-        "Animal cells have a <b>mitochondria</b> that plant cells do not have.",
-        "Animal cells have a <b>chloroplast</b> that plant cells do not have.",
-        "Animal cells have a <b>nucleus</b> that plant cells do not have."
+        "Animal cells have a lysosome that plant cells do not have.",
+        "Animal cells have a mitochondria that plant cells do not have.",
+        "Animal cells have a chloroplast that plant cells do not have.",
+        "Animal cells have a nucleus that plant cells do not have."
       ]
     },
     "speech2-lop": "So are there any organelles only plant cells have?",
@@ -139,6 +139,7 @@
       "responses": [
         "Yes, plant cells have ${a} and ${b} that animal cells do not have."
       ]
-    }
+    },
+    "speech3-lop": "I get it now, we can go back to the microscope to identify if this organism is a plant or animal."
   }
 }

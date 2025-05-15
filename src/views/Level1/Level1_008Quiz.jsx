@@ -34,7 +34,9 @@ String.prototype.interpolate = function (params) {
 const defaultAttributes = {
   // Empty default state as requested
   dialogCounter: 0,
-  playerResponse: ""
+  playerResponse: "",
+  playerResponse2: "",
+  cellinaState: "idle"
 }
 
 const Quiz = () => {
@@ -58,12 +60,16 @@ const Quiz = () => {
 
   const {
     dialogCounter,
-    playerResponse
+    playerResponse,
+    playerResponse2,
+    cellinaState
   } = useSelector((state) => 
     selectPageAttributes(state, state.app.pageId, defaultAttributes)
   )
   const dispatch_setDialogCounter = (counter) => { dispatch(setPageAttribute({key: "dialogCounter", value: counter}))}
   const dispatch_setPlayerResponse = (response) => { dispatch(setPageAttribute({key: "playerResponse", value: response}))}
+  const dispatch_setPlayerResponse2 = (response) => { dispatch(setPageAttribute({key: "playerResponse2", value: response}))}
+  const dispatch_setCellinaState = (state) => { dispatch(setPageAttribute({key: "cellinaState", value: state}))}
 
   useEffect(() => {
     if (dialogCounter === 0) {
@@ -79,11 +85,10 @@ const Quiz = () => {
     // }
   
     // dialogCounter === 2 -> show Player & Cellina Response
-    if (dialogCounter === 2) {
-      ;
-    }
-    else {
-      dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
+    
+    if(dialogCounter !== 2 && dialogCounter !== 4) {
+      dispatch(setBubbleShow({bubbleId: "player-response1", show: false}))
+      dispatch(setBubbleShow({bubbleId: "player-response2", show: false}))
       dispatch(setBubbleShow({bubbleId: "cellina-right", show: false}))
       dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: false}))
     }
@@ -97,13 +102,16 @@ const Quiz = () => {
     }
 
     // dialogCounter === 4 -> show MC Prompt
-    if (dialogCounter === 4) {
-      ;
-    }
-    else {
-      dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
-      dispatch(setBubbleShow({bubbleId: "cellina-right", show: false}))
-      dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: false}))
+    // else 
+      // dispatch(setBubbleShow({bubbleId: "player-response2", show: false}))
+      // dispatch(setBubbleShow({bubbleId: "cellina-right", show: false}))
+      // dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: false}))
+
+    if (dialogCounter === 5) {
+      setTimeout(() => dispatch(setBubbleShow({bubbleId: "speech3", show: true})), 1000)
+      
+      setTimeout(() => dispatch_setCellinaState("microscope"), 2000)
+      setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-next", show: true})), 3000)
     }
 
 
@@ -124,9 +132,8 @@ const Quiz = () => {
         state="idle"
         faceDirection="left"
         >
-        <SpeechBubble
-          showNext={false} id="player-response" top="-15vh" subText={t("level1-008quiz.prompt1.responses", { returnObjects: true })[playerResponse]}
-        />
+        <SpeechBubble showNext={false} id="player-response1" top="-15vh" subText={t("level1-008quiz.prompt1.responses", { returnObjects: true })[playerResponse]}/>
+        <SpeechBubble showNext={false} id="player-response2" top="-15vh" subText={playerResponse2}/>
       </Player>
       
       <Lop
@@ -142,20 +149,26 @@ const Quiz = () => {
         <SpeechBubble id="speech2" top="-15vh" subText={t("level1-008quiz.speech2-lop")} showNext={true}
           onClick={() => {dispatch_setDialogCounter(4)}}
         />
+        <SpeechBubble id="speech3" top="-15vh" subText={t("level1-008quiz.speech3-lop")} showNext={false}
+          onClick={() => {dispatch_setDialogCounter(6)}}
+        />
       </Lop>
       
       <Cellina
         right="10vw"
         bottom="20vh"
         zIndex={2}
-        state="idle"
+        state={cellinaState}
         faceDirection="left"
       >
         <SpeechBubble id="cellina-right" top="-10vh" left="10vw" subText={"That's right!"} showNext={true}
-          onClick={() => {dispatch_setDialogCounter(3)}}
+          onClick={() => {dispatch_setDialogCounter(dialogCounter + 1)}}
         />
         <SpeechBubble id="cellina-wrong" top="-10vh" left="10vw" subText={"Try again!"} showNext={true}
           onClick={() => {dispatch_setDialogCounter(1); toggleDisableOnSubmit()}}
+        />
+        <SpeechBubble id="cellina-next" top="-10vh" left="10vw" subText={"Let's take a look!"} showNext={true}
+          onClick={() => { navigate("/level1-009")}}
         />
       </Cellina>
 
@@ -172,8 +185,8 @@ const Quiz = () => {
           console.log("onSubmit", answer, index)
           dispatch_setDialogCounter(2)
           dispatch_setPlayerResponse(index)
-          dispatch(setBubbleShow({bubbleId: "player-response", show: true}))
-          if (answer === "Lysosome") {
+          dispatch(setBubbleShow({bubbleId: "player-response1", show: true}))
+          if (index === 0) {
             setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-right", show: true})), 1500)
           }
           else {
@@ -193,15 +206,17 @@ const Quiz = () => {
         disableOnSubmit={disableOnSubmit}
         onSubmit={(answers, indices) => {
           console.log("onSubmit", answers, indices)
-          // dispatch_setDialogCounter(2)
-          // dispatch_setPlayerResponse(index)
-          // dispatch(setBubbleShow({bubbleId: "player-response", show: true}))
-          // if (answer === "Lysosome") {
-          //   setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-right", show: true})), 1500)
-          // }
-          // else {
-          //   setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: true})), 1500)
-          // }
+          dispatch_setDialogCounter(5)
+          const response = t("level1-008quiz.prompt2.responses", { returnObjects: true })[0].interpolate({a: answers[0].toLowerCase(), b: answers[1].toLowerCase()})
+          console.log("response", response)
+          dispatch_setPlayerResponse2(response)
+          dispatch(setBubbleShow({bubbleId: "player-response2", show: true}))
+          if (indices[0] === 0 && indices[1] === 2) {
+            setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-right", show: true})), 1500)
+          }
+          else {
+            setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: true})), 1500)
+          }
         }}
       />}
     </div>

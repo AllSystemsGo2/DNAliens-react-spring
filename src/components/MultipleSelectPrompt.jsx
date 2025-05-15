@@ -14,7 +14,7 @@ const defaultAttributes = {
   disabled: false
 }
 
-const MultipleSelectPrompt = ({ prompt, responseKey, choices, disableOnSubmit=true, onSubmit, limitSelections=2, style, submitText = "Submit" }) => {
+const MultipleSelectPrompt = ({ prompt, responseKey, choices, disableOnSubmit=true, onSubmit, minSelections=2, maxSelections=2, style, submitText = "Submit" }) => {
   const dispatch = useDispatch()
   const location = useLocation()
 
@@ -35,7 +35,7 @@ const MultipleSelectPrompt = ({ prompt, responseKey, choices, disableOnSubmit=tr
     const add = selections.findIndex(x => x === choiceIndex)
     if(add === -1) {
       const newSelections = [...selections, choiceIndex]
-      while (newSelections.length > limitSelections) {
+      while (newSelections.length > maxSelections) {
         newSelections.shift()
       }
       dispatch_setSelections(newSelections)
@@ -86,7 +86,7 @@ const MultipleSelectPrompt = ({ prompt, responseKey, choices, disableOnSubmit=tr
       <button
         className="submit-button"
         onClick={handleSubmit}   
-        disabled={disabled || selections.length === 0}       
+        disabled={disabled || selections.length < minSelections}       
       >
         {submitText}
       </button>

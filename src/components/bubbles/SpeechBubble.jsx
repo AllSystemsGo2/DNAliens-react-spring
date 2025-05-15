@@ -10,6 +10,7 @@ const defaultAttributes = {
 }
 
 const SpeechBubble = ({ pageId="", id, mainText, subText, characterSrc, showNext=false, onClick, top = '-50%',bottom, left = '0vh', maxWidth="300px", right, style }) => {
+  
   const { t } = useTranslation()
   const dispatch = useDispatch();
   const { show } = useSelector(state => selectBubbleShowAttribute({state, pageId, bubbleId: id, defaultValue: false}))
