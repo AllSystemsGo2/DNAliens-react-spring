@@ -111,7 +111,7 @@
     }
   },
   "level1-008quiz": {
-    "speech1-lop": "Wait, is there an organelle only animal cells have?",
+    "speech1-lop": "Wait, is there an organelle only animal cells have?",    
     "prompt1": {
       "prompt": "Animal cells have a ________________ that plant cells do not have.",
       "choices": [
@@ -121,10 +121,23 @@
         "Nucleus"
       ],
       "responses": [
-        "Animal cells have a lysosome that plant cells do not have.",
-        "Animal cells have a mitochondria that plant cells do not have.",
-        "Animal cells have a chloroplast that plant cells do not have.",
-        "Animal cells have a nucleus that plant cells do not have."
+        "Animal cells have a <b>lysosome</b> that plant cells do not have.",
+        "Animal cells have a <b>mitochondria</b> that plant cells do not have.",
+        "Animal cells have a <b>chloroplast</b> that plant cells do not have.",
+        "Animal cells have a <b>nucleus</b> that plant cells do not have."
+      ]
+    },
+    "speech2-lop": "So are there any organelles only plant cells have?",
+    "prompt2": {
+      "prompt": "Plant cells have _______ and _________ that animal cells do not have. (Choose 2)",
+      "choices": [
+        "Chloroplasts",
+        "Nuclei",
+        "Cell Walls",
+        "Lysosomes"
+      ],
+      "responses": [
+        "Yes, plant cells have ${a} and ${b} that animal cells do not have."
       ]
     }
   }

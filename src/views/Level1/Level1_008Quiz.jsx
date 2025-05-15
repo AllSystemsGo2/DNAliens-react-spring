@@ -19,6 +19,17 @@ import Cellina from '../../components/characters/Cellina'
 import Scene from '../../components/Scene'
 import SpeechBubble from '../../components/bubbles/SpeechBubble'
 import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
+import MultipleSelectPrompt from '../../components/MultipleSelectPrompt'
+
+String.prototype.interpolate = function (params) {
+  // Extract keys and values from the params object
+  const names = Object.keys(params);
+  const vals = Object.values(params);
+
+  // Dynamically create a function using new Function
+  return new Function(...names, `return \`${this}\`;`)(...vals);
+};
+
 
 const defaultAttributes = {
   // Empty default state as requested
@@ -77,6 +88,24 @@ const Quiz = () => {
       dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: false}))
     }
 
+    // dialogCounter === 3 -> show MC Prompt
+    if (dialogCounter === 3) {
+      setTimeout(() => dispatch(setBubbleShow({bubbleId: "speech2", show: true})), 1000)
+    }
+    else {
+      dispatch(setBubbleShow({bubbleId: "speech2", show: false}))
+    }
+
+    // dialogCounter === 4 -> show MC Prompt
+    if (dialogCounter === 4) {
+      ;
+    }
+    else {
+      dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
+      dispatch(setBubbleShow({bubbleId: "cellina-right", show: false}))
+      dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: false}))
+    }
+
 
   }, [dialogCounter, dispatch])
 
@@ -109,6 +138,9 @@ const Quiz = () => {
       >
         <SpeechBubble id="speech1" top="-15vh" subText={t("level1-008quiz.speech1-lop")} showNext={true}
           onClick={() => {dispatch_setDialogCounter(1)}}
+        />
+        <SpeechBubble id="speech2" top="-15vh" subText={t("level1-008quiz.speech2-lop")} showNext={true}
+          onClick={() => {dispatch_setDialogCounter(4)}}
         />
       </Lop>
       
@@ -147,6 +179,29 @@ const Quiz = () => {
           else {
             setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: true})), 1500)
           }
+        }}
+      />}
+
+      {dialogCounter === 4 && <MultipleSelectPrompt
+        style={{
+          bottom: "50vh",
+          left: "15vh"
+        }}
+        prompt={t("level1-008quiz.prompt2.prompt")}
+        responseKey="level1-008quiz2"
+        choices={t("level1-008quiz.prompt2.choices", { returnObjects: true })}
+        disableOnSubmit={disableOnSubmit}
+        onSubmit={(answers, indices) => {
+          console.log("onSubmit", answers, indices)
+          // dispatch_setDialogCounter(2)
+          // dispatch_setPlayerResponse(index)
+          // dispatch(setBubbleShow({bubbleId: "player-response", show: true}))
+          // if (answer === "Lysosome") {
+          //   setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-right", show: true})), 1500)
+          // }
+          // else {
+          //   setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: true})), 1500)
+          // }
         }}
       />}
     </div>
