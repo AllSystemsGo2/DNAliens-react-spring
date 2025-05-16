@@ -168,7 +168,7 @@ const Quiz = () => {
           onClick={() => {dispatch_setDialogCounter(1); toggleDisableOnSubmit()}}
         />
         <SpeechBubble id="cellina-next" top="-10vh" left="10vw" subText={"Let's take a look!"} showNext={true}
-          onClick={() => { navigate("/level1-009")}}
+          onClick={() => { navigate("/level1/Level1_009CellTypeQuestion")}}
         />
       </Cellina>
 

@@ -141,5 +141,19 @@
       ]
     },
     "speech3-lop": "I get it now, we can go back to the microscope to identify if this organism is a plant or animal."
+  },
+  "level1_009CellTypeQuestion": {
+    "question1": "What type of cell do you see?",
+    "response1-correct": "That's correct! This is an animal cell.",
+    "response1-incorrect": "Hm, what organelles do you see? Hover over the cell to see the names of the organelles.",
+    "question2": "How do you know this is an animal cell?",
+    "hint": "Hint: Use your mouse to see the names of the organelles.",
+    "prompt": "What type of cell is this?",
+    "choices": [
+      "Plant Cell",
+      "Animal Cell"
+    ],
+    "explanation_prompt": "How do you know this is an animal cell?",
+    "explanation_placeholder": "I see that..."
   }
 }

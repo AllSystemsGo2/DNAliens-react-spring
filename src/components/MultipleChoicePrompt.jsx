@@ -14,7 +14,7 @@ const defaultAttributes = {
   disabled: false
 }
 
-const MultipleChoicePrompt = ({ prompt, responseKey, choices, disableOnSubmit=true, onSubmit, style, submitText = "Submit" }) => {
+const MultipleChoicePrompt = ({ prompt, responseKey, choices, disableOnSubmit=true, onSubmit, style, row=false, submitText = "Submit" }) => {
   const dispatch = useDispatch()
   const location = useLocation()
 
@@ -52,7 +52,7 @@ const MultipleChoicePrompt = ({ prompt, responseKey, choices, disableOnSubmit=tr
   return (
     <div className="multiple-choice-prompt" style={style} >
       <div className="prompt-text">{prompt}</div>
-      <div className="choices-container">
+      <div className={`choices-container ${row ? "row" : ""}`}>
         {choices?.slice(0, choices?.length).map((choice, index) => (
           <label key={index} className="choice-label">
             <input
