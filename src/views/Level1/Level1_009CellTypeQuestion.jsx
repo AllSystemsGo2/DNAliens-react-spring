@@ -149,7 +149,7 @@ const Level1_009CellTypeQuestion = () => {
         </Paragraph>
       )}
 
-      <div id="content" style={{ width: '100%', height: '20vh', bottom: '0vh', position: 'absolute', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div id="content" style={{ width: '100%', height: '25vh', bottom: '0vh', position: 'absolute', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         {dialogCounter === 1 && (
           <MultipleChoicePrompt
             id="cell-type-question"
@@ -172,6 +172,7 @@ const Level1_009CellTypeQuestion = () => {
           <WrittenResponsePrompt
             id="cell-explanation"
             disableOnSubmit={true}
+            multiline={true}
             style={{
               width: "110vh",
             }}
