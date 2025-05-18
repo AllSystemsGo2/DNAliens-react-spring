@@ -32,7 +32,7 @@ const NarrativeBubble = ({ pageId="", id="", mainText, subText, characterSrc, sh
   }
   return show ? (
     <div className="narrative-bubble bubble" style={bubbleStyle} onClick={onClick}>
-      {characterSrc && <img src={characterSrc} style={{position: "absolute", left: "-40%", top: "-50%", width: "15vh"}} />}
+      {characterSrc && <img src={characterSrc} style={{position: "absolute", left: "-10vh", top: "-50%", width: "15vh"}} />}
       <span style={{ display: 'block' }}>{mainText}</span>
       {subText && (
         <span style={{

@@ -147,13 +147,51 @@
     "response1-correct": "That's correct! This is an animal cell.",
     "response1-incorrect": "Hm, what organelles do you see? Hover over the cell to see the names of the organelles.",
     "question2": "How do you know this is an animal cell?",
-    "hint": "Hint: Use your mouse to see the names of the organelles.",
+    "hint": {
+      "header": "Hint",
+      "body" : "Use your mouse to see the names of the organelles."
+    },
     "prompt": "What type of cell is this?",
     "choices": [
       "Plant Cell",
       "Animal Cell"
     ],
     "explanation_prompt": "How do you know this is an animal cell?",
-    "explanation_placeholder": "I see that..."
+    "explanation_placeholder": "I see that...",
+    "tell-lop": "Tell Lop what you think."
+  },
+  "animal-cell-image": {
+    "FF0000": "cell-membrane",
+    "5500FF": "nucleolus",
+    "55FF00": "mitochondria",
+    "FF00FF": "lysosome",
+    "FFFF00": "cytoplasm"
+  },
+  "animal-cell-map-data": {
+    "cell-membrane": {
+      "nameKey": "cell-membrane",
+      "name": "Cell Membrane",
+      "description": "The cell membrane is a barrier that controls what enters and exits the cell."
+    },
+    "nucleolus": {
+      "nameKey": "nucleolus",
+      "name": "Nucleolus",
+      "description": "The nucleolus is a structure inside the nucleus that helps make ribosomes."
+    },
+    "mitochondria": {
+      "nameKey": "mitochondria",
+      "name": "Mitochondria",
+      "description": "Mitochondria are organelles that produce energy for the cell."
+    },
+    "lysosome": {
+      "nameKey": "lysosome",
+      "name": "Lysosome",
+      "description": "Lysosomes are organelles that break down waste and harmful substances."
+    },
+    "cytoplasm": {
+      "nameKey": "cytoplasm",
+      "name": "Cytoplasm",
+      "description": "Cytoplasm is the gel-like material inside the cell that contains organelles."
+    }
   }
 }
