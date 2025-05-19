@@ -140,6 +140,12 @@ const Level1_009CellTypeQuestion = () => {
 
        <ImageMap
         id="animal-cell"
+        style={{ 
+          position: 'absolute',
+          width: '70vh',
+          height: '70vh',
+          marginBottom: '15vh',
+        }}
         mapSrc={animalCellAlpha}
         imageSrc={animalCell}
         showLabels={false}
