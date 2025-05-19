@@ -1,11 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { animated, useSpring } from '@react-spring/web';
 import characterImage from '../../assets/sprinkles1.png'
 import MovableCharacter from './MovableCharacter';
 
+
+// STATES: hidden, idle
+const sprinklesReducer = (state, action) => {
+  switch (action.type) {
+    case 'HIDDEN':
+      return { ...state, currentState: 'hidden' };
+    case 'IDLE':
+      return { ...state, currentState: 'idle' };
+    default:
+      return state;
+  }
+};
+
+/* Returns what character image to use when the character is first rendered */
+const initImgUrlMapper = (state, previousState=undefined) => {
+  if (state === 'idle') {
+    return characterImage
+  }
+  else if (state === 'hidden') {
+    return null
+  }
+  else {
+    return characterImage
+  }
+}
+
+
+
+/**
+ * 
+ * @param {*} state : "idle", "hidden" 
+ * @returns 
+ */
 const Sprinkles = ({ bottom = '10vh', left = '5vh', right, faceDirection = 'left', zIndex = 2, state, children }) => {
   const [showDebugState, setShowDebugState] = useState(false)
+  const [imgUrl, setImgUrl] = useState(initImgUrlMapper(state))
+  const [sprinklesState, dispatchSprinkles] = useReducer(sprinklesReducer, { currentState: state })
 
   useEffect(() => {
     setShowDebugState(true)
@@ -13,6 +48,21 @@ const Sprinkles = ({ bottom = '10vh', left = '5vh', right, faceDirection = 'left
       setShowDebugState(false)
     }, 1000)
   },[state])
+
+  useEffect(() => {
+    if (state === 'hidden') {
+      dispatchSprinkles({ type: 'HIDDEN' })
+      setImgUrl(initImgUrlMapper(state));
+    }
+    else if (state === 'idle') {
+      dispatchSprinkles({ type: 'IDLE' })
+      setImgUrl(initImgUrlMapper(state));
+    }
+  }, [state])
+
+  useEffect(() => {
+    setImgUrl(initImgUrlMapper(sprinklesState.currentState))
+  }, [sprinklesState])
 
   const blockStyle = {
     position: 'block',
@@ -27,7 +77,7 @@ const Sprinkles = ({ bottom = '10vh', left = '5vh', right, faceDirection = 'left
     position: 'block',
     width: '100%',
     height: '100%',
-    backgroundImage: `url(${characterImage})`,
+    backgroundImage: `url(${imgUrl})`,
     backgroundSize: 'contain',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',

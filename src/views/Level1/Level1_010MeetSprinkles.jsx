@@ -18,6 +18,7 @@ import Lop from '../../components/characters/Lop'
 import Player from '../../components/characters/Player'
 import Sprinkles from '../../components/characters/Sprinkles'
 import Cellina from '../../components/characters/Cellina'
+import Enemy from '../../components/characters/Enemy'
 
 // Import UI components
 import SpeechBubble from '../../components/bubbles/SpeechBubble'
@@ -32,7 +33,8 @@ const defaultAttributes = {
   playerState: "idle",
   lopState: "idle",
   cellinaState: "microscope",
-  sprinklesState: "idle",
+  sprinklesState: "hidden",
+  enemyState: "hidden",
 }
 
 const Level1_010MeetSprinkles = () => {
@@ -64,21 +66,27 @@ const Level1_010MeetSprinkles = () => {
   const dispatch_setShowPlayerPrompt = (show) => dispatch(setPageAttribute({key: "showPlayerPrompt", value: show}))
   const dispatch_setPlayerResponse = (response) => dispatch(setPageAttribute({key: "playerResponse", value: response}))
   const dispatch_setCellinaState = (state) => dispatch(setPageAttribute({key: "cellinaState", value: state}))
+  const dispatch_setSprinklesState = (state) => dispatch(setPageAttribute({key: "sprinklesState", value: state}))
 
   useEffect(() => {
     console.log("dialogCounter", dialogCounter)
     if (dialogCounter === 1) {
       dispatch(setBubbleShow({bubbleId: "lop1", show: true}))           
-    }
-    if (dialogCounter === 2) {
+    } else {
       dispatch(setBubbleShow({bubbleId: "lop1", show: false}))
+    }
+
+    if (dialogCounter === 2) {
       setTimeout(() => {
         dispatch_setCellinaState("idle")
       }, 2000) 
       dispatch(setBubbleShow({bubbleId: "lop2", show: true}))
-    }
-    if (dialogCounter === 3) {
+    } else {
       dispatch(setBubbleShow({bubbleId: "lop2", show: false}))
+    }
+
+    if (dialogCounter === 3) {
+      dispatch_setSprinklesState("idle")
       dispatch(updateCharacterPosition({id: "sprinkles-character", right: "10vh"}))
       setTimeout(() => {
         dispatch(setBubbleShow({bubbleId: "lopScream", show: true}))
@@ -91,21 +99,28 @@ const Level1_010MeetSprinkles = () => {
         dispatch(setBubbleShow({bubbleId: "lopScream", show: false}))
         dispatch(setBubbleShow({bubbleId: "lop3", show: true}))
       }, 5000)      
+    } else {
+      dispatch(setBubbleShow({bubbleId: "lop3", show: false}))
     }
     if (dialogCounter === 4) {
-      dispatch(setBubbleShow({bubbleId: "lop3", show: false}))
       dispatch(setBubbleShow({bubbleId: "cellina4", show: true}))
-    }
-    if (dialogCounter === 5) {
+    } else {
       dispatch(setBubbleShow({bubbleId: "cellina4", show: false}))
+    }
+
+    if (dialogCounter === 5) {
       dispatch(setBubbleShow({bubbleId: "lop5", show: true}))
-    }
-    if (dialogCounter === 6) {
+    } else {
       dispatch(setBubbleShow({bubbleId: "lop5", show: false}))
-      dispatch(setBubbleShow({bubbleId: "cellina6", show: true}))
     }
-    if (dialogCounter === 7) {
+
+    if (dialogCounter === 6) {
+      dispatch(setBubbleShow({bubbleId: "cellina6", show: true}))
+    } else {
       dispatch(setBubbleShow({bubbleId: "cellina6", show: false}))
+    }
+
+    if (dialogCounter === 7) {
       dispatch(updateCharacterPosition({id: "lop-character", left: "100vh", bottom: "-2vh", zIndex: 4}))
       setTimeout(() => {
         dispatch(setBubbleShow({bubbleId: "lop7", show: true}))
@@ -113,34 +128,43 @@ const Level1_010MeetSprinkles = () => {
       setTimeout(() => {
         dispatch(setBubbleShow({bubbleId: "sprinklesMeow", show: true}))
       }, 4000)
-    }
-    if (dialogCounter === 8) {
+    } else {
       dispatch(setBubbleShow({bubbleId: "sprinklesMeow", show: false}))
       dispatch(setBubbleShow({bubbleId: "lop7", show: false}))
+    }
+
+    if (dialogCounter === 8) {
       dispatch(setBubbleShow({bubbleId: "cellina8", show: true}))
       setTimeout(() => {
         dispatch_setShowPlayerPrompt(true)
         dispatch(setBubbleShow({bubbleId: "player-prompt", show: true}))
       }, 2000)
-    }
-    if (dialogCounter === 9) {
+    } else {
       dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
       dispatch(setBubbleShow({bubbleId: "player-prompt", show: false}))
       dispatch(setBubbleShow({bubbleId: "cellina8", show: false}))
-      dispatch(setBubbleShow({bubbleId: "lop9", show: true}))
     }
-    if (dialogCounter === 10) {
+
+    if (dialogCounter === 9) {
+      dispatch(setBubbleShow({bubbleId: "lop9", show: true}))
+    } else {
       dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
       dispatch(setBubbleShow({bubbleId: "lop9", show: false}))
-      dispatch(setBubbleShow({bubbleId: "cellina10", show: true}))
     }
-    if (dialogCounter === 11) {
+    if (dialogCounter === 10) {
+      dispatch(setBubbleShow({bubbleId: "cellina10", show: true}))
+    } else {
       dispatch(setBubbleShow({bubbleId: "cellina10", show: false}))
+    }
+
+    if (dialogCounter === 11) {
       dispatch(setBubbleShow({bubbleId: "lop11", show: true}))
       dispatch(updateCharacterPosition({id: "lop-character", left: "45vh", bottom: "12vh", zIndex: 3}))
-    }
-    if (dialogCounter === 12) {
+    } else {
       dispatch(setBubbleShow({bubbleId: "lop11", show: false}))
+    }
+
+    if (dialogCounter === 12) {
       dispatch(setBubbleShow({bubbleId: "cellina12", show: true}))
       setTimeout(() => {
         dispatch_setCellinaState("spaceship")
