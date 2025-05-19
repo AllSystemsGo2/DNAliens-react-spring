@@ -1,8 +1,12 @@
+//Fundamentals
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+
+//Store
+import { navigateTo } from '../../store/slices/appSlice'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
 import { updateCharacterPosition } from '../../store/slices/movableCharacterSlice'
 import { setBubbleShow } from '../../helpers/bubbleHelper'
@@ -18,7 +22,6 @@ import Lop from '../../components/characters/Lop'
 import Player from '../../components/characters/Player'
 import Sprinkles from '../../components/characters/Sprinkles'
 import Cellina from '../../components/characters/Cellina'
-import Enemy from '../../components/characters/Enemy'
 
 // Import UI components
 import SpeechBubble from '../../components/bubbles/SpeechBubble'
@@ -34,7 +37,6 @@ const defaultAttributes = {
   lopState: "idle",
   cellinaState: "microscope",
   sprinklesState: "hidden",
-  enemyState: "hidden",
 }
 
 const Level1_010MeetSprinkles = () => {
@@ -48,6 +50,10 @@ const Level1_010MeetSprinkles = () => {
       pageId: getPageId(location.pathname), 
       props: defaultAttributes 
     }))
+    if(dialogCounter >= 4) {
+      dispatch_setSprinklesState("idle")
+      dispatch(updateCharacterPosition({id: "sprinkles-character", right: "10vh"}))
+    }
   }, [dispatch, location.pathname])
 
 
@@ -173,6 +179,7 @@ const Level1_010MeetSprinkles = () => {
 
       setTimeout(() => {
         dispatch(setBubbleShow({bubbleId: "cellina12", show: false}))
+        dispatch(setBubbleShow({bubbleId: "player13", show: true}))
       }, 4000)
     }
   }, [dialogCounter, dispatch])
@@ -230,6 +237,14 @@ const Level1_010MeetSprinkles = () => {
             dispatch_setPlayerResponse(choice)
             dispatch(setBubbleShow({bubbleId: "player-response", show: true}))
             dispatch(setBubbleShow({bubbleId: "player-prompt", show: false}))
+        }}/>
+
+        <DialogBubble id="player13" 
+          top="-10%" left="20%"
+          mainText={t("level1_010MeetSprinkles.player13.prompt", {returnObjects: true})} 
+          choices={t("level1_010MeetSprinkles.player13.choices", {returnObjects: true})} 
+          onSubmit={() => {
+            dispatch(navigateTo({navigate, path: '/Level1/Level1_011QuizChoice'}));
         }}/>
       </Player>
       
