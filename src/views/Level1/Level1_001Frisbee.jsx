@@ -20,6 +20,7 @@ import Lop from '../../components/characters/Lop'
 import Player from '../../components/characters/Player'
 import Scene from '../../components/Scene'
 import SpeechBubble from '../../components/bubbles/SpeechBubble'
+import DialogBubble from '../../components/bubbles/DialogBubble'
 import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
 
 const defaultAttributes = {
@@ -29,6 +30,7 @@ const defaultAttributes = {
   showText: true,
   showCrash: false,
   showChoice: false,
+  playerResponse: "",
 } 
 
 const setShowUfo = (value) => setPageAttribute({pageId: "frisbee", key: "showUfo", value})
@@ -37,6 +39,7 @@ const setShowUfoTimer =  (value) => setPageAttribute({pageId: "frisbee", key: "s
 const setShowText =  (value) => setPageAttribute({pageId: "frisbee", key: "showText", value})
 const setShowCrash =  (value) => setPageAttribute({pageId: "frisbee", key: "showCrash", value})
 const setShowChoice =  (value) => setPageAttribute({pageId: "frisbee", key: "showChoice", value})
+const setPlayerResponse = (response) => setPageAttribute({pageId: "frisbee", key: "playerResponse", value: response})
 
 const Frisbee = () => {
   const dispatch = useDispatch()
@@ -55,7 +58,8 @@ const Frisbee = () => {
     showCrash,
     showText,
     showUfo,
-    showChoice
+    showChoice,
+    playerResponse,
   } = useSelector((state) => selectPageAttributes(state, "frisbee", defaultAttributes))
   const audioRef = useRef(new Audio(spaceshipSound))
 
@@ -116,7 +120,7 @@ const Frisbee = () => {
       <Scene skyImage={starryBackground} terrainImage={planetForeground} />
 
       {/* Multiple choice prompt */}
-      {showChoice && (
+      {/* {showChoice && (
         <MultipleChoicePrompt
           prompt={t('frisbee.prompt.question')}
           responseKey="frisbee.choice"
@@ -132,13 +136,30 @@ const Frisbee = () => {
             zIndex: 3
           }}
         />
-      )}
+      )} */}
 
       <Lop right="35vh">
-        <SpeechBubble pageId="frisbee" id="lopQuestion" showNext={true} onClick={() => { dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "lopQuestion", show: false})); dispatch(setShowChoice(true)) }} subText={t('frisbee.lopQuestion')} />
+        <SpeechBubble pageId="frisbee" id="lopQuestion" showNext={true} 
+        onClick={() => { 
+          dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "lopQuestion", show: false})); 
+          dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "prompt", show: true}))
+          dispatch(setShowChoice(true)) }} 
+          mainText={t('frisbee.lopQuestion')} />
         <SpeechBubble pageId="frisbee" id="investigate" showNext={false} mainText={t('frisbee.investigate')} />
       </Lop>
-      <Player />
+      <Player zIndex={4}>
+        <SpeechBubble style={{zIndex: 4}} pageId="frisbee" id="response" mainText={playerResponse} showNext={true} 
+          onClick={() => {
+            dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "response", show: false}))
+            dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "investigate", show: true}))}}/>
+          <DialogBubble pageId="frisbee" id="prompt" showNext={false} mainText={t('frisbee.prompt.question')} choices={t('frisbee.prompt.choices', { returnObjects: true })}
+            onSubmit={(choice) => {
+              dispatch(setPlayerResponse(choice))
+              dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "prompt", show: false}))
+              dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "response", show: true}))
+            }}
+          />
+      </Player>
 
       <animated.div
         id="frisbee"
@@ -173,7 +194,7 @@ const Frisbee = () => {
 
       {/* UFO */}
       <animated.div
-      id="spaceship"
+        id="spaceship"
         style={{
           display: showUfo ? 'block' : 'none',
           ...ufoSpring,
@@ -203,10 +224,14 @@ const Frisbee = () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          zIndex: 5,
+          zIndex: 3,
           cursor: 'pointer'
         }}
-        onClick={() => dispatch(navigateTo({navigate, path: '/Level1/Level1_002CrashSite'}))}
+        onClick={() => {
+          if(playerResponse !== "") {
+            dispatch(navigateTo({navigate, path: '/Level1/Level1_002CrashSite'}))
+          }
+        }}
       />
 
       <div style={{

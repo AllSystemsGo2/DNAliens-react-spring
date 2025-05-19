@@ -198,6 +198,7 @@ const Level1_010MeetSprinkles = () => {
         <SpeechBubble id="playerScream" mainText={t("level1_010MeetSprinkles.scream")}/>      
         <SpeechBubble id="player-response" mainText={playerResponse} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
         <DialogBubble id="player-prompt" 
+          top="-80%"
           mainText={t("level1_010MeetSprinkles.playerPrompt.prompt", {returnObjects: true})} 
           choices={t("level1_010MeetSprinkles.playerPrompt.choices", {returnObjects: true})} 
           onSubmit={(choice) => {
@@ -228,13 +229,13 @@ const Level1_010MeetSprinkles = () => {
         right="10vh"
         bottom="18vh"
         zIndex={2}
-        state={cellinaState}
+        state={cellinaState}  
       >
-        <SpeechBubble id="cellina4" mainText={t("level1_010MeetSprinkles.cellina4")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
-        <SpeechBubble id="cellina6" mainText={t("level1_010MeetSprinkles.cellina6")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
-        <SpeechBubble id="cellina8" mainText={t("level1_010MeetSprinkles.cellina8")} />
-        <SpeechBubble id="cellina10" mainText={t("level1_010MeetSprinkles.cellina10")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
-        <SpeechBubble id="cellina12" mainText={t("level1_010MeetSprinkles.cellina12")} />
+        <SpeechBubble id="cellina4" mainText={t("level1_010MeetSprinkles.cellina4")} top="-30%" showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="cellina6" mainText={t("level1_010MeetSprinkles.cellina6")} top="-30%" showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="cellina8" mainText={t("level1_010MeetSprinkles.cellina8")} top="-30%"/>
+        <SpeechBubble id="cellina10" mainText={t("level1_010MeetSprinkles.cellina10")} top="-30%" showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="cellina12" mainText={t("level1_010MeetSprinkles.cellina12")} top="-30%"/>
       </Cellina>
 
       <Sprinkles 
