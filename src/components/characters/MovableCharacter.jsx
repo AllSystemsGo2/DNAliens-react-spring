@@ -31,6 +31,12 @@ const MovableCharacter = ({ id, bottom = '10vh', left = '5vh', right, zIndex = 2
       ? { right: character?.currentRight !== character?.prevRight ? character?.currentRight : character?.prevRight }
       : { left: character?.currentLeft !== character?.prevLeft ? character?.currentLeft : character?.prevLeft }
     ),
+    ...(zIndex !== undefined 
+      ? { zIndex: character?.zIndex !== character?.prevZIndex ? character?.zIndex : character?.prevZIndex }
+      : {}),
+    ...(bottom !== undefined 
+      ? { bottom: character?.currentBottom !== character?.prevBottom ? character?.currentBottom : character?.prevBottom }
+      : {}),
     config: { tension: 60, friction: 14 }
   });
      

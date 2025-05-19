@@ -201,7 +201,7 @@
     "sprinklesScream": "MEOW!",
     "lop3": "It's a CUTE animal!",
     "cellina4": "This animal is known as a kitten!",
-    "lop5": "A kritten? What's that",
+    "lop5": "A kritten? What's that?",
     "cellina6": "A kitten is a baby cat, an offspring of two parent cats.",
     "lop7": "This says Sprinkles!",
     "sprinklesMeow": "Meow!",
@@ -214,8 +214,8 @@
         "Sounds like an adventure, let's return her to her parents!"
       ]
     },
-    "lop9": "Yes! We should find her parents and bring her home",
-    "cellina10": "I've heard some reports about missing offspring we should start with those. ",
+    "lop9": "Yes! We should find her parents and bring her home.",
+    "cellina10": "I've heard some reports about missing offspring we should start with those.",
     "lop11": "But how will we travel when this rocket is broken?",
     "cellina12": "Well actually..."
   }

@@ -22,7 +22,7 @@ const movableCharacterSlice = createSlice({
       };
     },
     updateCharacterPosition: (state, action) => {
-      const { id, left, right, bottom } = action.payload;
+      const { id, left, right, bottom, zIndex } = action.payload;
       const character = state.characters[id];
       if (!character) return;
 
@@ -37,6 +37,9 @@ const movableCharacterSlice = createSlice({
       if (bottom !== undefined) {
         character.prevBottom = character.currentBottom;
         character.currentBottom = bottom;
+      }
+      if (zIndex !== undefined) {
+        character.zIndex = zIndex;
       }
     },
     resetCharacter: (state, action) => {

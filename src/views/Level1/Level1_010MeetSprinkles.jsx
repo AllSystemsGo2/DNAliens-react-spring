@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
+import { updateCharacterPosition } from '../../store/slices/movableCharacterSlice'
 import { setBubbleShow } from '../../helpers/bubbleHelper'
 import { getPageId } from '../../helpers/locationHelper'
 
@@ -27,7 +28,11 @@ const defaultAttributes = {
   // Empty default state as requested
   dialogCounter: 1,
   showPlayerPrompt: false,
-  player_response: "",
+  playerResponse: "",
+  playerState: "idle",
+  lopState: "idle",
+  cellinaState: "microscope",
+  sprinklesState: "idle",
 }
 
 const Level1_010MeetSprinkles = () => {
@@ -45,37 +50,46 @@ const Level1_010MeetSprinkles = () => {
 
   // Use the same pattern as in Level1_001Frisbee to retrieve page attributes
   const {
-    player_response,
+    playerResponse,
     dialogCounter,
+    playerState,
+    lopState,
+    cellinaState,
+    sprinklesState,
   } = useSelector((state) => 
     selectPageAttributes(state, state.app.pageId, defaultAttributes)
   )
   const dispatch_setDialogCounter = (counter) => dispatch(setPageAttribute({key: "dialogCounter", value: counter}))
   const dispatch_setShowPlayerPrompt = (show) => dispatch(setPageAttribute({key: "showPlayerPrompt", value: show}))
   const dispatch_setPlayerResponse = (response) => dispatch(setPageAttribute({key: "player_response", value: response}))
+  const dispatch_setCellinaState = (state) => dispatch(setPageAttribute({key: "cellinaState", value: state}))
 
   useEffect(() => {
     console.log("dialogCounter", dialogCounter)
     if (dialogCounter === 1) {
-      dispatch(setBubbleShow({bubbleId: "lop1", show: true}))
+      dispatch(setBubbleShow({bubbleId: "lop1", show: true}))           
     }
     if (dialogCounter === 2) {
       dispatch(setBubbleShow({bubbleId: "lop1", show: false}))
+      setTimeout(() => {
+        dispatch_setCellinaState("idle")
+      }, 2000) 
       dispatch(setBubbleShow({bubbleId: "lop2", show: true}))
     }
     if (dialogCounter === 3) {
       dispatch(setBubbleShow({bubbleId: "lop2", show: false}))
+      dispatch(updateCharacterPosition({id: "sprinkles-character", right: "10vh"}))
       setTimeout(() => {
         dispatch(setBubbleShow({bubbleId: "lopScream", show: true}))
         dispatch(setBubbleShow({bubbleId: "playerScream", show: true}))
         dispatch(setBubbleShow({bubbleId: "sprinklesScream", show: true}))
-      }, 1000)
+      }, 2000)
       setTimeout(() => {
         dispatch(setBubbleShow({bubbleId: "playerScream", show: false}))
         dispatch(setBubbleShow({bubbleId: "sprinklesScream", show: false}))
         dispatch(setBubbleShow({bubbleId: "lopScream", show: false}))
         dispatch(setBubbleShow({bubbleId: "lop3", show: true}))
-      }, 2000)      
+      }, 5000)      
     }
     if (dialogCounter === 4) {
       dispatch(setBubbleShow({bubbleId: "lop3", show: false}))
@@ -91,12 +105,13 @@ const Level1_010MeetSprinkles = () => {
     }
     if (dialogCounter === 7) {
       dispatch(setBubbleShow({bubbleId: "cellina6", show: false}))
+      dispatch(updateCharacterPosition({id: "lop-character", left: "100vh", bottom: "-2vh", zIndex: 4}))
       setTimeout(() => {
         dispatch(setBubbleShow({bubbleId: "lop7", show: true}))
-      }, 1000)
+      }, 3000)
       setTimeout(() => {
         dispatch(setBubbleShow({bubbleId: "sprinklesMeow", show: true}))
-      }, 1500)
+      }, 4000)
     }
     if (dialogCounter === 8) {
       dispatch(setBubbleShow({bubbleId: "sprinklesMeow", show: false}))
@@ -164,13 +179,13 @@ const Level1_010MeetSprinkles = () => {
 
 
       <Player 
-        left="25vw"
+        left="25vh"
         bottom="5vh"
-        zIndex={2}
-        state="idle"
+        zIndex={3}
+        state={playerState}
       >
         <SpeechBubble id="playerScream" mainText={t("level1_010MeetSprinkles.scream")}/>      
-        <SpeechBubble id="player-response" mainText={player_response} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="player-response" mainText={playerResponse} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
         <DialogBubble id="player-prompt" 
           mainText={t("level1_010MeetSprinkles.playerPrompt.prompt", {returnObjects: true})} 
           choices={t("level1_010MeetSprinkles.playerPrompt.choices", {returnObjects: true})} 
@@ -178,15 +193,14 @@ const Level1_010MeetSprinkles = () => {
             dispatch_setPlayerResponse(choice)
             dispatch(setBubbleShow({bubbleId: "player-response", show: true}))
             dispatch(setBubbleShow({bubbleId: "player-prompt", show: false}))
-            dispatch_setDialogCounter(dialogCounter + 1)
         }}/>
       </Player>
       
       <Lop 
-        left="5vw"
+        left="5vh"
         bottom="12vh"
-        zIndex={2}
-        state="idle"
+        zIndex={3}
+        state={lopState}
       >
         <SpeechBubble id="lop1" mainText={t("level1_010MeetSprinkles.lop1")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
         <SpeechBubble id="lop2" mainText={t("level1_010MeetSprinkles.lop2")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
@@ -199,10 +213,10 @@ const Level1_010MeetSprinkles = () => {
       </Lop>
 
       <Cellina 
-        right="10vw"
+        right="10vh"
         bottom="18vh"
         zIndex={2}
-        state="idle"
+        state={cellinaState}
       >
         <SpeechBubble id="cellina4" mainText={t("level1_010MeetSprinkles.cellina4")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
         <SpeechBubble id="cellina6" mainText={t("level1_010MeetSprinkles.cellina6")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
@@ -212,10 +226,10 @@ const Level1_010MeetSprinkles = () => {
       </Cellina>
 
       <Sprinkles 
-        right="10vw"
+        right="-30vh"
         bottom="5vh"
         zIndex={3}
-        state="idle"
+        state={sprinklesState}
       >
         <SpeechBubble id="sprinklesScream" mainText={t("level1_010MeetSprinkles.sprinklesScream")} />
         <SpeechBubble id="meow" mainText={t("level1_010MeetSprinkles.meow")} />
