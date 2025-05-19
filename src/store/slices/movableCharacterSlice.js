@@ -10,16 +10,21 @@ const movableCharacterSlice = createSlice({
   reducers: {
     initializeCharacter: (state, action) => {
       const { id, bottom, left, right, zIndex } = action.payload;
-      state.characters[id] = {
-        bottom: bottom || '10vh',
-        left: left || '5vh',
-        right,
-        zIndex: zIndex || 2,
-        prevLeft: left || '5vh',
-        prevRight: right,
-        currentLeft: left || '5vh',
-        currentRight: right
-      };
+      if (!state.characters[id]) {
+        state.characters[id] = {
+          bottom: bottom || '10vh',
+          left: left || '5vh',
+          right,
+          zIndex: zIndex || 2,
+          prevLeft: left || '5vh',
+          prevRight: right,
+          currentLeft: left || '5vh',
+          currentRight: right,
+          currentBottom: bottom || '10vh',
+        };
+      } else {
+        movableCharacterSlice.actions.updateCharacterPosition(state, action)
+      }
     },
     updateCharacterPosition: (state, action) => {
       const { id, left, right, bottom, zIndex } = action.payload;

@@ -1,13 +1,16 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSpring, animated } from '@react-spring/web';
-import characterImage from '../../assets/cellina1.png'
-import microscopeImage from '../../assets/cellina-microscope-2.png'
 import MovableCharacter from './MovableCharacter';
 import '../../styles/warpEffect.css';
 import { characterChildrenHelper } from '../../helpers/characterChildrenHelper';
 
-// state: idle, warp, microscope
+import characterImage from '../../assets/cellina1.png'
+import microscopeImage from '../../assets/cellina-microscope-2.png'
+import spaceshipImage from '../../assets/cellina-spaceship.png'
+
+
+// STATES: idle, warp, microscope
 const cellinaReducer = (state, action) => {
   switch (action.type) {
     // case 'WARP':
@@ -16,6 +19,8 @@ const cellinaReducer = (state, action) => {
       return { ...state, currentState: 'microscope' };
     case 'IDLE':
       return { ...state, currentState: 'idle' };
+    case 'SPACESHIP':
+      return { ...state, currentState: 'spaceship' };
     default:
       return state;
   }
@@ -32,10 +37,19 @@ const initImgUrlMapper = (state, previousState=undefined) => {
   else if (state === 'idle') {
     return characterImage
   }
+  else if (state === 'spaceship') {
+    return spaceshipImage
+  }
   else {
     return characterImage
   }
 }
+
+/**
+ * 
+ * @param {*} state : "idle", "microscope", "spaceship" 
+ * @returns 
+ */
 
 const Cellina = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'right', zIndex = 2, state, children }) => {
   const { speechBubbles, itemChildren, otherChildren } = characterChildrenHelper(children)
@@ -59,6 +73,9 @@ const Cellina = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'right'
       setIsWarping(true)
       if (state === 'microscope') {
         timeoutId = setTimeout(() => {setImgUrl(microscopeImage); setIsWarping(false)}, 2000)
+      }
+      else if (state === 'spaceship') {
+        timeoutId = setTimeout(() => {setImgUrl(spaceshipImage); setIsWarping(false)}, 2000)
       }
       else if (state === 'idle') {
         timeoutId = setTimeout(() => { console.log("goto idle") ; setImgUrl(characterImage); setIsWarping(false)}, 2000)

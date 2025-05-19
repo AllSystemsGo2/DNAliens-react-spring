@@ -62,7 +62,7 @@ const Level1_010MeetSprinkles = () => {
   )
   const dispatch_setDialogCounter = (counter) => dispatch(setPageAttribute({key: "dialogCounter", value: counter}))
   const dispatch_setShowPlayerPrompt = (show) => dispatch(setPageAttribute({key: "showPlayerPrompt", value: show}))
-  const dispatch_setPlayerResponse = (response) => dispatch(setPageAttribute({key: "player_response", value: response}))
+  const dispatch_setPlayerResponse = (response) => dispatch(setPageAttribute({key: "playerResponse", value: response}))
   const dispatch_setCellinaState = (state) => dispatch(setPageAttribute({key: "cellinaState", value: state}))
 
   useEffect(() => {
@@ -130,16 +130,26 @@ const Level1_010MeetSprinkles = () => {
       dispatch(setBubbleShow({bubbleId: "lop9", show: true}))
     }
     if (dialogCounter === 10) {
+      dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
       dispatch(setBubbleShow({bubbleId: "lop9", show: false}))
       dispatch(setBubbleShow({bubbleId: "cellina10", show: true}))
     }
     if (dialogCounter === 11) {
       dispatch(setBubbleShow({bubbleId: "cellina10", show: false}))
       dispatch(setBubbleShow({bubbleId: "lop11", show: true}))
+      dispatch(updateCharacterPosition({id: "lop-character", left: "45vh", bottom: "12vh", zIndex: 3}))
     }
     if (dialogCounter === 12) {
       dispatch(setBubbleShow({bubbleId: "lop11", show: false}))
       dispatch(setBubbleShow({bubbleId: "cellina12", show: true}))
+      setTimeout(() => {
+        dispatch_setCellinaState("spaceship")
+        dispatch(updateCharacterPosition({id: "cellina-character", right: "40vh", bottom: "30vh"}))
+      }, 1000)
+
+      setTimeout(() => {
+        dispatch(setBubbleShow({bubbleId: "cellina12", show: false}))
+      }, 4000)
     }
   }, [dialogCounter, dispatch])
 
@@ -186,11 +196,12 @@ const Level1_010MeetSprinkles = () => {
         state={playerState}
       >
         <SpeechBubble id="playerScream" mainText={t("level1_010MeetSprinkles.scream")}/>      
-        <SpeechBubble id="player-response" mainText={playerResponse} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="player-response" mainText={playerResponse} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
         <DialogBubble id="player-prompt" 
           mainText={t("level1_010MeetSprinkles.playerPrompt.prompt", {returnObjects: true})} 
           choices={t("level1_010MeetSprinkles.playerPrompt.choices", {returnObjects: true})} 
           onSubmit={(choice) => {
+            console.log("choice", choice)
             dispatch_setPlayerResponse(choice)
             dispatch(setBubbleShow({bubbleId: "player-response", show: true}))
             dispatch(setBubbleShow({bubbleId: "player-prompt", show: false}))
@@ -221,7 +232,7 @@ const Level1_010MeetSprinkles = () => {
       >
         <SpeechBubble id="cellina4" mainText={t("level1_010MeetSprinkles.cellina4")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
         <SpeechBubble id="cellina6" mainText={t("level1_010MeetSprinkles.cellina6")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
-        <SpeechBubble id="cellina8" mainText={t("level1_010MeetSprinkles.cellina8")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="cellina8" mainText={t("level1_010MeetSprinkles.cellina8")} />
         <SpeechBubble id="cellina10" mainText={t("level1_010MeetSprinkles.cellina10")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
         <SpeechBubble id="cellina12" mainText={t("level1_010MeetSprinkles.cellina12")} />
       </Cellina>
