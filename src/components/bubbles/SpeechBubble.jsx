@@ -17,6 +17,7 @@ const SpeechBubble = ({ pageId="", id, mainText, subText, characterSrc, showNext
   const {_pageId } = useSelector(state => pageId ? {_pageId: pageId} : {_pageId: state.app.pageId})
 
   useEffect(() => {
+    console.log("_pageId", _pageId, id )
     dispatch(initializePageAttributes({pageId: `${_pageId}:${id}`, id: 'show', props: defaultAttributes}));
   }, [dispatch, _pageId, id]);
 

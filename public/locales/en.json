@@ -35,12 +35,12 @@
     "prompt": {
       "question": "What was that?!?",
       "choices": [
-        "I’m not sure.",
+        "I'm not sure.",
         "A loud crash!",
         "Something fell from the sky!"
       ]
     },
-    "investigate": "Let’s go investigate!"
+    "investigate": "Let's go investigate!"
   },
   "crashSite": {
     "speechBubble": {
@@ -95,7 +95,7 @@
       "placeholder": "I think that..."
     },
     "cellinaCells": {
-      "subText": "Here’s what I know. Cells make up all living things. They are like tiny building blocks that help organisms grow, survive, and function."
+      "subText": "Here's what I know. Cells make up all living things. They are like tiny building blocks that help organisms grow, survive, and function."
     },
     "cellinaExamineCells": {
       "subText": "We can use that saliva to take a closer look at the cells of what is in that rocket!"
@@ -193,5 +193,30 @@
       "name": "Cytoplasm",
       "description": "Cytoplasm is the gel-like material inside the cell that contains organelles."
     }
+  },
+  "level1_010MeetSprinkles": {
+    "lop1": "Thanks Cellina! Let's go see if we can get the animal out of the rocket!",
+    "lop2": "I don't hear anything anymore",
+    "scream": "ARGH!",
+    "sprinklesScream": "MEOW!",
+    "lop3": "It's a CUTE animal!",
+    "cellina4": "This animal is known as a kitten!",
+    "lop5": "A kritten? What's that",
+    "cellina6": "A kitten is a baby cat, an offspring of two parent cats.",
+    "lop7": "This says Sprinkles!",
+    "sprinklesMeow": "Meow!",
+    "cellina8": "That must be her name. She has tags that means she has a family.",
+    "playerPrompt": {
+      "prompt": "What should we do?",
+      "choices": [
+        "A family! That means she's missing, we should bring her home.",
+        "She must have gotten lost, we should return her.",
+        "Sounds like an adventure, let's return her to her parents!"
+      ]
+    },
+    "lop9": "Yes! We should find her parents and bring her home",
+    "cellina10": "I've heard some reports about missing offspring we should start with those. ",
+    "lop11": "But how will we travel when this rocket is broken?",
+    "cellina12": "Well actually..."
   }
 }

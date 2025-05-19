@@ -40,7 +40,7 @@ const DialogBubble = ({ pageId="", id="", mainText, subText, choices=[], onSubmi
         </span>
       )}
       <div className="dialog-choices">
-        {choices.map((choice, index) => (
+        {choices?.slice(0, choices?.length).map((choice, index) => (
           <button
             key={index}
             className="dialog-choice-button"

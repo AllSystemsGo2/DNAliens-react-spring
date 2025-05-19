@@ -46,7 +46,7 @@ const Level1_009CellTypeQuestion = () => {
       pageId: getPageId(location.pathname), 
       props: defaultAttributes
     }))
-  }, [dispatch])
+  }, [dispatch, location.pathname])
 
   // Use the same pattern as in Level1_001Frisbee to retrieve page attributes
   const {
@@ -203,7 +203,7 @@ const Level1_009CellTypeQuestion = () => {
         )}
       </div>
 
-      <NarrativeBubble id="cellina-tell-lop" characterSrc={cellinaMicroscope} bottom="10vh" right="2vw" subText={t("level1_009CellTypeQuestion.tell-lop")} showNext={true} onClick={() => {navigate("/level1/010") }}/>
+      <NarrativeBubble id="cellina-tell-lop" characterSrc={cellinaMicroscope} bottom="10vh" right="2vw" subText={t("level1_009CellTypeQuestion.tell-lop")} showNext={true} onClick={() => {navigate("/Level1/Level1_010MeetSprinkles") }}/>
     </div>
   )
 }
