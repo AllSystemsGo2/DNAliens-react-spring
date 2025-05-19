@@ -14,6 +14,8 @@ import starryBackground from '../../assets/starry-background.jpg';
 import planetForeground from '../../assets/planet-foreground.png';
 import './Level1QuizChoice.css';
 
+import { navigateTo } from '../../store/slices/appSlice'
+
 const defaultAttributes = {
   showEnemies: false,
   showUIOverlay: false,
@@ -93,9 +95,9 @@ const Level1QuizChoice = () => {
 
   const handleReady = (choice) => {
     if (choice === 'fight') {
-      navigate('/Level1/Level1Fight');
+      dispatch(navigateTo({navigate, path: '/Level1/Level1Fight'}));
     } else if (choice === 'escape') {
-      navigate('/Level1/Level1Escape');
+      dispatch(navigateTo({navigate, path: '/Level1/Level1Escape'}));
     }
   };
 

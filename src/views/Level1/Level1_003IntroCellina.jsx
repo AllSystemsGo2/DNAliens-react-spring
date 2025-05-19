@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { useSpring, animated } from '@react-spring/web';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -112,7 +114,7 @@ const IntroCellina = () => {
       setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaMicroscope", show: true})), 2000)
     }
     else if (startDialogAtStep === 10) {
-      navigate("/level1/Level1_004SlidePrep")
+      dispatch(navigateTo({navigate, path: "/level1/Level1_004SlidePrep"}))
     }
   }, [dispatch, startDialogAtStep, navigate])
 

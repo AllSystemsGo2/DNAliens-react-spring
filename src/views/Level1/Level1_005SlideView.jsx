@@ -1,6 +1,8 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
@@ -112,7 +114,7 @@ const SlideView = () => {
         id="cellinaNext"
         subText="Let's explore the differences between plant and animal cells."
         characterSrc={cellinaSmall}
-        onClick={() => navigate("/level1/006")}
+        onClick={() => dispatch(navigateTo({navigate, path: "/level1/006"}))}
       />
     </div>
   )

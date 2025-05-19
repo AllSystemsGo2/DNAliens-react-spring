@@ -1,7 +1,8 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+
 import { useTranslation } from 'react-i18next'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
 import { setBubbleShow } from '../../helpers/bubbleHelper'
@@ -19,6 +20,8 @@ import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
 import WrittenResponsePrompt from '../../components/WrittenResponsePrompt'
 import Paragraph from '../../components/Paragraph'
 import ImageMap from '../../components/ImageMap'
+
+import { navigateTo } from '../../store/slices/appSlice'
 
 const defaultAttributes = {
   // Empty default state as requested
@@ -40,6 +43,8 @@ const Level1_009CellTypeQuestion = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
+
 
   useEffect(() => {
     dispatch(initializePageAttributes({
@@ -203,7 +208,7 @@ const Level1_009CellTypeQuestion = () => {
         )}
       </div>
 
-      <NarrativeBubble id="cellina-tell-lop" characterSrc={cellinaMicroscope} bottom="10vh" right="2vw" subText={t("level1_009CellTypeQuestion.tell-lop")} showNext={true} onClick={() => {navigate("/Level1/Level1_010MeetSprinkles") }}/>
+      <NarrativeBubble id="cellina-tell-lop" characterSrc={cellinaMicroscope} bottom="10vh" right="2vw" subText={t("level1_009CellTypeQuestion.tell-lop")} showNext={true} onClick={() => {dispatch(navigateTo({navigate, path: "/Level1/Level1_010MeetSprinkles"})) }}/>
     </div>
   )
 }

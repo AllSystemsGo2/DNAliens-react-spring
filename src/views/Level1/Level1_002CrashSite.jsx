@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { useSpring, animated } from '@react-spring/web'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -169,7 +171,7 @@ const CrashSite = () => {
   }
 
   const gotoNextPage = () => {
-    navigate('/Level1/Level1_003IntroCellina');
+    dispatch(navigateTo({navigate, path: '/Level1/Level1_003IntroCellina'}));
   }
 
   useEffect(() => {

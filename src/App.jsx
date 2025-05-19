@@ -1,4 +1,4 @@
-import { Link, MemoryRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { Link, MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, logout, fetchUser, refreshAuth } from './store/slices/authSlice'
 import React, { useEffect, useState, Suspense } from 'react'
@@ -6,13 +6,12 @@ import { setStoreDispatch } from './graphql/client'
 import { useTranslation } from 'react-i18next'
 import LanguageSelector from './components/LanguageSelector'
 import { resetPageAttributes } from './store/slices/pageSlice'
-import { setPageId } from './store/slices/appSlice'
+import { setPageId, navigateTo } from './store/slices/appSlice'
 import { getPageId } from './helpers/locationHelper'
 import './store/i18n'
 import './App.css'
 import './styles/animations.css'
 import './styles/nav.css'
-
 
 // Import all view components dynamically
 const viewsContext = import.meta.glob('./views/**/*.jsx', { eager: true })
@@ -30,13 +29,16 @@ const routes = Object.entries(viewsContext).map(([path, module]) => {
 
 function Navigation() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  
   const location = useLocation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   return (
     <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
       <Link to="/" className="nav-link">{t('nav.home')}</Link>
       <select 
-        onChange={(e) => navigate(e.target.value)}
+        onChange={(e) => dispatch(navigateTo({navigate, path: e.target.value}))}
         value={location.pathname}
         style={{
           background: '#2a2a2a',
@@ -210,6 +212,7 @@ const LocationTracker = () => {
   const dispatch = useDispatch();
   
   useEffect(() => {
+    console.log("Location changed to", location.pathname)
     dispatch(setPageId(getPageId(location.pathname)))
   }, [location, dispatch]);
   
