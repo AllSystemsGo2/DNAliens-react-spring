@@ -1,6 +1,8 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
@@ -167,7 +169,7 @@ const Level1_004SlidePrep = () => {
   }
 
   const handleOpenMicroscope = () => {
-    navigate("/level1/Level1_005SlideView")
+    dispatch(navigateTo({navigate, path: "/level1/Level1_005SlideView"}))
   }
 
   return (

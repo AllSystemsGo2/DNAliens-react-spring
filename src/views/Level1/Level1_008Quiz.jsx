@@ -1,6 +1,8 @@
 import { useSpring, animated } from '@react-spring/web'
 import {useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { getPageId } from '../../helpers/locationHelper'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -168,7 +170,7 @@ const Quiz = () => {
           onClick={() => {dispatch_setDialogCounter(1); toggleDisableOnSubmit()}}
         />
         <SpeechBubble id="cellina-next" top="-10vh" left="10vw" subText={"Let's take a look!"} showNext={true}
-          onClick={() => { navigate("/level1/Level1_009CellTypeQuestion")}}
+          onClick={() => { dispatch(navigateTo({navigate, path: "/level1/Level1_009CellTypeQuestion"}))}}
         />
       </Cellina>
 

@@ -1,6 +1,8 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
@@ -79,10 +81,10 @@ const SlideView = () => {
     console.log("goto", pageId)
     setPuzzleChoice(pageId)
     if (pageId === "animal-cell") {
-      navigate("/level1/007_AnimalCellPuzzle")
+      dispatch(navigateTo({navigate, path: "/level1/007_AnimalCellPuzzle"}))
     }
     else if (pageId === "plant-cell") {
-      navigate("/level1/007_PlantCellPuzzle")
+      dispatch(navigateTo({navigate, path: "/level1/007_PlantCellPuzzle"}))
     }
   }
 

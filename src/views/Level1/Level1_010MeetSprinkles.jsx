@@ -1,6 +1,6 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
@@ -34,6 +34,7 @@ const Level1_010MeetSprinkles = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
     dispatch(initializePageAttributes({

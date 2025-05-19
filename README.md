@@ -25,9 +25,9 @@ If you are developing a production application, we recommend using TypeScript an
 
 ## Generate New Page
 ```
-create a new View 'Level1/Level1_003IntroCellina' include useNavigate from react-router-dom, {useString, animated} from react-spring/web, {useSelector, useDispatch} from react-redux, and {useTranslation} from react-i18next.
+create a new View 'Level1/Level1_003IntroCellina' include {useNavigate, useLocation} from react-router-dom, {useString, animated} from react-spring/web, {useSelector, useDispatch} from react-redux, and {useTranslation} from react-i18next.
 
-In the react viewcomponent function, create constants dispatch, t, and navigate to recieve useDispatch(), useTranslation(), and useNavigate().
+In the react viewcomponent function, create constants dispatch, t, navigate, and location to recieve useDispatch(), useTranslation(), useNavigate(), and useLocation().
 
 Also import character components: Lop, Player, and Cellina
 Include SpeechBubble and MultipleChoicePrompt components. 

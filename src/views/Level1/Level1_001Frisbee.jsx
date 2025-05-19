@@ -2,6 +2,8 @@ import { useSpring, animated } from '@react-spring/web'
 import { useEffect, useRef } from 'react'
 
 import { useNavigate } from 'react-router-dom'
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
@@ -204,7 +206,7 @@ const Frisbee = () => {
           zIndex: 5,
           cursor: 'pointer'
         }}
-        onClick={() => navigate('/Level1/Level1_002CrashSite')}
+        onClick={() => dispatch(navigateTo({navigate, path: '/Level1/Level1_002CrashSite'}))}
       />
 
       <div style={{
