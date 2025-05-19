@@ -17,7 +17,7 @@ const defaultAttributes = {
 const NarrativeBubble = ({ pageId="", id="", mainText, subText, characterSrc, showNext=false, onClick, top = '-50%',bottom, left = '0vh', maxWidth="300px", right, style }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch();
-  const { show } = useSelector(state => selectBubbleShowAttribute({state, pageId, bubbleId: id, defaultValue: false}))
+  const { show } = useSelector(state => selectBubbleShowAttribute({state, pageId, bubbleId: id, defaultValue: defaultAttributes.show}))
   const {_pageId } = useSelector(state => pageId ? {_pageId: pageId} : {_pageId: state.app.pageId})
 
   useEffect(() => {

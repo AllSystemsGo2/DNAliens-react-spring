@@ -29,11 +29,14 @@ create a new View 'Level1/Level1_003IntroCellina' include {useNavigate, useLocat
 
 In the react viewcomponent function, create constants dispatch, t, navigate, and location to recieve useDispatch(), useTranslation(), useNavigate(), and useLocation().
 
+Import setBubbleShow from Bubble Helper.
+Import navigateTo from appSlice.
+Import setPageAttribute from pageSlice.
+
 Also import character components: Lop, Player, and Cellina
-Include SpeechBubble and MultipleChoicePrompt components. 
-Include setBubbleShow from Bubble Helper.
- 
-Import pageSlice and configure an empty defaultState. Then add a useEffect to dispatch initializePageAttributes for the defaultState and useSelector to retrieve the selectPageAttributes in the pattern shown in Level1_001Frisbee. Import setPageAttribute from pageSlice.
+Import SpeechBubble and MultipleChoicePrompt components. 
+
+ Configure an empty object named 'defaultState'. Then add a useEffect to dispatch initializePageAttributes for the defaultState with dependencies for [dispatch, location.pathname]. Use useSelector to retrieve the selectPageAttributes in the pattern shown in Level1_001Frisbee. 
 
 The container div must include the style selector "view".
 
