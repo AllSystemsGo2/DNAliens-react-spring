@@ -156,8 +156,8 @@
       "Plant Cell",
       "Animal Cell"
     ],
-    "explanation_prompt": "How do you know this is an animal cell?",
-    "explanation_placeholder": "I see that...",
+    "explanation_prompt": "How do you know what kind of cell this is?",
+    "explanation_placeholder": "I see...",
     "tell-lop": "Tell Lop what you think."
   },
   "animal-cell-image": {
@@ -224,5 +224,42 @@
         "Wow, Cellina! Let's go!"
       ]
     }
+  },
+  "level1_007AnimalCellLabels": {
+    "title": "Animal Cell",
+    "instructions": "Now that we've learned the organelles in the animal cell, let's review. Draw a line connecting each to its function.",
+    "termLabel": "Organelles",
+    "definitionLabel": "Functions",
+    "chloroplast": "Chloroplast",
+    "cellMembrane": "Cell Membrane",
+    "mitochondria": "Mitochondria",
+    "cytoplasm": "Cytoplasm",
+    "nucleus": "Nucleus",
+    "cellWall": "Cell Wall",
+    "makeEnergy": "Makes energy from food",
+    "controlCenter": "The control center of the cell that holds DNA and directs cell activities.",
+    "borderProtection": "a border that protects and controls movement in and out of the cell",
+    "wasteDigestion": "Breaks down and digests waste material.",
+    "jellyFluid": "A jelly-like fluid that fills the cell",
+    "completed": "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."
+  },
+  "level1_007PlantCellLabels": {
+    "title": "Plant Cell",
+    "instructions": "Now that we've learned the organelles in the plant cell, let's review. Draw a line connecting each to its function.",
+    "termLabel": "Organelles",
+    "definitionLabel": "Functions",
+    "chloroplast": "Chloroplast",
+    "cellMembrane": "Cell Membrane",
+    "mitochondria": "Mitochondria",
+    "cytoplasm": "Cytoplasm",
+    "nucleus": "Nucleus",
+    "cellWall": "Cell Wall",
+    "jellyFluid": "A jelly-like fluid that fills the cell",
+    "controlCenter": "The control center of the cell that holds DNA and directs cell activities.",
+    "borderProtection": "a border that protects and controls movement in and out of the cell",
+    "provideStructure": "Provides structure and support cell",
+    "makeFood": "Uses sunlight to make food",
+    "makeEnergy": "Makes energy from food",
+    "completed": "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."
   }
 }

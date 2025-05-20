@@ -26,31 +26,34 @@ const defaultState = {
 
 // Organelles and their correct functions
 const organelles = [
-  { id: 'lysosome', textId: "level1_007AnimalCellLabels.lysosome", defaultText: 'Lysosome' },
-  { id: 'cellMembrane', textId: "level1_007AnimalCellLabels.cellMembrane", defaultText: 'Cell Membrane' },
-  { id: 'mitochondria', textId: "level1_007AnimalCellLabels.mitochondria", defaultText: 'Mitochondria' },
-  { id: 'cytoplasm', textId: "level1_007AnimalCellLabels.cytoplasm", defaultText: 'Cytoplasm' },
-  { id: 'nucleus', textId: "level1_007AnimalCellLabels.nucleus", defaultText: 'Nucleus' }
+  { id: 'chloroplast', textId: "level1_007PlantCellLabels.chloroplast", defaultText: 'Chloroplast' },
+  { id: 'cellMembrane', textId: "level1_007PlantCellLabels.cellMembrane", defaultText: 'Cell Membrane' },
+  { id: 'mitochondria', textId: "level1_007PlantCellLabels.mitochondria", defaultText: 'Mitochondria' },
+  { id: 'cytoplasm', textId: "level1_007PlantCellLabels.cytoplasm", defaultText: 'Cytoplasm' },
+  { id: 'nucleus', textId: "level1_007PlantCellLabels.nucleus", defaultText: 'Nucleus' },
+  { id: 'cellWall', textId: "level1_007PlantCellLabels.cellWall", defaultText: 'Cell Wall' }
 ];
 
 const functions = [
-  { id: 'makeEnergy', textId: "level1_007AnimalCellLabels.makeEnergy", defaultText: 'Makes energy from food' },
-  { id: 'controlCenter', textId: "level1_007AnimalCellLabels.controlCenter", defaultText: 'The control center of the cell that holds DNA and directs cell activities.' },
-  { id: 'borderProtection', textId: "level1_007AnimalCellLabels.borderProtection", defaultText: 'a border that protects and controls movement in and out of the cell' },
-  { id: 'wasteDigestion', textId: "level1_007AnimalCellLabels.wasteDigestion", defaultText: 'Breaks down and digests waste material.' },
-  { id: 'jellyFluid', textId: "level1_007AnimalCellLabels.jellyFluid", defaultText: 'A jelly-like fluid that fills the cell' }
+  { id: 'jellyFluid', textId: "level1_007PlantCellLabels.jellyFluid", defaultText: 'A jelly-like fluid that fills the cell.' },
+  { id: 'controlCenter', textId: "level1_007PlantCellLabels.controlCenter", defaultText: 'The control center of the cell that holds DNA and directs cell activities.' },
+  { id: 'borderProtection', textId: "level1_007PlantCellLabels.borderProtection", defaultText: 'A border that protects and controls movement in and out of the cell' },
+  { id: 'provideStructure', textId: "level1_007PlantCellLabels.provideStructure", defaultText: 'Provides structure and support cell' },
+  { id: 'makeFood', textId: "level1_007PlantCellLabels.makeFood", defaultText: 'Uses sunlight to make food' },
+  { id: 'makeEnergy', textId: "level1_007PlantCellLabels.makeEnergy", defaultText: 'Makes energy from food' }
 ];
 
 // Correct matches
 const correctConnections = {
-  'lysosome': 'wasteDigestion',
+  'chloroplast': 'makeFood',
   'cellMembrane': 'borderProtection',
   'mitochondria': 'makeEnergy',
   'cytoplasm': 'jellyFluid',
-  'nucleus': 'controlCenter'
+  'nucleus': 'controlCenter',
+  'cellWall': 'provideStructure'
 };
 
-const Level1_007AnimalCellLabels = () => {
+const Level1_007PlantCellLabels = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -87,14 +90,14 @@ const Level1_007AnimalCellLabels = () => {
       }}>
         
         <Paragraph style={{width: '30%', textAlign: 'center'}}>
-          <h1 >{t("level1_007AnimalCellLabels.title", {defaultValue: "Animal Cell"})}</h1>  
+          <h1 >{t("level1_007PlantCellLabels.title", {defaultValue: "Plant Cell"})}</h1>  
         </Paragraph>
         
         <div style={{display: 'flex', flexDirection: 'row', position: 'absolute', right: '0rem', width: '40%', height: '20vh'}}>
           <NarrativeBubble id="instructionsBubble" showNext={false} top={"0%"} left={"0%"}
-            mainText={t("level1_007AnimalCellLabels.instructions", {defaultValue: "Now that we've learned the organelles in the animal cell, let's review. Draw a line connecting each to its function."})}
+            mainText={t("level1_007PlantCellLabels.instructions", {defaultValue: "Now that we've learned the organelles in the plant cell, let's review. Draw a line connecting each to its function."})}
           />
-          {!completed && <img src={cellinaSmall} alt="Cellina" style={{position: 'absolute', width: '20vh', zIndex: 3, right:"0%"}} />}
+          {completed && <img src={cellinaSmall} alt="Cellina" style={{position: 'absolute', width: '20vh', zIndex: 3, right:"0%"}} />}
         </div>
       </div>
 
@@ -103,8 +106,8 @@ const Level1_007AnimalCellLabels = () => {
           terms={organelles}
           definitions={functions}
           correctConnections={correctConnections}
-          termLabel={t("level1_007AnimalCellLabels.termLabel", {defaultValue: "Organelles"})}
-          definitionLabel={t("level1_007AnimalCellLabels.definitionLabel", {defaultValue: "Functions"})}
+          termLabel={t("level1_007PlantCellLabels.termLabel", {defaultValue: "Organelles"})}
+          definitionLabel={t("level1_007PlantCellLabels.definitionLabel", {defaultValue: "Functions"})}
           onComplete={() => {
             dispatch(setBubbleShow({bubbleId: 'instructionsBubble', show: false}))
             dispatch_setCompleted(true)
@@ -112,8 +115,8 @@ const Level1_007AnimalCellLabels = () => {
           }}
         />
       </div>
-      <NarrativeBubble id="completedBubble" characterSrc={cellinaSmall} showNext={true} bottom={"0%"} right={"0%"}
-        mainText={t("level1_007AnimalCellLabels.completed", {defaultValue: "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."})}
+      <NarrativeBubble id="completedBubble" showNext={true} bottom={"0%"} right={"0%"}
+        mainText={t("level1_007PlantCellLabels.completed", {defaultValue: "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."})}
         onClick={() => {
           dispatch(navigateTo({navigate, path: '/level1/Level1_008quiz'}))
         }}
@@ -122,4 +125,4 @@ const Level1_007AnimalCellLabels = () => {
   )
 }
 
-export default Level1_007AnimalCellLabels
+export default Level1_007PlantCellLabels

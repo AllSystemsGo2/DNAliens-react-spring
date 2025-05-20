@@ -17,15 +17,15 @@ const ConnectableItem = ({ id, type, text, onSelect, isSelected, isCorrect, isIn
                          isIncorrect ? '#f8d7da' : '#fff',
         cursor: 'pointer',
         position: 'relative',
-        width: type === 'organelle' ? '30vh' : '60vh'
+        width: type === 'term' ? '30vh' : '60vh'
       }}
     >
       {text}
       <div 
         style={{
           position: 'absolute',
-          right: type === 'organelle' ? '-10px' : 'auto',
-          left: type === 'function' ? '-10px' : 'auto',
+          right: type === 'term' ? '-10px' : 'auto',
+          left: type === 'definition' ? '-10px' : 'auto',
           top: '50%',
           width: '20px',
           height: '20px',
