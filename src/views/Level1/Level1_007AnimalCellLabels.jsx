@@ -216,130 +216,133 @@ const Level1_007AnimalCellLabels = () => {
           </div>
         </div>
 
-        <div 
-          ref={containerRef}
-          style={{
-            width: '100%', 
-            margin: '2rem',
-            position: 'relative',
-            minHeight: '400px'
-          }}
-        >
-          {/* Draw line while connecting */}
-          {selectedItem && (organelleRefsMap.current[selectedItem.id] || functionRefsMap.current[selectedItem.id]) && (
-            <ConnectionLine
-              startX={selectedItem.type === 'organelle' 
-                ? (organelleRefsMap.current[selectedItem.id]?.getBoundingClientRect().right - containerRef.current.getBoundingClientRect().left) 
-                : (functionRefsMap.current[selectedItem.id]?.getBoundingClientRect().left - containerRef.current.getBoundingClientRect().left)}
-              startY={selectedItem.type === 'organelle'
-                ? (organelleRefsMap.current[selectedItem.id]?.getBoundingClientRect().top + organelleRefsMap.current[selectedItem.id]?.getBoundingClientRect().height / 2 - containerRef.current.getBoundingClientRect().top)
-                : (functionRefsMap.current[selectedItem.id]?.getBoundingClientRect().top + functionRefsMap.current[selectedItem.id]?.getBoundingClientRect().height / 2 - containerRef.current.getBoundingClientRect().top)}
-              endX={mousePosition.x}
-              endY={mousePosition.y}
-            />
-          )}  
-
-          {/* Organelles and Functions */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '20px'
-          }}>
-            <div style={{
-              backgroundColor: '#b3d4fc',
-              padding: '10px',
-              width: '30%',
-              textAlign: 'center',
-              fontWeight: 'bold',
-              fontSize: '1.2em'
-            }}>
-              Organelles
-            </div>
-            <div style={{
-              backgroundColor: '#b3d4fc',
-              padding: '10px',
-              width: '30%',
-              textAlign: 'center',
-              fontWeight: 'bold',
-              fontSize: '1.2em'
-            }}>
-              Function
-            </div>
-          </div>
-
-          
-
-          {/* Organelle-Function Pairs */}
-          {organelles.map((organelle, index) => (
-            <div 
-              key={organelle.id}
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginBottom: '15px',
-                position: 'relative'
-              }}
-            >
-              <div 
-              ref={ref => registerOrganelleRef(organelle.id, ref)}
-              >
-                <ConnectableItem 
-                  id={organelle.id}
-                  type="organelle"
-                  text={organelle.text}
-                  onSelect={handleSelectItem}
-                  isSelected={selectedItem?.id === organelle.id}
-                  isCorrect={feedback?.organelleId === organelle.id && feedback?.isCorrect}
-                  isIncorrect={feedback?.organelleId === organelle.id && !feedback?.isCorrect}
-                />
-              </div>
-              <div 
-              ref={ref => registerFunctionRef(functions[index].id, ref)}
-              >
-                <ConnectableItem 
-                  id={functions[index].id}
-                  type="function"
-                  text={functions[index].text}
-                  onSelect={handleSelectItem}
-                  isSelected={selectedItem?.id === functions[index].id}
-                  isCorrect={feedback?.functionId === functions[index].id && feedback?.isCorrect}
-                  isIncorrect={feedback?.functionId === functions[index].id && !feedback?.isCorrect}
-                />
-              </div>
-            </div>
-          ))}
-
-          {/* Draw existing connections */}
-          {/* {connections.map((connection, index) => {
-            const coords = getConnectionCoordinates(connection);
-            if (coords) {
-              return (
-                <ConnectionLine
-                  key={`connection-${index}`}
-                  startX={coords.startX}
-                  startY={coords.startY}
-                  endX={coords.endX}
-                  endY={coords.endY}
-                  isCorrect={coords.isCorrect}
-                  isIncorrect={!coords.isCorrect}
-                />
-              );
-            }
-            return null;
-          })} */}
-
-          {/* Completion message */}
-          <NarrativeBubble 
-            id="completionBubble" 
-            showNext={true} 
-            style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}
-            mainText={t("level1_007AnimalCellLabels.completion", {defaultValue: "Great job! You've correctly matched all the organelles to their functions!"})}
-            onClick={() => {
-              // Navigate to next level or show additional content
-              dispatch(navigateTo({navigate, path: '/Level1/Level1_008'}));
+        <div style={{padding: '2rem'}}>
+          <div 
+            ref={containerRef}
+            style={{
+              width: '100%', 
+              position: 'relative',
+              minHeight: '400px'
             }}
-          />
-        </div>
+          >
+            {/* Draw line while connecting */}
+            {selectedItem && (organelleRefsMap.current[selectedItem.id] || functionRefsMap.current[selectedItem.id]) && (
+              <ConnectionLine
+                startX={selectedItem.type === 'organelle' 
+                  ? (organelleRefsMap.current[selectedItem.id]?.getBoundingClientRect().right - containerRef.current.getBoundingClientRect().left) 
+                  : (functionRefsMap.current[selectedItem.id]?.getBoundingClientRect().left - containerRef.current.getBoundingClientRect().left)}
+                startY={selectedItem.type === 'organelle'
+                  ? (organelleRefsMap.current[selectedItem.id]?.getBoundingClientRect().top + organelleRefsMap.current[selectedItem.id]?.getBoundingClientRect().height / 2 - containerRef.current.getBoundingClientRect().top)
+                  : (functionRefsMap.current[selectedItem.id]?.getBoundingClientRect().top + functionRefsMap.current[selectedItem.id]?.getBoundingClientRect().height / 2 - containerRef.current.getBoundingClientRect().top)}
+                endX={mousePosition.x}
+                endY={mousePosition.y}
+              />
+            )}  
+
+            {/* Draw existing connections */}
+            {connections.map((connection, index) => {
+              const coords = getConnectionCoordinates(connection);
+              if (coords) {
+                return (
+                  <ConnectionLine
+                    key={`connection-${index}`}
+                    startX={coords.startX}
+                    startY={coords.startY}
+                    endX={coords.endX}
+                    endY={coords.endY}
+                    isCorrect={coords.isCorrect}
+                    isIncorrect={!coords.isCorrect}
+                  />
+                );
+              }
+              return null;
+            })}
+
+            {/* Organelles and Functions */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              marginBottom: '20px'
+            }}>
+              <div style={{
+                backgroundColor: '#b3d4fc',
+                padding: '10px',
+                width: '30vh',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: '1.2em'
+              }}>
+                Organelles
+              </div>
+              <div style={{
+                backgroundColor: '#b3d4fc',
+                padding: '10px',
+                width: '60vh',
+                textAlign: 'center',
+                fontWeight: 'bold',
+                fontSize: '1.2em'
+              }}>
+                Function
+              </div>
+            </div>
+
+            
+
+            {/* Organelle-Function Pairs */}
+            {organelles.map((organelle, index) => (
+              <div 
+                key={organelle.id}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '15px',
+                  position: 'relative'
+                }}
+              >
+                <div 
+                ref={ref => registerOrganelleRef(organelle.id, ref)}
+                >
+                  <ConnectableItem 
+                    id={organelle.id}
+                    type="organelle"
+                    text={organelle.text}
+                    onSelect={handleSelectItem}
+                    isSelected={selectedItem?.id === organelle.id}
+                    isCorrect={feedback?.organelleId === organelle.id && feedback?.isCorrect}
+                    isIncorrect={feedback?.organelleId === organelle.id && !feedback?.isCorrect}
+                  />
+                </div>
+                <div 
+                ref={ref => registerFunctionRef(functions[index].id, ref)}
+                >
+                  <ConnectableItem 
+                    id={functions[index].id}
+                    type="function"
+                    text={functions[index].text}
+                    onSelect={handleSelectItem}
+                    isSelected={selectedItem?.id === functions[index].id}
+                    isCorrect={feedback?.functionId === functions[index].id && feedback?.isCorrect}
+                    isIncorrect={feedback?.functionId === functions[index].id && !feedback?.isCorrect}
+                  />
+                </div>
+              </div>
+            ))}
+
+            
+
+            {/* Completion message */}
+            <NarrativeBubble 
+              id="completionBubble" 
+              showNext={true} 
+              style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}
+              mainText={t("level1_007AnimalCellLabels.completion", {defaultValue: "Great job! You've correctly matched all the organelles to their functions!"})}
+              onClick={() => {
+                // Navigate to next level or show additional content
+                dispatch(navigateTo({navigate, path: '/Level1/Level1_008'}));
+              }}
+            />
+          </div>
+      </div>
     </div>
   )
 }

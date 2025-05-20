@@ -17,7 +17,7 @@ const ConnectableItem = ({ id, type, text, onSelect, isSelected, isCorrect, isIn
                          isIncorrect ? '#f8d7da' : '#fff',
         cursor: 'pointer',
         position: 'relative',
-        width: type === 'organelle' ? '30%' : '60%'
+        width: type === 'organelle' ? '30vh' : '60vh'
       }}
     >
       {text}
