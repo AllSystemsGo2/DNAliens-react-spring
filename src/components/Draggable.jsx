@@ -19,7 +19,10 @@ const Draggable = ({ children, id, tryDropOn, dropArea, style, draggable = true,
       const elementRect = elementRef.current.getBoundingClientRect()
       const areaRect = dropAreaElement.getBoundingClientRect()
       
-      api.start({ x: areaRect.x - (elementRect.width- areaRect.width)/2 - parentRect.x, y: areaRect.y - (elementRect.height-areaRect.height)/2 - parentRect.y, immediate: true })
+      api.start({ 
+        x: areaRect.x - (elementRect.width- areaRect.width)/2 - parentRect.x, 
+        y: areaRect.y - (elementRect.height-areaRect.height)/2 - parentRect.y, 
+        immediate: true })
     }
     else {
       api.start({ 
@@ -35,11 +38,13 @@ const Draggable = ({ children, id, tryDropOn, dropArea, style, draggable = true,
   const handleMouseDown = (e) => {
     if (!draggable) return
     setIsDragging(true)
+    e.preventDefault()
     dragStart.current = { x: e.clientX - x.get(), y: e.clientY - y.get() }
   }
 
   const handleMouseMove = useCallback((e) => {
     if (!isDragging) return
+    
     const newX = e.clientX - dragStart.current.x
     const newY = e.clientY - dragStart.current.y
     api.start({ x: newX, y: newY, immediate: true })
