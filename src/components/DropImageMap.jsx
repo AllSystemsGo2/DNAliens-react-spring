@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { useTranslation } from 'react-i18next'
 
@@ -17,12 +17,15 @@ import { useTranslation } from 'react-i18next'
  * @param {boolean} showLabels - Show text labels for each area
  * @param {string} labelPosition - Position of labels ('inside', 'top', 'bottom', etc.)
  */
-const ImageMap = ({ 
+const DropImageMap = ({ 
+  id,
+  enabled = true,
   imageSrc, 
   mapSrc,
   areas = {},
   areaData = {},
   labelPositions = {},
+  mouseInput= {x:0,y:0},
   onHover, 
   onClick,
   style, 
@@ -46,6 +49,10 @@ const ImageMap = ({
     scale: (hoveredArea && hoverZoom) ? 1.05 : 1,
     config: { tension: 300, friction: 10 }
   })
+
+  useEffect(() => {
+    handleMouseMove(mouseInput)
+  }, [mouseInput])
 
   // Load the image and prepare canvas for alpha detection
   useEffect(() => {
@@ -125,6 +132,7 @@ const ImageMap = ({
     return null;
   }
 
+
   const handleMouseLeave = () => {
     if (hoveredArea) {
       setHoveredArea(null)
@@ -140,11 +148,15 @@ const ImageMap = ({
 
   return (
     <div 
+    id={id}
       ref={containerRef}
       style={{ 
         position: 'relative',
         ...style 
       }}
+      data-drop-area="true"
+      data-area-id={hoveredArea}
+      data-enabled={enabled}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
@@ -254,4 +266,4 @@ const ImageMap = ({
   }
 }
 
-export default ImageMap
+export default DropImageMap

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 
-const Draggable = ({ children, id, tryDropOn, dropArea, style, draggable = true, onDrop }) => {
+const Draggable = ({ children, id, tryDropOn, dropArea, style, draggable = true, onDrop, onDrag }) => {
   const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }))
   const [isDragging, setIsDragging] = useState(false)
   const originalPosition = useRef({ x: 0, y: 0 })
@@ -48,6 +48,7 @@ const Draggable = ({ children, id, tryDropOn, dropArea, style, draggable = true,
     const newX = e.clientX - dragStart.current.x
     const newY = e.clientY - dragStart.current.y
     api.start({ x: newX, y: newY, immediate: true })
+    onDrag?.(e)
   }, [isDragging, api])
 
   const handleMouseUp = useCallback((e) => {

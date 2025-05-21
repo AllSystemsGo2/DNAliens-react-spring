@@ -4,7 +4,7 @@ import './DropArea.css'
 const DropArea = ({ children, id, style, enabled = true }) => {
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleDragEnter = useCallback(() => {
+  const handleDragEnter = useCallback((e) => {
     const draggable = document.querySelector('[data-draggable="true"]')
     if (draggable) {
       setIsHovered(true)
