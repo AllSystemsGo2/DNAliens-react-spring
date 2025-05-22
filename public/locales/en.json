@@ -285,6 +285,6 @@
     "provideStructure": "Provides structure and support cell",
     "makeFood": "Uses sunlight to make food",
     "makeEnergy": "Makes energy from food",
-    "completed": "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."
+    "completed": "Good job! Let's move on."
   }
 }

@@ -246,7 +246,7 @@ const Level1_007AnimalCellPuzzle = () => {
 
       <NarrativeBubble id="completedBubble" showNext={true} bottom={"0%"} right={"0%"}
         mainText={t("level1_007AnimalCellPuzzle.completed")}
-        onClick={() => dispatch(navigateTo({dispatch, path:'/level1/Level1_007AnimalCellLabels'}))}
+        onClick={() => dispatch(navigateTo({navigate, path:'/level1/Level1_007AnimalCellLabels'}))}
       />
     </div>
   )

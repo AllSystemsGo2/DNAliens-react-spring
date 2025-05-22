@@ -17,7 +17,7 @@ import Paragraph from '../../components/Paragraph'
 import ConnectQuiz from '../../components/ConnectQuiz'
 
 //Assets
-import cellinaSmall from '../../assets/cellina-microscope-2-256.png'
+import cellinaSmall from '../../assets/cellina1.png'
 
 const defaultState = {
   // Empty default state as requested
