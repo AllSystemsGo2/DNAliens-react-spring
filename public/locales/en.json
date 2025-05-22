@@ -162,7 +162,7 @@
   },
   "animal-cell-image": {
     "FF0000": "cell-membrane",
-    "5500FF": "nucleolus",
+    "5500FF": "nucleus",
     "55FF00": "mitochondria",
     "FF00FF": "lysosome",
     "FFFF00": "cytoplasm"
@@ -173,10 +173,10 @@
       "name": "Cell Membrane",
       "description": "The cell membrane is a barrier that controls what enters and exits the cell."
     },
-    "nucleolus": {
-      "nameKey": "nucleolus",
-      "name": "Nucleolus",
-      "description": "The nucleolus is a structure inside the nucleus that helps make ribosomes."
+    "nucleus": {
+      "nameKey": "nucleus",
+      "name": "nucleus",
+      "description": "The nucleus is a structure inside the nucleus that helps make ribosomes."
     },
     "mitochondria": {
       "nameKey": "mitochondria",
@@ -225,6 +225,18 @@
       ]
     }
   },
+  "level1_007AnimalCellPuzzle": {
+    "title": "Animal Cell",
+    "instructions": "Complete the puzzle to discover the parts of an animal cell.",
+    "functions": {
+      "lysosome": "This is a Lysosome. It breaks down and digests waste material.",
+      "cell-membrane": "This is the Cell Membrane, a barrier that controls movement in and out of the cell.",
+      "mitochondria": "This is a Mitochondria. It makes energy from food.",
+      "nucleus": "This is the Nucleus. It stores DNA.",
+      "cytoplasm": "This is the Cytoplasm. It is a jelly-like fluid that fills the cell."
+    },
+    "completed": "Good job! Let's go double check some things."
+  },
   "level1_007AnimalCellLabels": {
     "title": "Animal Cell",
     "instructions": "Now that we've learned the organelles in the animal cell, let's review. Draw a line connecting each to its function.",
@@ -242,6 +254,19 @@
     "wasteDigestion": "Breaks down and digests waste material.",
     "jellyFluid": "A jelly-like fluid that fills the cell",
     "completed": "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."
+  },
+  "level1_007PlantCellPuzzle": {
+    "title": "Plant Cell",
+    "instructions": "Complete the puzzle to discover the parts of a plant cell.",
+    "functions": {
+      "chloroplast": "This is the Chloroplast. It uses sunlight to create food.",
+      "cell-membrane": "This is the Cell Membrane, a barrier that controls movement in and out of the cell.",
+      "mitochondria": "This is a Mitochondria. It makes energy from food.",
+      "nucleus": "This is the Nucleus. It stores DNA.",
+      "cytoplasm": "This is the Cytoplasm. It is a jelly-like fluid that fills the cell.",
+      "cell-wall": "This is the Cell Wall. It provides structure and support cell"
+    },
+    "completed": "Good job! Let's go double check some things."
   },
   "level1_007PlantCellLabels": {
     "title": "Plant Cell",

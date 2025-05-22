@@ -32,7 +32,7 @@ const DropImageMap = ({
   showDebug = false,
   labelOnHover = false,
   showLabels = false,
-  hoverZoom = true
+  hoverZoom = true, children
 }) => {
   // Get the translation function at the component level
   const { t } = useTranslation()
@@ -254,6 +254,7 @@ const DropImageMap = ({
           Position: {position.x}, {position.y} | Hovering: {hoveredArea || 'None'}
         </div>
       )}
+      {children}
     </div>
   )
   

@@ -59,9 +59,20 @@ const writePageAttribute = createAsyncThunk(
 export const setPageAttribute = createAsyncThunk(
   'page/setPageAttribute',
   async ({pageId, key, value}, {getState, dispatch }) => {
-    const _pageId = pageId ?? getState().app.pageId
-    dispatch(writePageAttribute({pageId: _pageId, key, value}))
-    return { pageId: _pageId, key, value }
+    try { 
+      const _pageId = pageId ?? getState().app.pageId
+      const compValue = getState().page?.pages?.[_pageId]?.[key]
+      if(compValue === value){
+        return { pageId: _pageId, key, value }
+      }
+      else {              
+        dispatch(writePageAttribute({pageId: _pageId, key, value}))
+        return { pageId: _pageId, key, value }
+      }
+    } catch (error) {
+      console.error("setPageAttribute error", error)
+      throw error      
+    }
   }
 )
 

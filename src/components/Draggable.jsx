@@ -71,7 +71,7 @@ const Draggable = ({ children, id, tryDropOn, dropArea, style, draggable = true,
         const areaId = area.getAttribute('data-area-id')
         if (tryDropOn?.(areaId)) {
           dropped = true
-          onDrop?.({ dropAreaId: areaId })
+          onDrop?.({ dropAreaId: areaId, id: id })
         }
       }
     })

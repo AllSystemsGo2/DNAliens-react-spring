@@ -32,7 +32,7 @@ const defaultAttributes = {
 
 const labelPositions = {
   "Cell Membrane": { bottom: '5%', left: '50%', transform: 'translate(-50%, -50%)' },
-  "Nucleolus": { top: '40%', left: '50%', transform: 'translate(-50%, -50%)' },
+  "nucleus": { top: '40%', left: '50%', transform: 'translate(-50%, -50%)' },
   "Mitochondria": { top: '45%', left: '20%', transform: 'translate(-50%, -50%)' },
   "Lysosome": { top: '22%', left: '35%', transform: 'translate(-50%, -50%)' },
   "Cytoplasm": { top: '20%', left: '51%', transform: 'translate(-50%, -50%)' },

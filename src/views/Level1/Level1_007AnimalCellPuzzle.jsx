@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import DropImageMap from '../../components/DropImageMap'
 import Draggable from '../../components/Draggable'
 import Item from '../../components/Item'
+import Paragraph from '../../components/Paragraph'
 
 import { setBubbleShow } from '../../helpers/bubbleHelper'
 import { navigateTo } from '../../store/slices/appSlice'
@@ -16,11 +17,11 @@ import NarrativeBubble from '../../components/bubbles/NarrativeBubble'
 import SpeechBubble from '../../components/bubbles/SpeechBubble'
 
 import animalCellAlpha from '../../assets/animal-cell1-1024-alpha.png'
-
+import cellinaSmall from '../../assets/cellina1.png'
 import puzzleBG from '../../assets/animal-cell1-puzzle/puzzle-bg.png'
 import cytoplasm from '../../assets/animal-cell1-puzzle/cytoplasm.png'
 import cellmembrane from '../../assets/animal-cell1-puzzle/cell-membrane.png'
-import nucleolus from '../../assets/animal-cell1-puzzle/nucleolus.png'
+import nucleus from '../../assets/animal-cell1-puzzle/nucleus.png'
 import lysosome from '../../assets/animal-cell1-puzzle/lysosome.png'
 import mitochondria from '../../assets/animal-cell1-puzzle/mitocondria.png'
 
@@ -30,7 +31,7 @@ import { getPageId } from '../../helpers/locationHelper'
 
 const labelPositions = {
   "Cell Membrane": { bottom: '5%', left: '50%', transform: 'translate(-50%, -50%)' },
-  "Nucleolus": { top: '40%', left: '50%', transform: 'translate(-50%, -50%)' },
+  "nucleus": { top: '40%', left: '50%', transform: 'translate(-50%, -50%)' },
   "Mitochondria": { top: '45%', left: '20%', transform: 'translate(-50%, -50%)' },
   "Lysosome": { top: '22%', left: '35%', transform: 'translate(-50%, -50%)' },
   "Cytoplasm": { top: '20%', left: '51%', transform: 'translate(-50%, -50%)' },
@@ -40,9 +41,10 @@ const labelPositions = {
 const defaultState = {
   cellmembraneDropArea: "",
   cytoplasmDropArea: "",
-  nucleolusDropArea: "",
+  nucleusDropArea: "",
   lysosomeDropArea: "",
-  mitochondriaDropArea: ""
+  mitochondriaDropArea: "",
+  completed: false
 }
 
 const imgStyle = {
@@ -63,23 +65,82 @@ const Level1_007AnimalCellPuzzle = () => {
     dispatch(initializePageAttributes({
       pageId: getPageId(location.pathname),
       props: defaultState
-    }))
+    }))     
   }, [dispatch, location.pathname])
 
   const {cellmembraneDropArea, 
     cytoplasmDropArea,
-    nucleolusDropArea, 
+    nucleusDropArea, 
     lysosomeDropArea,
-    mitochondriaDropArea
+    mitochondriaDropArea,
+    completed
   } = useSelector((state) => 
     selectPageAttributes(state, getPageId(location.pathname), defaultState)
   )
-  const handleDrop = ({dropAreaId}) => {
-   console.log(dropAreaId) 
+
+  const dispatch_setDropArea = { 
+    "drag-cell-membrane": (dropAreaId) => dispatch(setPageAttribute({pageId: getPageId(location.pathname), key: "cellmembraneDropArea", value: dropAreaId})),
+    "drag-cytoplasm": (dropAreaId) => dispatch(setPageAttribute({pageId: getPageId(location.pathname), key: "cytoplasmDropArea", value: dropAreaId})),
+    "drag-nucleus": (dropAreaId) => dispatch(setPageAttribute({pageId: getPageId(location.pathname), key: "nucleusDropArea", value: dropAreaId})),
+    "drag-lysosome": (dropAreaId) => dispatch(setPageAttribute({pageId: getPageId(location.pathname), key: "lysosomeDropArea", value: dropAreaId})),
+    "drag-mitochondria": (dropAreaId) => dispatch(setPageAttribute({pageId: getPageId(location.pathname), key: "mitochondriaDropArea", value: dropAreaId}))
+  }
+  useEffect(() => {
+    setTimeout(() => {
+      if(!completed){
+        dispatch(setBubbleShow({bubbleId: "instructionsBubble", show: true}))
+      } else {
+        dispatch(setBubbleShow({bubbleId: "instructionsBubble", show: false}))
+        dispatch(setBubbleShow({bubbleId: "completedBubble", show: true}))   
+      }
+    }, 1000)
+  }, [dispatch, completed])
+
+  useEffect(() => {
+    if( cellmembraneDropArea !== "" && cytoplasmDropArea !== "" && nucleusDropArea !== "" && lysosomeDropArea !== "" && mitochondriaDropArea !== "") {
+      dispatch(setPageAttribute({pageId: getPageId(location.pathname), key: "completed", value: true}))
+    }
+  }, [dispatch, cellmembraneDropArea, cytoplasmDropArea, nucleusDropArea, lysosomeDropArea, mitochondriaDropArea])
+
+  const handleDrop = ({dropAreaId, id}) => {
+   console.log(dropAreaId)
+   if(dropAreaId){
+    dispatch(setBubbleShow({bubbleId: `${dropAreaId}Bubble`, show: true}))
+    dispatch_setDropArea[id](dropAreaId)   
+   }
+  }
+
+  const handleDrag = (e) => {
+    dispatch(setBubbleShow({bubbleId: "lysosomeBubble", show: false}))
+    dispatch(setBubbleShow({bubbleId: "mitochondriaBubble", show: false}))
+    dispatch(setBubbleShow({bubbleId: "nucleusBubble", show: false}))
+    dispatch(setBubbleShow({bubbleId: "cytoplasmBubble", show: false}))
+    dispatch(setBubbleShow({bubbleId: "cell-membraneBubble", show: false}))
+    setMouseInput(e)
   }
 
   return (
     <div className="view">
+      {/* Title and Instructions */}
+      <div style={{
+        display: 'block',
+        width: '100%',
+        height: '20vh',
+        margin: '2rem'
+      }}>
+        
+        <Paragraph style={{width: '30%', textAlign: 'center'}}>
+          <h1 >{t("level1_007AnimalCellPuzzle.title", {defaultValue: "Animal Cell"})}</h1>  
+        </Paragraph>
+        
+        <div style={{display: 'flex', flexDirection: 'row', position: 'absolute', right: '0rem', width: '40%', height: '20vh'}}>
+          <NarrativeBubble id="instructionsBubble" showNext={false} top={"0%"} left={"0%"}
+            mainText={t("level1_007AnimalCellPuzzle.instructions", {defaultValue: "Complete the puzzle to discover the parts of an animal cell."})}
+          />
+          {!completed && <img src={cellinaSmall} alt="Cellina" style={{position: 'absolute', width: '20vh', zIndex: 3, right:"0%"}} />}
+        </div>
+      </div>
+
       <DropImageMap
         id="animal-cell"
         style={{ 
@@ -100,50 +161,70 @@ const Level1_007AnimalCellPuzzle = () => {
         areaData={t("animal-cell-map-data", { returnObjects: true })}
         onDrop={handleDrop}
         mouseInput={mouseInput}
-      />
-
+      >
+        <SpeechBubble id="lysosomeBubble" showNext={false} top={"0vh"} left={"10vh"}          
+          subText={t("level1_007AnimalCellPuzzle.functions.lysosome", {defaultValue: "Lysosome"})}
+        />
+        <SpeechBubble id="mitochondriaBubble" showNext={false} top={"18vh"} left={"45vh"}
+          subText={t("level1_007AnimalCellPuzzle.functions.mitochondria", {defaultValue: "Mitochondria"})}
+        />
+        <SpeechBubble id="nucleusBubble" showNext={false} top={"20vh"} left={"20vh"}
+          subText={t("level1_007AnimalCellPuzzle.functions.nucleus", {defaultValue: "Nucleus"})}
+        />
+        <SpeechBubble id="cytoplasmBubble" showNext={false} top={"-5vh"} left={"20vh"}
+          subText={t("level1_007AnimalCellPuzzle.functions.cytoplasm", {defaultValue: "Cytoplasm"})}
+        />
+        <SpeechBubble id="cell-membraneBubble" showNext={false} top={"-6vh"} left={"33vh"}
+          subText={t("level1_007AnimalCellPuzzle.functions.cell-membrane", {defaultValue: "Cell Membrane"})}
+        />
+      </DropImageMap>
       <div style={{display: "flex", flexDirection: "column", alignItems: "space-between", justifyContent: "space-around", position: "absolute", right: "20vh", top: "10vh", width: "20vh", height: "80vh", zIndex: 2 }}>
-        <Draggable id="drag-cell-membrane" dropArea={cellmembraneDropArea} 
+        {cellmembraneDropArea === "" && <Draggable id="drag-cell-membrane" dropArea={cellmembraneDropArea} 
           draggable={cellmembraneDropArea === ""} 
           tryDropOn={(areaId) => areaId === 'cell-membrane'}
           onDrop={handleDrop} 
-          onDrag={(e) => setMouseInput(e)}
+          onDrag={handleDrag}
           > 
           <Item style={imgStyle} src={cellmembrane} />
-        </Draggable>
-        <Draggable id="drag-nucleolus" dropArea={nucleolusDropArea} 
-          draggable={nucleolusDropArea === ""} 
-          tryDropOn={(areaId) => areaId === 'nucleolus'}
+        </Draggable>}
+        {nucleusDropArea === "" && <Draggable id="drag-nucleus" dropArea={nucleusDropArea} 
+          draggable={nucleusDropArea === ""} 
+          tryDropOn={(areaId) => areaId === 'nucleus'}
           onDrop={handleDrop} 
-          onDrag={(e) => setMouseInput(e)}
+          onDrag={handleDrag}
           > 
-          <Item style={imgStyle} src={nucleolus} />
-        </Draggable>
-        <Draggable id="drag-lysosome" dropArea={lysosomeDropArea} 
+          <Item style={imgStyle} src={nucleus} />
+        </Draggable>}
+        {lysosomeDropArea === "" && <Draggable id="drag-lysosome" dropArea={lysosomeDropArea} 
           draggable={lysosomeDropArea === ""} 
           tryDropOn={(areaId) => areaId === 'lysosome'}
           onDrop={handleDrop} 
-          onDrag={(e) => setMouseInput(e)}
+          onDrag={handleDrag}
           > 
           <Item style={imgStyle} src={lysosome} />
-        </Draggable>
-        <Draggable id="drag-mitochondria" dropArea={mitochondriaDropArea} 
+        </Draggable>}
+        {mitochondriaDropArea === "" && <Draggable id="drag-mitochondria" dropArea={mitochondriaDropArea} 
           draggable={mitochondriaDropArea === ""} 
           tryDropOn={(areaId) => areaId === 'mitochondria'}
           onDrop={handleDrop}
-          onDrag={(e) => setMouseInput(e)}
+          onDrag={handleDrag}
           > 
           <Item style={imgStyle} src={mitochondria} />
-        </Draggable>
-        <Draggable id="drag-cytoplasm" dropArea={cytoplasmDropArea} 
+        </Draggable>}
+        {cytoplasmDropArea === "" && <Draggable id="drag-cytoplasm" dropArea={cytoplasmDropArea} 
           draggable={cytoplasmDropArea === ""} 
           tryDropOn={(areaId) => areaId === 'cytoplasm'}
           onDrop={handleDrop}
-          onDrag={(e) => setMouseInput(e)}
+          onDrag={handleDrag}
           > 
           <Item style={imgStyle} src={cytoplasm} />
-        </Draggable>
+        </Draggable>}
       </div>
+
+      <NarrativeBubble id="completedBubble" showNext={true} bottom={"0%"} right={"0%"}
+        mainText={t("level1_007AnimalCellPuzzle.completed")}
+        onClick={() => dispatch(navigateTo({dispatch, path:'/level1/Level1_007AnimalCellLabels'}))}
+      />
     </div>
   )
 }
