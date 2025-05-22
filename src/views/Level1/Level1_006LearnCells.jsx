@@ -81,10 +81,10 @@ const SlideView = () => {
     console.log("goto", pageId)
     setPuzzleChoice(pageId)
     if (pageId === "animal-cell") {
-      dispatch(navigateTo({navigate, path: "/level1/007_AnimalCellPuzzle"}))
+      dispatch(navigateTo({navigate, path: "/level1/Level1_007AnimalCellPuzzle"}))
     }
     else if (pageId === "plant-cell") {
-      dispatch(navigateTo({navigate, path: "/level1/007_PlantCellPuzzle"}))
+      dispatch(navigateTo({navigate, path: "/level1/Level1_007PlantCellPuzzle"}))
     }
   }
 
