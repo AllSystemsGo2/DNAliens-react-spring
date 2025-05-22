@@ -23,7 +23,13 @@ import cytoplasm from '../../assets/animal-cell1-puzzle/cytoplasm.png'
 import cellmembrane from '../../assets/animal-cell1-puzzle/cell-membrane.png'
 import nucleus from '../../assets/animal-cell1-puzzle/nucleus.png'
 import lysosome from '../../assets/animal-cell1-puzzle/lysosome.png'
-import mitochondria from '../../assets/animal-cell1-puzzle/mitocondria.png'
+import mitochondria from '../../assets/animal-cell1-puzzle/mitochondria.png'
+
+import cytoplasmLayer from '../../assets/animal-cell1-puzzle/cytoplasm-layer.png'
+import nucleusLayer from '../../assets/animal-cell1-puzzle/nucleus-layer.png'
+import lysosomeLayer from '../../assets/animal-cell1-puzzle/lysosome-layer.png'
+import mitochondriaLayer from '../../assets/animal-cell1-puzzle/mitochondria-layer.png'
+import cellmembraneLayer from '../../assets/animal-cell1-puzzle/cell-membrane-layer.png'
 
 
 import { getPageId } from '../../helpers/locationHelper'
@@ -48,9 +54,12 @@ const defaultState = {
 }
 
 const imgStyle = {
-  width: "10vh",
-  // height: "10vh",
-  // objectFit: "cover"
+  width: "10vh"
+}
+const bgStyle = {
+  position: "absolute",
+  width: "100%",
+  height: "100%"
 }
 
 const Level1_007AnimalCellPuzzle = () => {
@@ -141,6 +150,20 @@ const Level1_007AnimalCellPuzzle = () => {
         </div>
       </div>
 
+      <div style={{display: 'flex', flexDirection: 'row',
+        position: "absolute",
+        left: "40vh",
+        top: "10vh",
+        width: "80vh",
+        height: "80vh",
+        zIndex: 1}}>
+        {cellmembraneDropArea !== "" && <Item src={cellmembraneLayer} style={bgStyle} />}
+        {cytoplasmDropArea !== "" && <Item src={cytoplasmLayer} style={bgStyle} />}
+        {nucleusDropArea !== "" && <Item src={nucleusLayer} style={bgStyle} />}
+        {lysosomeDropArea !== "" && <Item src={lysosomeLayer} style={bgStyle} />}
+        {mitochondriaDropArea !== "" && <Item src={mitochondriaLayer} style={bgStyle} />}
+      </div>
+
       <DropImageMap
         id="animal-cell"
         style={{ 
@@ -149,7 +172,7 @@ const Level1_007AnimalCellPuzzle = () => {
           top: "10vh",
           width: "80vh",
           height: "80vh",
-          zIndex: 1
+          zIndex: 2
         }}
         mapSrc={animalCellAlpha}
         imageSrc={puzzleBG}
@@ -176,9 +199,9 @@ const Level1_007AnimalCellPuzzle = () => {
         />
         <SpeechBubble id="cell-membraneBubble" showNext={false} top={"-6vh"} left={"33vh"}
           subText={t("level1_007AnimalCellPuzzle.functions.cell-membrane", {defaultValue: "Cell Membrane"})}
-        />
+        />        
       </DropImageMap>
-      <div style={{display: "flex", flexDirection: "column", alignItems: "space-between", justifyContent: "space-around", position: "absolute", right: "20vh", top: "10vh", width: "20vh", height: "80vh", zIndex: 2 }}>
+      <div style={{display: "flex", flexDirection: "column", alignItems: "space-between", justifyContent: "space-around", position: "absolute", right: "20vh", top: "10vh", width: "20vh", height: "80vh", zIndex: 3 }}>
         {cellmembraneDropArea === "" && <Draggable id="drag-cell-membrane" dropArea={cellmembraneDropArea} 
           draggable={cellmembraneDropArea === ""} 
           tryDropOn={(areaId) => areaId === 'cell-membrane'}
