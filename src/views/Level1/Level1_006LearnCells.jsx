@@ -1,6 +1,6 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { navigateTo } from '../../store/slices/appSlice'
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -16,8 +16,6 @@ import Player from '../../components/characters/Player';
 import Cellina from '../../components/characters/Cellina';
 
 import SpeechBubble from '../../components/bubbles/SpeechBubble'
-import NarrativeBubble from '../../components/bubbles/NarrativeBubble'
-import WrittenResponsePrompt from '../../components/WrittenResponsePrompt'
 
 import starryBackground from '../../assets/starry-background.jpg'
 import planetForeground from '../../assets/planet-foreground.png'
@@ -26,30 +24,59 @@ import spoonImage from '../../assets/spoon.png'
 import animalCell from '../../assets/animal-cell1-512.png'
 import plantCell from '../../assets/plant-cell1-512.png'
 
+import { getPageId } from '../../helpers/locationHelper'
+
 
 const defaultState = {
   cellinaState: "microscope",
-  puzzleChoice: ""
+  puzzleChoice: "",
+  disableAnimalButton: false,
+  disablePlantButton: false
 }
 
 const SlideView = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const location = useLocation()
 
   // trigger effect on view mounted
   useEffect(() => {
     dispatch(initializePageAttributes({
-      pageId: "slideView", 
+      pageId: getPageId(location.pathname), 
       props: defaultState
     }))
   }, [])
 
   // trigger effect on view mounted 
   useEffect(() => {
-    setTimeout(() => dispatch(setBubbleShow({pageId: "learnCells", bubbleId: "cellina", show: true})), 1000)
+    setTimeout(() => dispatch(setBubbleShow({bubbleId: "cellina", show: true})), 1000)
     setTimeout(() => setCellinaState("idle") , 500)
   }, [])
+
+
+  const animalCellLabelsCompleted = useSelector((state) => selectPageAttributes(state, getPageId("/level1/Level1_007AnimalCellLabels"), {completed: false}).completed) 
+  const plantCellLabelsCompleted = useSelector((state) => selectPageAttributes(state, getPageId("/level1/Level1_007PlantCellLabels"), {completed: false}).completed)
+
+  
+  useEffect(() => {
+    if(!animalCellLabelsCompleted && plantCellLabelsCompleted) {
+      setTimeout(() => dispatch(setBubbleShow({bubbleId: "learnAnimalCells", show: true})), 1000)
+      dispatch(setPageAttribute({key: "disablePlantButton", value: true}))
+      dispatch(setPageAttribute({key: "learnPlantCells", value: false}))
+    }
+    if(!plantCellLabelsCompleted && animalCellLabelsCompleted) {
+      setTimeout(() => dispatch(setBubbleShow({bubbleId: "learnPlantCells", show: true})), 1000)
+      dispatch(setPageAttribute({key: "disableAnimalButton", value: true}))
+      dispatch(setPageAttribute({key: "learnAnimalCells", value: false}))
+    }
+    if(animalCellLabelsCompleted || plantCellLabelsCompleted) {
+      dispatch(setBubbleShow({bubbleId: "cellina", show: true}))
+    }
+    if(animalCellLabelsCompleted && plantCellLabelsCompleted) {
+      dispatch(navigateTo({navigate, path: "/level1/Level1_008Quiz"}))
+    }
+  }, [animalCellLabelsCompleted, plantCellLabelsCompleted])
 
   const holoboardSpring = useSpring({
     from: {
@@ -72,10 +99,10 @@ const SlideView = () => {
     config: { duration: 500 }
   })
 
-  const { cellinaState } = useSelector((state) => selectPageAttributes(state, "slideView", defaultState))
+  const { cellinaState, disableAnimalButton, disablePlantButton } = useSelector((state) => selectPageAttributes(state, getPageId(location.pathname), defaultState))
 
-  const setPuzzleChoice = (value) => dispatch(setPageAttribute({pageId: "slideView", key: "puzzleChoice", value}))
-  const setCellinaState = (value) => dispatch(setPageAttribute({pageId: "slideView", key: "cellinaState", value}))
+  const setPuzzleChoice = (value) => dispatch(setPageAttribute({key: "puzzleChoice", value}))
+  const setCellinaState = (value) => dispatch(setPageAttribute({key: "cellinaState", value}))
 
   const goto = (pageId) => {
     console.log("goto", pageId)
@@ -133,7 +160,9 @@ const SlideView = () => {
       <Player bottom="5vh" right="15vh" faceDirection='left' zIndex={3}>
       </Player>
       <Cellina bottom="35vh" right="30vh" faceDirection='left' state={cellinaState}>
-        <SpeechBubble pageId="learnCells" id="cellina" showNext={false} subText="Choose a plant or animal cell to start!" top="-25%" right="-50%"/>
+        <SpeechBubble id="cellina" showNext={false} mainText={t("learnCells.cellina.mainText")} top="-25%" right="-50%"/>
+        <SpeechBubble id="learnAnimalCells" showNext={false} mainText={t("learnCells.animalCells.mainText")} top="-25%" right="-50%"/>
+        <SpeechBubble id="learnPlantCells" showNext={false} mainText={t("learnCells.plantCells.mainText")} top="-25%" right="-50%"/>
       </Cellina>
     
       <animated.div id='holoboard' className="holoboard-prompt" style={{
@@ -177,8 +206,8 @@ const SlideView = () => {
             backgroundRepeat: 'no-repeat'
           }}>
           </Item>
-          <button style={{width: '50%'}} className="submit-button" onClick={()=> goto("animal-cell") }>Animal Cell</button>
-          <button style={{width: '50%'}} className="submit-button" onClick={()=> goto("plant-cell") }>Plant Cell</button>
+          <button style={{width: '50%'}} className="submit-button" onClick={()=> goto("animal-cell") } disabled={disableAnimalButton}>Animal Cell</button>
+          <button style={{width: '50%'}} className="submit-button" onClick={()=> goto("plant-cell") } disabled={disablePlantButton}>Plant Cell</button>
         </div>
       </animated.div>  
     </div>

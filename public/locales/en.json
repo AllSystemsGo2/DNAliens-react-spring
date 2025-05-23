@@ -293,5 +293,16 @@
     "FF00FF": "cytoplasm",
     "FFFF00": "cell-wall",
     "FFFFFF": "chloroplast"
+  },
+  "learnCells": {
+    "cellina": {
+      "mainText": "Choose a plant or animal cell to start!"
+    },
+    "animalCells": {
+      "mainText": "Good! Now, choose the animal cell to continue!"
+    },
+    "plantCells": {
+      "mainText": "Good! Now, choose the plant cell to continue!"
+    }
   }
 }
