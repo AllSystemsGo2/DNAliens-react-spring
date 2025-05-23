@@ -1,6 +1,6 @@
 // Fundamentals
 import { useSpring, animated } from '@react-spring/web'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -15,6 +15,7 @@ import { getPageId } from '../../helpers/locationHelper'
 import NarrativeBubble from '../../components/bubbles/NarrativeBubble'
 import Paragraph from '../../components/Paragraph'
 import ConnectQuiz from '../../components/ConnectQuiz'
+import { selectorFunction_decisionSplit_Completed007 } from '../../helpers/level1Helpers'
 
 //Assets
 import cellinaSmall from '../../assets/cellina1.png'
@@ -71,6 +72,10 @@ const Level1_007AnimalCellLabels = () => {
     selectPageAttributes(state, state.app.pageId, defaultState)
   )
 
+  const nextPath = useSelector((state) => 
+    selectorFunction_decisionSplit_Completed007(state)
+  )
+
   const dispatch_setCompleted = (value) => dispatch(setPageAttribute({key: "completed", value}))
 
 
@@ -115,7 +120,7 @@ const Level1_007AnimalCellLabels = () => {
       <NarrativeBubble id="completedBubble" characterSrc={cellinaSmall} showNext={true} bottom={"0%"} right={"0%"}
         mainText={t("level1_007AnimalCellLabels.completed", {defaultValue: "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."})}
         onClick={() => {
-          dispatch(navigateTo({navigate, path: '/level1/Level1_008quiz'}))
+          dispatch(navigateTo({navigate, path: nextPath}))
         }}
       />
     </div>

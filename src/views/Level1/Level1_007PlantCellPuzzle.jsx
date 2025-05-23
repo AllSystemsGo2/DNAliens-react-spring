@@ -126,7 +126,7 @@ const Level1_007PlantCellPuzzle = () => {
 
   const handleDrag = (e) => {
     dispatch(setBubbleShow({bubbleId: "chloroplastBubble", show: false}))
-    dispatch(setBubbleShow({bubbleId: "cellwallBubble", show: false}))
+    dispatch(setBubbleShow({bubbleId: "cell-wallBubble", show: false}))
     dispatch(setBubbleShow({bubbleId: "mitochondriaBubble", show: false}))
     dispatch(setBubbleShow({bubbleId: "nucleusBubble", show: false}))
     dispatch(setBubbleShow({bubbleId: "cytoplasmBubble", show: false}))

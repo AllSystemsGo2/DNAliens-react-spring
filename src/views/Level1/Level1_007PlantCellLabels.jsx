@@ -1,6 +1,6 @@
 // Fundamentals
 import { useSpring, animated } from '@react-spring/web'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -10,6 +10,7 @@ import { navigateTo } from '../../store/slices/appSlice'
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
 import { setBubbleShow } from '../../helpers/bubbleHelper'
 import { getPageId } from '../../helpers/locationHelper'
+import { selectorFunction_decisionSplit_Completed007 } from '../../helpers/level1Helpers'
 
 // Import UI components
 import NarrativeBubble from '../../components/bubbles/NarrativeBubble'
@@ -74,6 +75,10 @@ const Level1_007PlantCellLabels = () => {
     selectPageAttributes(state, state.app.pageId, defaultState)
   )
 
+  const nextPath = useSelector((state) => 
+    selectorFunction_decisionSplit_Completed007(state)
+  )
+
   const dispatch_setCompleted = (value) => dispatch(setPageAttribute({key: "completed", value}))
 
 
@@ -118,7 +123,7 @@ const Level1_007PlantCellLabels = () => {
       <NarrativeBubble id="completedBubble" showNext={true} bottom={"0%"} right={"0%"}
         mainText={t("level1_007PlantCellLabels.completed", {defaultValue: "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."})}
         onClick={() => {
-          dispatch(navigateTo({navigate, path: '/level1/Level1_008quiz'}))
+          dispatch(navigateTo({navigate, path: nextPath}))
         }}
       />
     </div>
