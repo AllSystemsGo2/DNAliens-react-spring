@@ -18,8 +18,6 @@ import spaceshipRustling from '../../assets/spaceship-rustling.ogg'
 import Lop from '../../components/characters/Lop'
 import SpeechBubble from '../../components/bubbles/SpeechBubble';
 import Item from '../../components/Item';
-import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
-import Paragraph from '../../components/Paragraph'
 import DriftingText from '../../components/DriftingText'
 import DialogBubble from '../../components/bubbles/DialogBubble'
 
@@ -175,6 +173,9 @@ const CrashSite = () => {
     dispatch(navigateTo({navigate, path: '/level1/Level1_003IntroCellina'}));
   }
 
+  /**
+   * Play Audio Effects
+   */
   useEffect(() => {
     const audio = audioRef.current
     audio.loop = true
