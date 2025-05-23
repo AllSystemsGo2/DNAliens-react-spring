@@ -35,17 +35,16 @@
     "prompt": {
       "question": "What was that?!?",
       "choices": [
-        "I’m not sure.",
+        "I'm not sure.",
         "A loud crash!",
         "Something fell from the sky!"
       ]
     },
-    "investigate": "Let’s go investigate!"
+    "investigate": "Let's go investigate!"
   },
   "crashSite": {
     "speechBubble": {
-      "mainText": "Something's in there...",
-      "subText": ""
+      "mainText": "Something's in there..."
     },
     "prompt": {
       "question": "What should we do?",
@@ -56,16 +55,16 @@
       ]
     },
     "lopQuestion": {
-      "subText": "It ate it all, and now all we have is this wet spoon! What do we do now?"
+      "mainText": "It ate it all, and now all we have is this wet spoon! What do we do now?"
     },
     "lopResponse1": {
-      "subText": "Yeah! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+      "mainText": "Yeah! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
     },
     "lopResponse2": {
-      "subText": "Wait! It could be dangerous, I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+      "mainText": "Wait! It could be dangerous, I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
     },
     "lopResponse3": {
-      "subText": "It could be hurt! We have to help! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+      "mainText": "It could be hurt! We have to help! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
     },
     "end": {
       "header": "The END",
@@ -79,35 +78,231 @@
   },
   "introCellina": {
     "warp": {
-      "subText": "That's not just wet, there's saliva on that spoon. We can learn so much from that!"
+      "mainText": "That's not just wet, there's saliva on that spoon. We can learn so much from that!"
     },
     "lopHelp": {
-      "subText": "Cellina, the Genehome guide, you think you can help us?"
+      "mainText": "Cellina, the Genehome guide, you think you can help us?"
     },
     "cellinaSaliva": {
-      "subText": "Of course, saliva has cells in it!"
+      "mainText": "Of course, saliva has cells in it!"
     },
     "lopCells": {
-      "subText": "What are cells?"
+      "mainText": "What are cells?"
     },
     "question": {
       "prompt": "Respond to Lop, 'What are cells?'",
       "placeholder": "I think that..."
     },
     "cellinaCells": {
-      "subText": "Here’s what I know. Cells make up all living things. They are like tiny building blocks that help organisms grow, survive, and function."
+      "mainText": "Here's what I know. Cells make up all living things. They are like tiny building blocks that help organisms grow, survive, and function."
     },
     "cellinaExamineCells": {
-      "subText": "We can use that saliva to take a closer look at the cells of what is in that rocket!"
+      "mainText": "We can use that saliva to take a closer look at the cells of what is in that rocket!"
     },
     "lopExamineSpoon": {
-      "subText": "I just see the saliva, how can we see the cells?"
+      "mainText": "I just see the saliva, how can we see the cells?"
     },
     "cellinaExamineSpoon": {
-      "subText": "Microscopes help us see small things, give me a minute."
+      "mainText": "Microscopes help us see small things, give me a minute."
     },
     "cellinaMicroscope": {
-      "subText": "WAIT! We need to transfer the saliva to a microscope slide."
+      "mainText": "WAIT! We need to transfer the saliva to a microscope slide."
+    }
+  },
+  "level1-008quiz": {
+    "speech1-lop": "Wait, is there an organelle only animal cells have?",    
+    "prompt1": {
+      "prompt": "Animal cells have a ________________ that plant cells do not have.",
+      "choices": [
+        "Lysosome",
+        "Mitochondria",
+        "Chloroplast",
+        "Nucleus"
+      ],
+      "responses": [
+        "Animal cells have a lysosome that plant cells do not have.",
+        "Animal cells have a mitochondria that plant cells do not have.",
+        "Animal cells have a chloroplast that plant cells do not have.",
+        "Animal cells have a nucleus that plant cells do not have."
+      ]
+    },
+    "speech2-lop": "So are there any organelles only plant cells have?",
+    "prompt2": {
+      "prompt": "Plant cells have _______ and _________ that animal cells do not have. (Choose 2)",
+      "choices": [
+        "Chloroplasts",
+        "Nuclei",
+        "Cell Walls",
+        "Lysosomes"
+      ],
+      "responses": [
+        "Yes, plant cells have ${a} and ${b} that animal cells do not have."
+      ]
+    },
+    "speech3-lop": "I get it now, we can go back to the microscope to identify if this organism is a plant or animal."
+  },
+  "level1_009CellTypeQuestion": {
+    "question1": "What type of cell do you see?",
+    "response1-correct": "That's correct! This is an animal cell.",
+    "response1-incorrect": "Hm, what organelles do you see? Hover over the cell to see the names of the organelles.",
+    "question2": "How do you know this is an animal cell?",
+    "hint": {
+      "header": "Hint",
+      "body" : "Use your mouse to see the names of the organelles."
+    },
+    "prompt": "What type of cell is this?",
+    "choices": [
+      "Plant Cell",
+      "Animal Cell"
+    ],
+    "explanation_prompt": "How do you know what kind of cell this is?",
+    "explanation_placeholder": "I see...",
+    "tell-lop": "Tell Lop what you think."
+  },
+  "animal-cell-image": {
+    "FF0000": "cell-membrane",
+    "5500FF": "nucleus",
+    "55FF00": "mitochondria",
+    "FF00FF": "lysosome",
+    "FFFF00": "cytoplasm"
+  },
+  "animal-cell-map-data": {
+    "cell-membrane": {
+      "nameKey": "cell-membrane",
+      "name": "Cell Membrane",
+      "description": "The cell membrane is a barrier that controls what enters and exits the cell."
+    },
+    "nucleus": {
+      "nameKey": "nucleus",
+      "name": "nucleus",
+      "description": "The nucleus is a structure inside the nucleus that helps make ribosomes."
+    },
+    "mitochondria": {
+      "nameKey": "mitochondria",
+      "name": "Mitochondria",
+      "description": "Mitochondria are organelles that produce energy for the cell."
+    },
+    "lysosome": {
+      "nameKey": "lysosome",
+      "name": "Lysosome",
+      "description": "Lysosomes are organelles that break down waste and harmful substances."
+    },
+    "cytoplasm": {
+      "nameKey": "cytoplasm",
+      "name": "Cytoplasm",
+      "description": "Cytoplasm is the gel-like material inside the cell that contains organelles."
+    }
+  },
+  "level1_010MeetSprinkles": {
+    "lop1": "Thanks Cellina! Let's go see if we can get the animal out of the rocket!",
+    "lop2": "I don't hear anything anymore",
+    "scream": "ARGH!",
+    "sprinklesScream": "MEOW!",
+    "lop3": "It's a CUTE animal!",
+    "cellina4": "This animal is known as a kitten!",
+    "lop5": "A kritten? What's that?",
+    "cellina6": "A kitten is a baby cat, an offspring of two parent cats.",
+    "lop7": "This says Sprinkles!",
+    "sprinklesMeow": "Meow!",
+    "cellina8": "That must be her name. She has tags that means she has a family.",
+    "playerPrompt": {
+      "prompt": "What should we do?",
+      "choices": [
+        "A family! That means she's missing, we should bring her home.",
+        "She must have gotten lost, we should return her.",
+        "Sounds like an adventure, let's return her to her parents!"
+      ]
+    },
+    "lop9": "Yes! We should find her parents and bring her home.",
+    "cellina10": "I've heard some reports about missing offspring. We should start with those.",
+    "lop11": "But how will we travel when this rocket is broken?",
+    "cellina12": "Well actually...",
+    "player13": {
+      "prompt": "",
+      "choices": [
+        "Wow, Cellina! Let's go!"
+      ]
+    }
+  },
+  "level1_007AnimalCellPuzzle": {
+    "title": "Animal Cell",
+    "instructions": "Complete the puzzle to discover the parts of an animal cell.",
+    "functions": {
+      "lysosome": "This is a Lysosome. It breaks down and digests waste material.",
+      "cell-membrane": "This is the Cell Membrane, a barrier that controls movement in and out of the cell.",
+      "mitochondria": "This is a Mitochondria. It makes energy from food.",
+      "nucleus": "This is the Nucleus. It stores DNA.",
+      "cytoplasm": "This is the Cytoplasm. It is a jelly-like fluid that fills the cell."
+    },
+    "completed": "Good job! Let's go double check some things."
+  },
+  "level1_007AnimalCellLabels": {
+    "title": "Animal Cell",
+    "instructions": "Now that we've learned the organelles in the animal cell, let's review. Draw a line connecting each to its function.",
+    "termLabel": "Organelles",
+    "definitionLabel": "Functions",
+    "chloroplast": "Chloroplast",
+    "cellMembrane": "Cell Membrane",
+    "mitochondria": "Mitochondria",
+    "cytoplasm": "Cytoplasm",
+    "nucleus": "Nucleus",
+    "cellWall": "Cell Wall",
+    "makeEnergy": "Makes energy from food",
+    "controlCenter": "The control center of the cell that holds DNA and directs cell activities.",
+    "borderProtection": "A border that protects and controls movement in and out of the cell",
+    "wasteDigestion": "Breaks down and digests waste material.",
+    "jellyFluid": "A jelly-like fluid that fills the cell",
+    "completed": "Good job! Let's move on."
+  },
+  "level1_007PlantCellPuzzle": {
+    "title": "Plant Cell",
+    "instructions": "Complete the puzzle to discover the parts of a plant cell.",
+    "functions": {
+      "chloroplast": "This is the Chloroplast. It uses sunlight to create food.",
+      "cell-membrane": "This is the Cell Membrane, a barrier that controls movement in and out of the cell.",
+      "mitochondria": "This is a Mitochondria. It makes energy from food.",
+      "nucleus": "This is the Nucleus. It stores DNA.",
+      "cytoplasm": "This is the Cytoplasm. It is a jelly-like fluid that fills the cell.",
+      "cell-wall": "This is the Cell Wall. It provides structure and support cell"
+    },
+    "completed": "Good job! Let's go double check some things."
+  },
+  "level1_007PlantCellLabels": {
+    "title": "Plant Cell",
+    "instructions": "Now that we've learned the organelles in the plant cell, let's review. Draw a line connecting each to its function.",
+    "termLabel": "Organelles",
+    "definitionLabel": "Functions",
+    "chloroplast": "Chloroplast",
+    "cellMembrane": "Cell Membrane",
+    "mitochondria": "Mitochondria",
+    "cytoplasm": "Cytoplasm",
+    "nucleus": "Nucleus",
+    "cellWall": "Cell Wall",
+    "jellyFluid": "A jelly-like fluid that fills the cell",
+    "controlCenter": "The control center of the cell that holds DNA and directs cell activities.",
+    "borderProtection": "A border that protects and controls movement in and out of the cell",
+    "provideStructure": "Provides structure and support cell",
+    "makeFood": "Uses sunlight to make food",
+    "makeEnergy": "Makes energy from food",
+    "completed": "Good job! Let's move on."
+  },
+  "plant-cell-image": {
+    "00FF00": "cell-membrane",
+    "FF0000": "nucleus",
+    "0000FF": "mitochondria",
+    "FF00FF": "cytoplasm",
+    "FFFF00": "cell-wall",
+    "FFFFFF": "chloroplast"
+  },
+  "learnCells": {
+    "cellina": {
+      "mainText": "Choose a plant or animal cell to start!"
+    },
+    "animalCells": {
+      "mainText": "Good! Now, choose the animal cell to continue!"
+    },
+    "plantCells": {
+      "mainText": "Good! Now, choose the plant cell to continue!"
     }
   }
 }
