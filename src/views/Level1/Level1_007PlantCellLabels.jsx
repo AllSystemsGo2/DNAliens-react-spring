@@ -102,7 +102,7 @@ const Level1_007PlantCellLabels = () => {
           <NarrativeBubble id="instructionsBubble" showNext={false} top={"0%"} left={"0%"}
             mainText={t("level1_007PlantCellLabels.instructions", {defaultValue: "Now that we've learned the organelles in the plant cell, let's review. Draw a line connecting each to its function."})}
           />
-          {completed && <img src={cellinaSmall} alt="Cellina" style={{position: 'absolute', width: '20vh', zIndex: 3, right:"0%"}} />}
+          {!completed && <img src={cellinaSmall} alt="Cellina" style={{position: 'absolute', width: '20vh', zIndex: 3, right:"0%"}} />}
         </div>
       </div>
 
@@ -122,6 +122,7 @@ const Level1_007PlantCellLabels = () => {
       </div>
       <NarrativeBubble id="completedBubble" showNext={true} bottom={"0%"} right={"0%"}
         mainText={t("level1_007PlantCellLabels.completed", {defaultValue: "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."})}
+        characterSrc={cellinaSmall}
         onClick={() => {
           dispatch(navigateTo({navigate, path: nextPath}))
         }}

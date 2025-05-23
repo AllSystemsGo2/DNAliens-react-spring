@@ -12,7 +12,7 @@ import cellinaMicroscope from '../../assets/cellina-microscope-2-256.png'
 import animalCell from '../../assets/animal-cell1-1024.png'
 import animalCellAlpha from '../../assets/animal-cell1-1024-alpha.png'
 
-import emptySlide from '../../assets/blank-slide1.png'
+// import emptySlide from '../../assets/blank-slide1.png'
 
 // Import UI components
 import NarrativeBubble from '../../components/bubbles/NarrativeBubble'
@@ -32,7 +32,7 @@ const defaultAttributes = {
 
 const labelPositions = {
   "Cell Membrane": { bottom: '5%', left: '50%', transform: 'translate(-50%, -50%)' },
-  "nucleus": { top: '40%', left: '50%', transform: 'translate(-50%, -50%)' },
+  "Nucleus": { top: '40%', left: '50%', transform: 'translate(-50%, -50%)' },
   "Mitochondria": { top: '45%', left: '20%', transform: 'translate(-50%, -50%)' },
   "Lysosome": { top: '22%', left: '35%', transform: 'translate(-50%, -50%)' },
   "Cytoplasm": { top: '20%', left: '51%', transform: 'translate(-50%, -50%)' },
@@ -111,10 +111,10 @@ const Level1_009CellTypeQuestion = () => {
     if (dialogCounter === 3) {      
       setTimeout(() => {
         dispatch(setBubbleShow({bubbleId: "cellina-question2", show: true}))
-      }, 1500)
+      }, 1000)
       setTimeout(() => {
         dispatch_setShowWrittenResponse(true)
-      }, 3000) 
+      }, 2000) 
     }
 
     if (dialogCounter === 4) {
@@ -208,7 +208,7 @@ const Level1_009CellTypeQuestion = () => {
         )}
       </div>
 
-      <NarrativeBubble id="cellina-tell-lop" characterSrc={cellinaMicroscope} bottom="10vh" right="2vw" subText={t("level1_009CellTypeQuestion.tell-lop")} showNext={true} onClick={() => {dispatch(navigateTo({navigate, path: "/Level1/Level1_010MeetSprinkles"})) }}/>
+      <NarrativeBubble id="cellina-tell-lop" characterSrc={cellinaMicroscope} bottom="10vh" right="2vw" subText={t("level1_009CellTypeQuestion.tell-lop")} showNext={true} onClick={() => {dispatch(navigateTo({navigate, path: "/level1/Level1_010MeetSprinkles"})) }}/>
     </div>
   )
 }

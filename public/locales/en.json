@@ -44,8 +44,7 @@
   },
   "crashSite": {
     "speechBubble": {
-      "mainText": "Something's in there...",
-      "subText": ""
+      "mainText": "Something's in there..."
     },
     "prompt": {
       "question": "What should we do?",
@@ -56,16 +55,16 @@
       ]
     },
     "lopQuestion": {
-      "subText": "It ate it all, and now all we have is this wet spoon! What do we do now?"
+      "mainText": "It ate it all, and now all we have is this wet spoon! What do we do now?"
     },
     "lopResponse1": {
-      "subText": "Yeah! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+      "mainText": "Yeah! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
     },
     "lopResponse2": {
-      "subText": "Wait! It could be dangerous, I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+      "mainText": "Wait! It could be dangerous, I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
     },
     "lopResponse3": {
-      "subText": "It could be hurt! We have to help! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
+      "mainText": "It could be hurt! We have to help! I have this cookie dough and a spoon. We can stick it inside and see if we get a bite."
     },
     "end": {
       "header": "The END",
@@ -79,35 +78,35 @@
   },
   "introCellina": {
     "warp": {
-      "subText": "That's not just wet, there's saliva on that spoon. We can learn so much from that!"
+      "mainText": "That's not just wet, there's saliva on that spoon. We can learn so much from that!"
     },
     "lopHelp": {
-      "subText": "Cellina, the Genehome guide, you think you can help us?"
+      "mainText": "Cellina, the Genehome guide, you think you can help us?"
     },
     "cellinaSaliva": {
-      "subText": "Of course, saliva has cells in it!"
+      "mainText": "Of course, saliva has cells in it!"
     },
     "lopCells": {
-      "subText": "What are cells?"
+      "mainText": "What are cells?"
     },
     "question": {
       "prompt": "Respond to Lop, 'What are cells?'",
       "placeholder": "I think that..."
     },
     "cellinaCells": {
-      "subText": "Here's what I know. Cells make up all living things. They are like tiny building blocks that help organisms grow, survive, and function."
+      "mainText": "Here's what I know. Cells make up all living things. They are like tiny building blocks that help organisms grow, survive, and function."
     },
     "cellinaExamineCells": {
-      "subText": "We can use that saliva to take a closer look at the cells of what is in that rocket!"
+      "mainText": "We can use that saliva to take a closer look at the cells of what is in that rocket!"
     },
     "lopExamineSpoon": {
-      "subText": "I just see the saliva, how can we see the cells?"
+      "mainText": "I just see the saliva, how can we see the cells?"
     },
     "cellinaExamineSpoon": {
-      "subText": "Microscopes help us see small things, give me a minute."
+      "mainText": "Microscopes help us see small things, give me a minute."
     },
     "cellinaMicroscope": {
-      "subText": "WAIT! We need to transfer the saliva to a microscope slide."
+      "mainText": "WAIT! We need to transfer the saliva to a microscope slide."
     }
   },
   "level1-008quiz": {

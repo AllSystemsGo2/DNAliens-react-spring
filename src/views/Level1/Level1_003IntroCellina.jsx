@@ -182,21 +182,21 @@ const IntroCellina = () => {
             />
           </Item>
         )}
-        <SpeechBubble pageId="introCellina" id="lopHelp" subText={t("introCellina.lopHelp.subText")} showNext={true} onClick={() => stepDialog(2)} />
-        <SpeechBubble pageId="introCellina" id="lopCells" subText={t("introCellina.lopCells.subText")} showNext={true} onClick={() => stepDialog(4)}/>
-        <SpeechBubble pageId="introCellina" id="lopExamineSpoon" subText={t("introCellina.lopExamineSpoon.subText")} showNext={true} onClick={() => stepDialog(8)}/>
+        <SpeechBubble pageId="introCellina" id="lopHelp" mainText={t("introCellina.lopHelp.mainText")} showNext={true} onClick={() => stepDialog(2)} />
+        <SpeechBubble pageId="introCellina" id="lopCells" mainText={t("introCellina.lopCells.mainText")} showNext={true} onClick={() => stepDialog(4)}/>
+        <SpeechBubble pageId="introCellina" id="lopExamineSpoon" mainText={t("introCellina.lopExamineSpoon.mainText")} showNext={true} onClick={() => stepDialog(8)}/>
       </Lop>
       <Player bottom="5vh" right="15vh" faceDirection='left' zIndex={3}>
-        <SpeechBubble pageId="introCellina" id="playerCellsExplanation" subText={playerCellsExplanation} showNext={false} onClick={() => stepDialog(5)} />
+        <SpeechBubble pageId="introCellina" id="playerCellsExplanation" mainText={playerCellsExplanation} showNext={false} onClick={() => stepDialog(5)} />
       </Player>
       {showCellina && (
         <Cellina bottom="35vh" right="30vh" faceDirection='left' state={cellinaState}>
-          <SpeechBubble top="-15vh" pageId="introCellina" id="warp" subText={t("introCellina.warp.subText")} showNext={true} onClick={() => stepDialog(1)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaSaliva" subText={t("introCellina.cellinaSaliva.subText")} showNext={true} onClick={() => stepDialog(3)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaCells" subText={t("introCellina.cellinaCells.subText")} showNext={true} onClick={() => stepDialog(6)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineCells" subText={t("introCellina.cellinaExamineCells.subText")} showNext={true} onClick={() => stepDialog(7)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineSpoon" subText={t("introCellina.cellinaExamineSpoon.subText")} showNext={true} onClick={() => stepDialog(9)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaMicroscope" subText={t("introCellina.cellinaMicroscope.subText")} showNext={true} onClick={() => stepDialog(10)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="warp" mainText={t("introCellina.warp.mainText")} showNext={true} onClick={() => stepDialog(1)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaSaliva" mainText={t("introCellina.cellinaSaliva.mainText")} showNext={true} onClick={() => stepDialog(3)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaCells" mainText={t("introCellina.cellinaCells.mainText")} showNext={true} onClick={() => stepDialog(6)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineCells" mainText={t("introCellina.cellinaExamineCells.mainText")} showNext={true} onClick={() => stepDialog(7)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineSpoon" mainText={t("introCellina.cellinaExamineSpoon.mainText")} showNext={true} onClick={() => stepDialog(9)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaMicroscope" mainText={t("introCellina.cellinaMicroscope.mainText")} showNext={true} onClick={() => stepDialog(10)} />
         </Cellina>
       )}
 

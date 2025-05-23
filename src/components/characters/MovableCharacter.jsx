@@ -25,6 +25,18 @@ const MovableCharacter = ({ id, bottom = '10vh', left = '5vh', right, zIndex = 2
     }
   }, [dispatch, id, left]);
 
+  useEffect(() => {
+    if (bottom !== undefined) {
+      dispatch(updateCharacterPosition({ id, bottom }));
+    }
+  }, [dispatch, id, bottom]);
+
+  useEffect(() => {
+    if (zIndex !== undefined) {
+      dispatch(updateCharacterPosition({ id, zIndex }));
+    }
+  }, [dispatch, id, zIndex]);
+
   const translateSpring = useSpring({
     position: 'absolute',
     ...(right !== undefined 

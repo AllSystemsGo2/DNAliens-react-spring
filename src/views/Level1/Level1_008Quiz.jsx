@@ -103,11 +103,7 @@ const Quiz = () => {
       dispatch(setBubbleShow({bubbleId: "speech2", show: false}))
     }
 
-    // dialogCounter === 4 -> show MC Prompt
-    // else 
-      // dispatch(setBubbleShow({bubbleId: "player-response2", show: false}))
-      // dispatch(setBubbleShow({bubbleId: "cellina-right", show: false}))
-      // dispatch(setBubbleShow({bubbleId: "cellina-wrong", show: false}))
+    // dialogCounter === 4 -> show MS Prompt
 
     if (dialogCounter === 5) {
       setTimeout(() => dispatch(setBubbleShow({bubbleId: "speech3", show: true})), 1000)
@@ -134,8 +130,8 @@ const Quiz = () => {
         state="idle"
         faceDirection="left"
         >
-        <SpeechBubble showNext={false} id="player-response1" top="-15vh" subText={t("level1-008quiz.prompt1.responses", { returnObjects: true })[playerResponse]}/>
-        <SpeechBubble showNext={false} id="player-response2" top="-15vh" subText={playerResponse2}/>
+        <SpeechBubble showNext={false} id="player-response1" top="-15vh" mainText={t("level1-008quiz.prompt1.responses", { returnObjects: true })[playerResponse]}/>
+        <SpeechBubble showNext={false} id="player-response2" top="-15vh" mainText={playerResponse2}/>
       </Player>
       
       <Lop
@@ -145,13 +141,13 @@ const Quiz = () => {
         state="idle"
         faceDirection="right"
       >
-        <SpeechBubble id="speech1" top="-15vh" subText={t("level1-008quiz.speech1-lop")} showNext={true}
+        <SpeechBubble id="speech1" top="-15vh" mainText={t("level1-008quiz.speech1-lop")} showNext={true}
           onClick={() => {dispatch_setDialogCounter(1)}}
         />
-        <SpeechBubble id="speech2" top="-15vh" subText={t("level1-008quiz.speech2-lop")} showNext={true}
+        <SpeechBubble id="speech2" top="-15vh" mainText={t("level1-008quiz.speech2-lop")} showNext={true}
           onClick={() => {dispatch_setDialogCounter(4)}}
         />
-        <SpeechBubble id="speech3" top="-15vh" subText={t("level1-008quiz.speech3-lop")} showNext={false}
+        <SpeechBubble id="speech3" top="-15vh" mainText={t("level1-008quiz.speech3-lop")} showNext={false}
           onClick={() => {dispatch_setDialogCounter(6)}}
         />
       </Lop>
@@ -163,13 +159,13 @@ const Quiz = () => {
         state={cellinaState}
         faceDirection="left"
       >
-        <SpeechBubble id="cellina-right" top="-10vh" left="10vw" subText={"That's right!"} showNext={true}
+        <SpeechBubble id="cellina-right" top="-10vh" left="10vw" mainText={"That's right!"} showNext={true}
           onClick={() => {dispatch_setDialogCounter(dialogCounter + 1)}}
         />
-        <SpeechBubble id="cellina-wrong" top="-10vh" left="10vw" subText={"Try again!"} showNext={true}
+        <SpeechBubble id="cellina-wrong" top="-10vh" left="10vw" mainText={"Try again!"} showNext={true}
           onClick={() => {dispatch_setDialogCounter(1); toggleDisableOnSubmit()}}
         />
-        <SpeechBubble id="cellina-next" top="-10vh" left="10vw" subText={"Let's take a look!"} showNext={true}
+        <SpeechBubble id="cellina-next" top="-10vh" left="10vw" mainText={"Let's take a look!"} showNext={true}
           onClick={() => { dispatch(navigateTo({navigate, path: "/level1/Level1_009CellTypeQuestion"}))}}
         />
       </Cellina>
@@ -208,7 +204,7 @@ const Quiz = () => {
         disableOnSubmit={disableOnSubmit}
         onSubmit={(answers, indices) => {
           console.log("onSubmit", answers, indices)
-          dispatch_setDialogCounter(5)
+          dispatch_setDialogCounter(4)
           const response = t("level1-008quiz.prompt2.responses", { returnObjects: true })[0].interpolate({a: answers[0].toLowerCase(), b: answers[1].toLowerCase()})
           console.log("response", response)
           dispatch_setPlayerResponse2(response)

@@ -255,6 +255,7 @@ const Level1_007PlantCellPuzzle = () => {
 
       <NarrativeBubble id="completedBubble" showNext={true} bottom={"0%"} right={"0%"}
         mainText={t("level1_007PlantCellPuzzle.completed")}
+        characterSrc={cellinaSmall}
         onClick={() => dispatch(navigateTo({navigate, path:'/level1/Level1_007PlantCellLabels'}))}
       />
     </div>

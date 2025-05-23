@@ -101,9 +101,9 @@ const Level1QuizChoice = () => {
 
   const handleReady = (choice) => {
     if (choice === 'fight') {
-      dispatch(navigateTo({navigate, path: '/Level1/Level1_012Fight'}));
+      dispatch(navigateTo({navigate, path: '/level1/Level1_012Fight'}));
     } else if (choice === 'escape') {
-      dispatch(navigateTo({navigate, path: '/Level1/Level1_012Escape'}));
+      dispatch(navigateTo({navigate, path: '/level1/Level1_012Escape'}));
     }
   };
 

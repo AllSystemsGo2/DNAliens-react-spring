@@ -112,6 +112,7 @@ const SlideView = () => {
         right="5%"
         pageId="slideView"
         id="cellinaNext"
+        showNext={true}
         subText="Let's explore the differences between plant and animal cells."
         characterSrc={cellinaSmall}
         onClick={() => dispatch(navigateTo({navigate, path: "/level1/Level1_006LearnCells"}))}

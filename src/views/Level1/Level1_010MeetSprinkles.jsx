@@ -244,7 +244,7 @@ const Level1_010MeetSprinkles = () => {
           mainText={t("level1_010MeetSprinkles.player13.prompt", {returnObjects: true})} 
           choices={t("level1_010MeetSprinkles.player13.choices", {returnObjects: true})} 
           onSubmit={() => {
-            dispatch(navigateTo({navigate, path: '/Level1/Level1_011QuizChoice'}));
+            dispatch(navigateTo({navigate, path: '/level1/Level1_011QuizChoice'}));
         }}/>
       </Player>
       

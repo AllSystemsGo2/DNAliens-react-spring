@@ -79,6 +79,11 @@ const Frisbee = () => {
         dispatch(setShowCrash(true))
         dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "lopQuestion", show: true}))
       }, 3250)
+
+      setTimeout(() => {
+        dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "prompt", show: true}))
+        dispatch(setShowChoice(true))
+      }, 4500)
     }
   }, [showUfo, dispatch])
 
@@ -139,11 +144,7 @@ const Frisbee = () => {
       )} */}
 
       <Lop right="35vh">
-        <SpeechBubble pageId="frisbee" id="lopQuestion" showNext={true} 
-        onClick={() => { 
-          dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "lopQuestion", show: false})); 
-          dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "prompt", show: true}))
-          dispatch(setShowChoice(true)) }} 
+        <SpeechBubble pageId="frisbee" id="lopQuestion" 
           mainText={t('frisbee.lopQuestion')} />
         <SpeechBubble pageId="frisbee" id="investigate" showNext={false} mainText={t('frisbee.investigate')} />
       </Lop>
@@ -152,9 +153,10 @@ const Frisbee = () => {
           onClick={() => {
             dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "response", show: false}))
             dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "investigate", show: true}))}}/>
-          <DialogBubble pageId="frisbee" id="prompt" showNext={false} mainText={t('frisbee.prompt.question')} choices={t('frisbee.prompt.choices', { returnObjects: true })}
+          <DialogBubble pageId="frisbee" id="prompt" showNext={false} choices={t('frisbee.prompt.choices', { returnObjects: true })}
             onSubmit={(choice) => {
               dispatch(setPlayerResponse(choice))
+              dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "lopQuestion", show: false})); 
               dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "prompt", show: false}))
               dispatch(setShowSpeechBubbleHelper({pageId: "frisbee", bubbleId: "response", show: true}))
             }}
@@ -229,7 +231,7 @@ const Frisbee = () => {
         }}
         onClick={() => {
           if(playerResponse !== "") {
-            dispatch(navigateTo({navigate, path: '/Level1/Level1_002CrashSite'}))
+            dispatch(navigateTo({navigate, path: '/level1/Level1_002CrashSite'}))
           }
         }}
       />

@@ -9,10 +9,11 @@
  */
 
 import { selectPageAttributes } from "../store/slices/pageSlice"
+import { getPageId } from "./locationHelper"
 
 export function selectorFunction_decisionSplit_Completed007(state) {
-  if(!selectPageAttributes(state, "Level1:Level1_007AnimalCellLabels", {completed: false}).completed ||
-     !selectPageAttributes(state, "Level1:Level1_007PlantCellLabels", {completed: false}).completed) {
+  if(!selectPageAttributes(state, getPageId("/level1/Level1_007AnimalCellLabels"), {completed: false}).completed ||
+     !selectPageAttributes(state, getPageId("/level1/Level1_007PlantCellLabels"), {completed: false}).completed) {
     return "/level1/Level1_006LearnCells"
   }
 
