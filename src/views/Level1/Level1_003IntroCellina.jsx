@@ -11,17 +11,25 @@ import Lop from '../../components/characters/Lop';
 import Player from '../../components/characters/Player';
 import Cellina from '../../components/characters/Cellina';
 import SpeechBubble from '../../components/bubbles/SpeechBubble';
-import DialogBubble from '../../components/bubbles/DialogBubble'; 
+import DriftingText from '../../components/DriftingText';
+import SceneAudio from '../../components/SceneAudio';
+
 import {setBubbleShow} from '../../helpers/bubbleHelper'
 import WrittenResponsePrompt from '../../components/WrittenResponsePrompt';
 import Item from '../../components/Item';
+import Scene from '../../components/Scene'
+
+//Assets
 import starryBackground from '../../assets/starry-background.jpg'
 import planetForeground from '../../assets/planet-foreground.png'
-import Scene from '../../components/Scene'
 import spaceship from '../../assets/spaceship-crashed-2048.png'
 import spoonImage from '../../assets/spoon.png'
 import animalCell from '../../assets/animal-cell1-512.png'
 import plantCell from '../../assets/plant-cell1-512.png'
+import spaceshipRustling from '../../assets/spaceship-rustling.ogg'
+
+
+
 
 // Redux
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice';
@@ -45,6 +53,17 @@ const setPlayerCellsExplanation = (value) => setPageAttribute({pageId: "introCel
 const setShowHoloboard = (show) => setPageAttribute({pageId: "introCellina", key: "showHoloboard", value: show })
 const setCellinaState = (state) => setPageAttribute({pageId: "introCellina", key: "cellinaState", value: state })
 
+  /**
+   * The IntroCellina view component.
+   * 
+   * This component renders the "Intro to Cellina" view.
+   * The view contains a crashed spaceship, a rustling sound effect, a Lop character, a Player character, a Cellina character, and a holoboard.
+   * The view also contains bubbles for the Lop, Player, and Cellina characters, and a written response prompt for the Player.
+   * The view also contains a holoboard with two cells: an animal cell and a plant cell.
+   * The view also contains a navigation button to navigate to the next level.
+   * 
+   * @returns {JSX.Element} The IntroCellina view component.
+   */
 const IntroCellina = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -68,6 +87,8 @@ const IntroCellina = () => {
       setTimeout(() => dispatch(setShowCellina(true)), 1000)
     }
   }, [dispatch, showCellina]);
+
+  
 
   useEffect(()=> {
     if(startDialogAtStep === 0) { 
@@ -143,6 +164,7 @@ const IntroCellina = () => {
     <div className="view intro-cellina">
       {/* Add your view content here */}
       <Scene skyImage={starryBackground} terrainImage={planetForeground} transformTerrain="scaleX(-1)" />
+      <SceneAudio audioPath={spaceshipRustling} isPlaying={true} mute={false} volume={0.5}/>
       
       {/* Crashed Spaceship */}
       <div 
@@ -160,6 +182,27 @@ const IntroCellina = () => {
           transform: 'rotateZ(185deg)'
         }}
       />
+
+      {/* Rustle */}
+      {Array.from({ length: 3 }).map((_, i) => (
+        <DriftingText key={i} style={{
+          position: 'absolute',
+          bottom: '35vh',
+          left: `${22 + i }vw`,
+          zIndex: 4,
+          color: 'white'
+        }} distance={20} duration={2000} text="RUSTLE..." />
+      ))}
+      {/* Rustle */}
+      {Array.from({ length: 2 }).map((_, i) => (
+        <DriftingText key={i} style={{
+          position: 'absolute',
+          bottom: '35vh',
+          left: `${22 + i }vw`,
+          zIndex: 4,
+          color: 'white'
+        }} distance={10} duration={2000} text="MUNCH!!" />
+      ))}
 
       <Lop bottom="15vh" right="70vh"> 
         {/* Spoon */}
