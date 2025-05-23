@@ -52,7 +52,7 @@ const MultipleSelectPrompt = ({ prompt, responseKey, choices, disableOnSubmit=tr
     if (selections.length) {
       const sortedSelections = [...selections]
       sortedSelections.sort((a, b) => a - b)
-      onSubmit(choices.filter((_,i)=> i in sortedSelections), sortedSelections)
+      onSubmit(choices.filter((_,i)=> sortedSelections.includes(i)), sortedSelections)
     }
     if(disableOnSubmit){
       dispatch_setDisabled(true)
