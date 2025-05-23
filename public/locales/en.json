@@ -250,10 +250,10 @@
     "cellWall": "Cell Wall",
     "makeEnergy": "Makes energy from food",
     "controlCenter": "The control center of the cell that holds DNA and directs cell activities.",
-    "borderProtection": "a border that protects and controls movement in and out of the cell",
+    "borderProtection": "A border that protects and controls movement in and out of the cell",
     "wasteDigestion": "Breaks down and digests waste material.",
     "jellyFluid": "A jelly-like fluid that fills the cell",
-    "completed": "Good job! Let's go back to the microscope to identify if this organism is a plant or animal."
+    "completed": "Good job! Let's move on."
   },
   "level1_007PlantCellPuzzle": {
     "title": "Plant Cell",
@@ -281,10 +281,18 @@
     "cellWall": "Cell Wall",
     "jellyFluid": "A jelly-like fluid that fills the cell",
     "controlCenter": "The control center of the cell that holds DNA and directs cell activities.",
-    "borderProtection": "a border that protects and controls movement in and out of the cell",
+    "borderProtection": "A border that protects and controls movement in and out of the cell",
     "provideStructure": "Provides structure and support cell",
     "makeFood": "Uses sunlight to make food",
     "makeEnergy": "Makes energy from food",
     "completed": "Good job! Let's move on."
+  },
+  "plant-cell-image": {
+    "00FF00": "cell-membrane",
+    "FF0000": "nucleus",
+    "0000FF": "mitochondria",
+    "FF00FF": "cytoplasm",
+    "FFFF00": "cell-wall",
+    "FFFFFF": "chloroplast"
   }
 }
