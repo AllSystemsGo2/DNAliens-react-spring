@@ -25,13 +25,18 @@ If you are developing a production application, we recommend using TypeScript an
 
 ## Generate New Page
 ```
-create a new View 'Level1/Level1_003IntroCellina' include useNavigate from react-router-dom, {useString, animated} from react-spring/web, {useSelector, useDispatch} from react-redux, and {useTranslation} from react-i18next.
+create a new View 'Level1/Level1_003IntroCellina' include {useNavigate, useLocation} from react-router-dom, {useString, animated} from react-spring/web, {useSelector, useDispatch} from react-redux, and {useTranslation} from react-i18next.
 
-In the react viewcomponent function, create constants dispatch, t, and navigate to recieve useDispatch(), useTranslation(), and useNavigate().
+In the react viewcomponent function, create constants dispatch, t, navigate, and location to recieve useDispatch(), useTranslation(), useNavigate(), and useLocation().
 
-Also import character components: Lop and Player.
- 
-Import pageSlice and configure an empty defaultState. Then add a useEffect to dispatch initializePageAttributes for the defaultState and useSelector to retrieve the selectPageAttributes in the pattern shown in Level1_001Frisbee
+Import setBubbleShow from Bubble Helper.
+Import navigateTo from appSlice.
+Import setPageAttribute from pageSlice.
+
+Also import character components: Lop, Player, and Cellina
+Import SpeechBubble and MultipleChoicePrompt components. 
+
+ Configure an empty object named 'defaultState'. Then add a useEffect to dispatch initializePageAttributes for the defaultState with dependencies for [dispatch, location.pathname]. Use useSelector to retrieve the selectPageAttributes in the pattern shown in Level1_001Frisbee. 
 
 The container div must include the style selector "view".
 
@@ -48,6 +53,12 @@ Add a Player component with the following props:
 
 Add a Lop component with the following props:
 - left: 15vw
+- bottom: 12vh
+- zIndex: 2
+- state: idle
+
+Add a Cellina component with the following props:
+- left: 25vw
 - bottom: 12vh
 - zIndex: 2
 - state: idle

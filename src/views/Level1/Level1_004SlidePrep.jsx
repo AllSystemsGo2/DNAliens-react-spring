@@ -1,6 +1,8 @@
 import { useSpring, animated } from '@react-spring/web'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
@@ -15,7 +17,8 @@ import slide1 from '../../assets/blank-slide1.png'
 import Item from '../../components/Item'
 import Draggable from '../../components/Draggable'
 import DropArea from '../../components/DropArea'
-import SpeechBubble from '../../components/SpeechBubble'
+import SpeechBubble from '../../components/bubbles/SpeechBubble'
+import NarrativeBubble from '../../components/bubbles/NarrativeBubble'
 
 const defaultAttributes = {
   dropSpoon: "",
@@ -136,7 +139,7 @@ const Level1_004SlidePrep = () => {
   }
 
   const handleShake = () => {
-    if(shakeSpoonCount < 5) {
+    if(shakeSpoonCount < 4) {
       dispatch(setPageAttribute({
         pageId: "slidePrep",
         key: "shakeSpoonCount",
@@ -155,7 +158,7 @@ const Level1_004SlidePrep = () => {
         value: false
       }))
       setTimeout(() => {
-        dispatch(setBubbleShow("slidePrep", "speechBubble", false))
+        dispatch(setBubbleShow({pageId: "slidePrep", bubbleId: "speechBubble", show: false}))
         dispatch(setPageAttribute({
           pageId: "slidePrep",
           key: "showOpenMicroscope",
@@ -167,8 +170,14 @@ const Level1_004SlidePrep = () => {
   }
 
   const handleOpenMicroscope = () => {
-    navigate("/level1/005Microscope")
+    dispatch(navigateTo({navigate, path: "/level1/Level1_005SlideView"}))
   }
+
+  useEffect(() => {
+    if(showOpenMicroscope) {
+      dispatch(setBubbleShow({pageId: "slidePrep", bubbleId: "takeALook", show: true}))
+    }
+  }, [showOpenMicroscope])
 
   return (
     <div className="view">
@@ -207,10 +216,7 @@ const Level1_004SlidePrep = () => {
       </DropArea>
       {showShakeButton && <button style={{ position: "absolute", right: "5vw", top: "25vh", width: "20vh"}} className="submit-button dark xlarge" onClick={handleShake}>Shake</button>}
       <SpeechBubble pageId="slidePrep" id="speechBubble" mainText="Ok. That's probably enough." style={{ position: "absolute", right: "5vw", bottom: "35vh" }}/>
-      {showOpenMicroscope && <div style={{ position: "absolute", right: "3vw", bottom: "8vh"}}>
-        <img src={cellinaSmall} style={{position: "absolute", left: "-50%", top: "-75%", width: "15vh"}} />
-        <button  style={{ width: "20vh"}} className="submit-button dark" onClick={handleOpenMicroscope}>Let's take a look!</button>
-      </div>}
+      <NarrativeBubble pageId="slidePrep" id="takeALook" characterSrc={cellinaSmall} mainText="Ok. Let's take a look!" onClick={handleOpenMicroscope} showNext={true} right="3vh" bottom="3vh" />
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice';
 import EscapeScene from '../../components/EscapeScene'; 
 import DialogPrompt from '../../components/DialogPrompt'
-import './Level1Escape.css';
+import './Level1_012Escape.css';
 import Scene from '../../components/Scene'
 import starryBackground from '../../assets/starry-background.jpg'
 import Paragraph from '../../components/Paragraph';

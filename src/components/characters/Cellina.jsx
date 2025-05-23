@@ -1,33 +1,63 @@
 import React, { useEffect, useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSpring, animated } from '@react-spring/web';
-import characterImage from '../../assets/cellina1.png'
-import microscopeImage from '../../assets/cellina-microscope-2.png'
 import MovableCharacter from './MovableCharacter';
 import '../../styles/warpEffect.css';
 import { characterChildrenHelper } from '../../helpers/characterChildrenHelper';
 
-// state: idle, warp, microscope
+import characterImage from '../../assets/cellina1.png'
+import microscopeImage from '../../assets/cellina-microscope-2.png'
+import spaceshipImage from '../../assets/cellina-spaceship.png'
+
+
+// STATES: idle, warp, microscope
 const cellinaReducer = (state, action) => {
   switch (action.type) {
-    case 'WARP':
-      return { ...state, currentState: 'warp' };
+    // case 'WARP':
+    //   return { ...state, currentState: 'warp' };
     case 'MICROSCOPE':
       return { ...state, currentState: 'microscope' };
     case 'IDLE':
       return { ...state, currentState: 'idle' };
+    case 'SPACESHIP':
+      return { ...state, currentState: 'spaceship' };
     default:
       return state;
   }
 };
+
+/* Returns what character image to use when the character is first rendered */
+const initImgUrlMapper = (state, previousState=undefined) => {
+  if (state === 'warp') {
+    return previousState ? initImgUrlMapper(previousState) : characterImage
+  }
+  else if (state === 'microscope') {
+    return microscopeImage
+  }
+  else if (state === 'idle') {
+    return characterImage
+  }
+  else if (state === 'spaceship') {
+    return spaceshipImage
+  }
+  else {
+    return characterImage
+  }
+}
+
+/**
+ * 
+ * @param {*} state : "idle", "microscope", "spaceship" 
+ * @returns 
+ */
 
 const Cellina = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'right', zIndex = 2, state, children }) => {
   const { speechBubbles, itemChildren, otherChildren } = characterChildrenHelper(children)
   
   const [showDebugState, setShowDebugState] = useState(false);
   const [isWarping, setIsWarping] = useState(true);
-  const [imgUrl, setImgUrl] = useState(characterImage)
-  const [cellinaState, dispatch] = useReducer(cellinaReducer, { currentState: 'warp' })
+  const [imgUrl, setImgUrl] = useState(initImgUrlMapper(state))
+  const [cellinaState, dispatchCellina] = useReducer(cellinaReducer, { currentState: state })
 
   const warpSpring = useSpring({
     from: { opacity: 0, scale: 0, rotate: 0 },
@@ -39,19 +69,24 @@ const Cellina = ({ bottom = '20vh', left = '5vh', right, faceDirection = 'right'
   useEffect(() => {
     if(cellinaState.currentState !== state) {
       // Handle state changes
+      let timeoutId = undefined
+      setIsWarping(true)
       if (state === 'microscope') {
-        setIsWarping(cellinaState.currentState !== 'warp')
-        setTimeout(() => {setImgUrl(microscopeImage); setIsWarping(false)}, 2000)
+        timeoutId = setTimeout(() => {setImgUrl(microscopeImage); setIsWarping(false)}, 2000)
+      }
+      else if (state === 'spaceship') {
+        timeoutId = setTimeout(() => {setImgUrl(spaceshipImage); setIsWarping(false)}, 2000)
       }
       else if (state === 'idle') {
-        setImgUrl(characterImage)
+        timeoutId = setTimeout(() => { console.log("goto idle") ; setImgUrl(characterImage); setIsWarping(false)}, 2000)
       }
       else if (state === 'warp') {
         setIsWarping(true)
       }
-      dispatch({ type: state.toUpperCase() })
+      dispatchCellina({ type: state.toUpperCase() })
+      return ()=> {console.log("cancel timeout") ; clearTimeout(timeoutId)}
     }
-  }, [state, cellinaState.currentState])
+  }, [state])
 
   useEffect(() => {
     setShowDebugState(true)

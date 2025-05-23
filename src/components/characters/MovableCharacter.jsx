@@ -25,12 +25,30 @@ const MovableCharacter = ({ id, bottom = '10vh', left = '5vh', right, zIndex = 2
     }
   }, [dispatch, id, left]);
 
+  useEffect(() => {
+    if (bottom !== undefined) {
+      dispatch(updateCharacterPosition({ id, bottom }));
+    }
+  }, [dispatch, id, bottom]);
+
+  useEffect(() => {
+    if (zIndex !== undefined) {
+      dispatch(updateCharacterPosition({ id, zIndex }));
+    }
+  }, [dispatch, id, zIndex]);
+
   const translateSpring = useSpring({
     position: 'absolute',
     ...(right !== undefined 
       ? { right: character?.currentRight !== character?.prevRight ? character?.currentRight : character?.prevRight }
       : { left: character?.currentLeft !== character?.prevLeft ? character?.currentLeft : character?.prevLeft }
     ),
+    ...(zIndex !== undefined 
+      ? { zIndex: character?.zIndex !== character?.prevZIndex ? character?.zIndex : character?.prevZIndex }
+      : {}),
+    ...(bottom !== undefined 
+      ? { bottom: character?.currentBottom !== character?.prevBottom ? character?.currentBottom : character?.prevBottom }
+      : {}),
     config: { tension: 60, friction: 14 }
   });
      

@@ -1,4 +1,4 @@
-import { Link, MemoryRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
+import { Link, MemoryRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { loginUser, logout, fetchUser, refreshAuth } from './store/slices/authSlice'
 import React, { useEffect, useState, Suspense } from 'react'
@@ -6,11 +6,12 @@ import { setStoreDispatch } from './graphql/client'
 import { useTranslation } from 'react-i18next'
 import LanguageSelector from './components/LanguageSelector'
 import { resetPageAttributes } from './store/slices/pageSlice'
+import { setPageId, navigateTo } from './store/slices/appSlice'
+import { getPageId } from './helpers/locationHelper'
 import './store/i18n'
 import './App.css'
 import './styles/animations.css'
 import './styles/nav.css'
-
 
 // Import all view components dynamically
 const viewsContext = import.meta.glob('./views/**/*.jsx', { eager: true })
@@ -28,13 +29,16 @@ const routes = Object.entries(viewsContext).map(([path, module]) => {
 
 function Navigation() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
+  
   const location = useLocation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   return (
     <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
       <Link to="/" className="nav-link">{t('nav.home')}</Link>
       <select 
-        onChange={(e) => navigate(e.target.value)}
+        onChange={(e) => dispatch(navigateTo({navigate, path: e.target.value}))}
         value={location.pathname}
         style={{
           background: '#2a2a2a',
@@ -96,14 +100,10 @@ function App() {
 
   return (
     <MemoryRouter>
-      <div className="App" style={{
-        minHeight: '100vh',
-        minWidth: '120vh',
-        width: '160vh',
-        position: 'relative'
-      }}>
+      <div className="App">
+        <LocationTracker />
         <nav style={{
-          padding: '20px',
+          width: '100%',
           background: '#1a1a1a',
           boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
           display: 'flex',
@@ -156,54 +156,87 @@ function App() {
           )}
           <LanguageSelector selected="en" />
         </nav>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route path="/" element={
-              <div className='view'>
-                <h3>{t('home.intro')}</h3>
-                <h3>{t('home.instructions')}</h3>
-                <div>
-                  <h2>{t('home.sections.codebase')}</h2>
-                  <li>React SPA in JSX</li>
-                  <li>React Spring</li>
-                  <li>Simple CSS Animations</li>
-                  <li>React Audio</li>
-                  <li>Lottie</li>
+        <div className='superview'>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Routes>
+              <Route path="/" element={
+                <div className='view'>
+                  <div>
+                    <BeginButton/>
+                  </div>
+                  <h3>{t('home.intro')}</h3>
+                  <h3>{t('home.instructions')}</h3>
+                  <div>
+                    <h2>{t('home.sections.codebase')}</h2>
+                    <li>React SPA in JSX</li>
+                    <li>React Spring</li>
+                    <li>Simple CSS Animations</li>
+                    <li>React Audio</li>
+                    <li>Lottie</li>
+                  </div>
+                  <div>
+                    <h2>{t('home.sections.artTools')}</h2>
+                    <li>Gemini Flash 2.0 - static image generation</li>
+                    <li>PixelBay - open source, royalty-free sound library </li>
+                    <li>Krita - open source image editor</li>
+                    <li>Audacity - open source audio editor</li>
+                  </div>
+                  <div>
+                    <h2>{t('home.sections.codeGenTools')}</h2>
+                    <li>Claude 3.5 Sonnet</li>
+                  </div>
+                  <div>
+                    <button onClick={handleResetGameData} disabled={disableReset}>Reset Game Data</button>
+                  </div>
                 </div>
-                <div>
-                  <h2>{t('home.sections.artTools')}</h2>
-                  <li>Gemini Flash 2.0 - static image generation</li>
-                  <li>PixelBay - open source, royalty-free sound library </li>
-                  <li>Krita - open source image editor</li>
-                  <li>Audacity - open source audio editor</li>
-                </div>
-                <div>
-                  <h2>{t('home.sections.codeGenTools')}</h2>
-                  <li>Claude 3.5 Sonnet</li>
-                </div>
-                <div>
-                  <button onClick={handleResetGameData} disabled={disableReset}>Reset Game Data</button>
-                </div>
-              </div>
-            } />
-            {routes.map(({ path, component }) => (
-              <Route
-                key={path}
-                path={path}
-                element={React.createElement(component)}
-              />
-            ))}
-            <Route path="*" element={
-              <NotFound />
-            } />
+              } />
+              {routes.map(({ path, component }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  element={React.createElement(component)}
+                />
+              ))}
+              <Route path="*" element={
+                <NotFound />
+              } />
 
-          </Routes>
-        </Suspense>
+            </Routes>
+          </Suspense>
+        </div>
       </div>
     </MemoryRouter>
   )
 }
 
+const BeginButton = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [disableReset, setDisableReset] = useState(false)
+  const handleBegin = () => {
+    setDisableReset(true)
+    dispatch(resetPageAttributes()).finally(() => {
+      setDisableReset(false)
+      dispatch(navigateTo({navigate, path: "/level1/Level1_001Frisbee"}))
+    })
+  }
+  return (
+    <button onClick={handleBegin} disabled={disableReset}>Begin Game</button>
+  )
+}
+
+// Create a LocationTracker component to handle location changes
+const LocationTracker = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    console.log("Location changed to", location.pathname)
+    dispatch(setPageId(getPageId(location.pathname)))
+  }, [location, dispatch]);
+  
+  return null;
+};
 
 function NotFound() {
   const location = useLocation();

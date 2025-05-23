@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { useSpring, animated } from '@react-spring/web';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -8,18 +10,26 @@ import { useTranslation } from 'react-i18next';
 import Lop from '../../components/characters/Lop';
 import Player from '../../components/characters/Player';
 import Cellina from '../../components/characters/Cellina';
-import SpeechBubble from '../../components/SpeechBubble';
-import DialogBubble from '../../components/DialogBubble';
+import SpeechBubble from '../../components/bubbles/SpeechBubble';
+import DriftingText from '../../components/DriftingText';
+import SceneAudio from '../../components/SceneAudio';
+
 import {setBubbleShow} from '../../helpers/bubbleHelper'
 import WrittenResponsePrompt from '../../components/WrittenResponsePrompt';
 import Item from '../../components/Item';
+import Scene from '../../components/Scene'
+
+//Assets
 import starryBackground from '../../assets/starry-background.jpg'
 import planetForeground from '../../assets/planet-foreground.png'
-import Scene from '../../components/Scene'
 import spaceship from '../../assets/spaceship-crashed-2048.png'
 import spoonImage from '../../assets/spoon.png'
 import animalCell from '../../assets/animal-cell1-512.png'
 import plantCell from '../../assets/plant-cell1-512.png'
+import spaceshipRustling from '../../assets/spaceship-rustling.ogg'
+
+
+
 
 // Redux
 import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice';
@@ -43,6 +53,17 @@ const setPlayerCellsExplanation = (value) => setPageAttribute({pageId: "introCel
 const setShowHoloboard = (show) => setPageAttribute({pageId: "introCellina", key: "showHoloboard", value: show })
 const setCellinaState = (state) => setPageAttribute({pageId: "introCellina", key: "cellinaState", value: state })
 
+  /**
+   * The IntroCellina view component.
+   * 
+   * This component renders the "Intro to Cellina" view.
+   * The view contains a crashed spaceship, a rustling sound effect, a Lop character, a Player character, a Cellina character, and a holoboard.
+   * The view also contains bubbles for the Lop, Player, and Cellina characters, and a written response prompt for the Player.
+   * The view also contains a holoboard with two cells: an animal cell and a plant cell.
+   * The view also contains a navigation button to navigate to the next level.
+   * 
+   * @returns {JSX.Element} The IntroCellina view component.
+   */
 const IntroCellina = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -67,52 +88,54 @@ const IntroCellina = () => {
     }
   }, [dispatch, showCellina]);
 
+  
+
   useEffect(()=> {
     if(startDialogAtStep === 0) { 
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "warp", true)), 3000)
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "warp", show: true})), 3000)
     }
     if(startDialogAtStep === 1) {
-      dispatch(setBubbleShow("introCellina", "warp", false))
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "lopHelp", true)), 500)
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "warp", show: false}))
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopHelp", show: true})), 500)
     }
     else if (startDialogAtStep === 2) {
-      dispatch(setBubbleShow("introCellina", "lopHelp", false))
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "cellinaSaliva", true)), 500)
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopHelp", show: false}))
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaSaliva", show: true})), 500)
     }
     else if (startDialogAtStep === 3) {
-      dispatch(setBubbleShow("introCellina", "cellinaSaliva", false))
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "lopCells", true)), 500)
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaSaliva", show: false}))
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopCells", show: true})), 500)
     }
     else if (startDialogAtStep === 4) {
-      dispatch(setBubbleShow("introCellina", "lopCells", false))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopCells", show: false}))
       setTimeout(() => dispatch(setShowQuestion(true)), 500)
     }
     else if (startDialogAtStep === 5) {
-      dispatch(setBubbleShow("introCellina", "playerCellsExplanation", false))
-      dispatch(setBubbleShow("introCellina", "cellinaCells", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "playerCellsExplanation", show: false}))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaCells", show: true}))
       dispatch(setShowHoloboard(true))
     }
     else if (startDialogAtStep === 6) {
-      dispatch(setBubbleShow("introCellina", "playerCellsExplanation", false))
-      dispatch(setBubbleShow("introCellina", "cellinaCells", false))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "playerCellsExplanation", show: false}))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaCells", show: false}))
       dispatch(setShowHoloboard(false))
-      dispatch(setBubbleShow("introCellina", "cellinaExamineCells", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaExamineCells", show: true}))
     }
     else if (startDialogAtStep === 7) {
-      dispatch(setBubbleShow("introCellina", "cellinaExamineCells", false))
-      dispatch(setBubbleShow("introCellina", "lopExamineSpoon", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaExamineCells", show: false}))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopExamineSpoon", show: true}))
     }
     else if (startDialogAtStep === 8) {
-      dispatch(setBubbleShow("introCellina", "lopExamineSpoon", false))
-      dispatch(setBubbleShow("introCellina", "cellinaExamineSpoon", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "lopExamineSpoon", show: false}))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaExamineSpoon", show: true}))
     }
     else if (startDialogAtStep === 9) {
-      dispatch(setBubbleShow("introCellina", "cellinaExamineSpoon", false))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaExamineSpoon", show: false}))
       dispatch(setCellinaState("microscope"))
-      setTimeout(() => dispatch(setBubbleShow("introCellina", "cellinaMicroscope", true)), 2000)
+      setTimeout(() => dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaMicroscope", show: true})), 2000)
     }
     else if (startDialogAtStep === 10) {
-      navigate("/level1/Level1_004SlidePrep")
+      dispatch(navigateTo({navigate, path: "/level1/Level1_004SlidePrep"}))
     }
   }, [dispatch, startDialogAtStep, navigate])
 
@@ -123,16 +146,16 @@ const IntroCellina = () => {
   const handleResponse = (response) => {
     dispatch(setShowQuestion(false))
     dispatch(setPlayerCellsExplanation(response))
-    dispatch(setBubbleShow("introCellina", "playerCellsExplanation", true))
+    dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "playerCellsExplanation", show: true}))
 
     setTimeout(() => {
-      dispatch(setBubbleShow("introCellina", "cellinaCells", true))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "cellinaCells", show: true}))
       dispatch(setShowHoloboard(true))
     }, 1500)
     
     setTimeout(() => {
       dispatch(setShowStartDialogAtStep(5))
-      dispatch(setBubbleShow("introCellina", "playerCellsExplanation", false))
+      dispatch(setBubbleShow({pageId: "introCellina", bubbleId: "playerCellsExplanation", show: false}))
     }, 4000)
   }
 
@@ -141,13 +164,14 @@ const IntroCellina = () => {
     <div className="view intro-cellina">
       {/* Add your view content here */}
       <Scene skyImage={starryBackground} terrainImage={planetForeground} transformTerrain="scaleX(-1)" />
+      <SceneAudio audioPath={spaceshipRustling} isPlaying={true} mute={false} volume={0.5}/>
       
       {/* Crashed Spaceship */}
       <div 
         style={{
           position: 'absolute',
           bottom: '10vh',
-          left: '15vw',
+          left: '25vh',
           width: '60vh',
           height: '60vh',
           backgroundImage: `url(${spaceship})`,
@@ -159,7 +183,28 @@ const IntroCellina = () => {
         }}
       />
 
-      <Lop bottom="15vh" right="50vw"> 
+      {/* Rustle */}
+      {Array.from({ length: 3 }).map((_, i) => (
+        <DriftingText key={i} style={{
+          position: 'absolute',
+          bottom: '35vh',
+          left: `${22 + i }vw`,
+          zIndex: 4,
+          color: 'white'
+        }} distance={20} duration={2000} text="RUSTLE..." />
+      ))}
+      {/* Rustle */}
+      {Array.from({ length: 2 }).map((_, i) => (
+        <DriftingText key={i} style={{
+          position: 'absolute',
+          bottom: '35vh',
+          left: `${22 + i }vw`,
+          zIndex: 4,
+          color: 'white'
+        }} distance={10} duration={2000} text="MUNCH!!" />
+      ))}
+
+      <Lop bottom="15vh" right="70vh"> 
         {/* Spoon */}
         {showSpoon && (
           <Item style={{
@@ -180,21 +225,21 @@ const IntroCellina = () => {
             />
           </Item>
         )}
-        <SpeechBubble pageId="introCellina" id="lopHelp" subText={t("introCellina.lopHelp.subText")} showNext={true} onClick={() => stepDialog(2)} />
-        <SpeechBubble pageId="introCellina" id="lopCells" subText={t("introCellina.lopCells.subText")} showNext={true} onClick={() => stepDialog(4)}/>
-        <SpeechBubble pageId="introCellina" id="lopExamineSpoon" subText={t("introCellina.lopExamineSpoon.subText")} showNext={true} onClick={() => stepDialog(8)}/>
+        <SpeechBubble pageId="introCellina" id="lopHelp" mainText={t("introCellina.lopHelp.mainText")} showNext={true} onClick={() => stepDialog(2)} />
+        <SpeechBubble pageId="introCellina" id="lopCells" mainText={t("introCellina.lopCells.mainText")} showNext={true} onClick={() => stepDialog(4)}/>
+        <SpeechBubble pageId="introCellina" id="lopExamineSpoon" mainText={t("introCellina.lopExamineSpoon.mainText")} showNext={true} onClick={() => stepDialog(8)}/>
       </Lop>
       <Player bottom="5vh" right="15vh" faceDirection='left' zIndex={3}>
-        <SpeechBubble pageId="introCellina" id="playerCellsExplanation" subText={playerCellsExplanation} showNext={false} onClick={() => stepDialog(5)} />
+        <SpeechBubble pageId="introCellina" id="playerCellsExplanation" mainText={playerCellsExplanation} showNext={false} onClick={() => stepDialog(5)} />
       </Player>
       {showCellina && (
         <Cellina bottom="35vh" right="30vh" faceDirection='left' state={cellinaState}>
-          <SpeechBubble top="-15vh" pageId="introCellina" id="warp" subText={t("introCellina.warp.subText")} showNext={true} onClick={() => stepDialog(1)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaSaliva" subText={t("introCellina.cellinaSaliva.subText")} showNext={true} onClick={() => stepDialog(3)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaCells" subText={t("introCellina.cellinaCells.subText")} showNext={true} onClick={() => stepDialog(6)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineCells" subText={t("introCellina.cellinaExamineCells.subText")} showNext={true} onClick={() => stepDialog(7)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineSpoon" subText={t("introCellina.cellinaExamineSpoon.subText")} showNext={true} onClick={() => stepDialog(9)} />
-          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaMicroscope" subText={t("introCellina.cellinaMicroscope.subText")} showNext={true} onClick={() => stepDialog(10)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="warp" mainText={t("introCellina.warp.mainText")} showNext={true} onClick={() => stepDialog(1)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaSaliva" mainText={t("introCellina.cellinaSaliva.mainText")} showNext={true} onClick={() => stepDialog(3)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaCells" mainText={t("introCellina.cellinaCells.mainText")} showNext={true} onClick={() => stepDialog(6)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineCells" mainText={t("introCellina.cellinaExamineCells.mainText")} showNext={true} onClick={() => stepDialog(7)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaExamineSpoon" mainText={t("introCellina.cellinaExamineSpoon.mainText")} showNext={true} onClick={() => stepDialog(9)} />
+          <SpeechBubble top="-15vh" pageId="introCellina" id="cellinaMicroscope" mainText={t("introCellina.cellinaMicroscope.mainText")} showNext={true} onClick={() => stepDialog(10)} />
         </Cellina>
       )}
 

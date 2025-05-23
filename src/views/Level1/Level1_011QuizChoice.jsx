@@ -9,10 +9,15 @@ import Lop from '../../components/characters/Lop';
 import Player from '../../components/characters/Player';
 import Sprinkles from '../../components/characters/Sprinkles';
 import Enemy from '../../components/characters/Enemy';
-import SpeechBubble from '../../components/SpeechBubble';
+
+import SpeechBubble from '../../components/bubbles/SpeechBubble';
+import { setBubbleShow } from '../../helpers/bubbleHelper';
+
 import starryBackground from '../../assets/starry-background.jpg';
 import planetForeground from '../../assets/planet-foreground.png';
-import './Level1QuizChoice.css';
+import './Level1_011QuizChoice.css';
+
+import { navigateTo } from '../../store/slices/appSlice'
 
 const defaultAttributes = {
   showEnemies: false,
@@ -39,6 +44,7 @@ const Level1QuizChoice = () => {
       dispatch(setShowEnemies(true));
       setTimeout(() => {
         dispatch(setShowThreaten(true))
+        dispatch(setBubbleShow({pageId: "level1quizchoice", bubbleId: "threaten", show: true}))
       }, 1000);
 
       setTimeout(() => {
@@ -53,11 +59,13 @@ const Level1QuizChoice = () => {
     if (showFightText) {
       setTimeout(() => {
         dispatch(setGotoFightStance(true));
+        dispatch(setBubbleShow({pageId: "level1quizchoice", bubbleId: "fightText", show: true}))
       }, 1500);
     }
     if (showEscapeText) {
       setTimeout(() => {
         dispatch(setGotoEscapeStance(true));
+        dispatch(setBubbleShow({pageId: "level1quizchoice", bubbleId: "escapeText", show: true}))
       }, 1500);
     }
   }, [showFightText, showEscapeText, dispatch]);
@@ -93,11 +101,12 @@ const Level1QuizChoice = () => {
 
   const handleReady = (choice) => {
     if (choice === 'fight') {
-      navigate('/Level1/Level1Fight');
+      dispatch(navigateTo({navigate, path: '/level1/Level1_012Fight'}));
     } else if (choice === 'escape') {
-      navigate('/Level1/Level1Escape');
+      dispatch(navigateTo({navigate, path: '/level1/Level1_012Escape'}));
     }
   };
+
 
   return (
     <div className="view quiz-choice-container">
@@ -105,13 +114,13 @@ const Level1QuizChoice = () => {
       <div className="characters-group">
         <PlayerShip left="25vw" bottom="25vh" size="45vh" zIndex={1} character="cellina-spaceship" state="landed" />
         <Player left={!gotoFightStance ? "5vw" : "25vw"} faceDirection='right' bottom={!gotoFightStance ? "5vh" : "12vh"} zIndex={2} state="idle">
-          {showFightText && <SpeechBubble subText={"I’d like to see you try!"} />}
-          {showEscapeText && <SpeechBubble subText={"Quick everyone on the ship!"} />}
+          <SpeechBubble pageId="level1quizchoice" id="fightText" mainText={"I’d like to see you try!"} />
+          <SpeechBubble pageId="level1quizchoice" id="escapeText" mainText={"Quick everyone on the ship!"} />
         </Player>
         <Lop left={!gotoFightStance ? "15vw" : "15vw"} faceDirection='right' bottom={!gotoFightStance ? "12vh" : "10vh"} zIndex={2} state="idle" />
         <Sprinkles left={!gotoFightStance ? "30vw" : "5vw"} faceDirection='right' bottom={!gotoFightStance ? "10vh" : "5vh"} zIndex={2} state="idle" />
         <Enemy id="baddies1" right={showEnemies ? '5vw' : '-30vw'} bottom="5vh" zIndex={2} state="idle" character="baddies1">
-          {showThreaten && <SpeechBubble subText={"Hey! That's a cute creature you have there. Be a shame if anyone tried to take it."} />}
+          <SpeechBubble pageId="level1quizchoice" id="threaten" mainText={"Hey! That's a cute creature you have there. Be a shame if anyone tried to take it."} />
         </Enemy>
         <Enemy id="baddies2" right={showEnemies ? '1vw' : '-40vw'} bottom="1vh" zIndex={2} state="idle" character="baddies2" />
       </div>
@@ -130,7 +139,7 @@ const Level1QuizChoice = () => {
           </div>
         </div>
       )}
-      {setShowReadyButton && gotoFightStance && (
+      {showReadyButton && gotoFightStance && (
         <div id="challenge-choice" className="ui-overlay">
           <div className="choice-buttons">
             <button className="choice-button fight" onClick={() => handleReady('fight')}>
@@ -140,7 +149,7 @@ const Level1QuizChoice = () => {
           </div>
         </div>
       )}
-      {setShowReadyButton && gotoEscapeStance && (
+      {showReadyButton && gotoEscapeStance && (
         <div id="challenge-choice" className="ui-overlay">
           <div className="choice-buttons">
             <button className="choice-button escape" onClick={() => handleReady('escape')}>

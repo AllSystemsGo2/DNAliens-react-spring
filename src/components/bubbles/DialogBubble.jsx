@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './SpeechBubble.css'
+import './Bubble.css'
 import { useSelector, useDispatch } from 'react-redux';
-import { initializePageAttributes, selectPageAttributes } from '../store/slices/pageSlice';
+import { initializePageAttributes } from '../../store/slices/pageSlice';
+import { selectBubbleShowAttribute } from '../../helpers/bubbleHelper';
+
 
 const defaultAttributes = {
   show: false
@@ -10,11 +12,12 @@ const defaultAttributes = {
 
 const DialogBubble = ({ pageId="", id="", mainText, subText, choices=[], onSubmit, top = '-50%', bottom, left = '0vh', maxWidth="300px", right, style }) => {
   const dispatch = useDispatch();
-  const { show } = useSelector(state => selectPageAttributes(state, `${pageId}:${id}`));
-
+  const { show } = useSelector(state => selectBubbleShowAttribute({state, pageId, bubbleId: id, defaultValue: false}))
+  const {_pageId } = useSelector(state => pageId ? {_pageId: pageId} : {_pageId: state.app.pageId})
+  
   React.useEffect(() => {
-    dispatch(initializePageAttributes({pageId: `${pageId}:${id}`, id: 'show', props: defaultAttributes}));
-  }, [dispatch, pageId, id]);
+    dispatch(initializePageAttributes({pageId: `${_pageId}:${id}`, id: 'show', props: defaultAttributes}));
+  }, [dispatch, _pageId, id]);
 
   const bubbleStyle = {
     ...style,
@@ -24,7 +27,7 @@ const DialogBubble = ({ pageId="", id="", mainText, subText, choices=[], onSubmi
   }
 
   return show ? (
-    <div className="speech-bubble" style={bubbleStyle}>
+    <div className="speech-bubble bubble" style={bubbleStyle}>
       <span style={{ display: 'block' }}>{mainText}</span>
       {subText && (
         <span style={{
@@ -37,7 +40,7 @@ const DialogBubble = ({ pageId="", id="", mainText, subText, choices=[], onSubmi
         </span>
       )}
       <div className="dialog-choices">
-        {choices.map((choice, index) => (
+        {choices?.slice(0, choices?.length).map((choice, index) => (
           <button
             key={index}
             className="dialog-choice-button"

@@ -3,6 +3,7 @@ import { client } from '../../graphql/client'
 import { GET_USER } from '../../graphql/queries/user'
 import { login, refreshAuthToken } from '../../auth'
 import { setPages } from '../slices/pageSlice'
+import { setResponses } from '../slices/responseSlice'
 
 export const loginUser = createAsyncThunk(
   'auth/login',
@@ -35,7 +36,7 @@ export const refreshAuth = createAsyncThunk(
 
 export const fetchUser = createAsyncThunk(
   'auth/fetchUser',
-  async (_, { dispatch }) => {
+  async (_, { dispatch, getState }) => {
     const username = localStorage.getItem('username')
     const { data } = await client.query({
       query: GET_USER,  
@@ -45,7 +46,7 @@ export const fetchUser = createAsyncThunk(
     })
 
     // Parse pageAttributes from database, (all attributes are strings in database)
-    const DNAliens = JSON.parse(data.getUser.gameData.documentRoot).DNAliens
+    const DNAliens = JSON.parse(data.getUser.gameData.documentRoot)[getState().app.name]
     Object.keys(DNAliens["pages"]).forEach(pageId => {
       Object.keys(DNAliens["pages"][pageId]).forEach(key => {
         try { 
@@ -57,6 +58,18 @@ export const fetchUser = createAsyncThunk(
       })
     })
     dispatch(setPages(DNAliens["pages"]))
+
+    // Do not retrieve responses from database, 
+    // const responses = JSON.parse(data.getUser.respData.documentRoot)[getState().app.lesson]
+    // Object.keys(responses).forEach(key => {
+    //   try { 
+    //     responses[key] = JSON.parse(responses[key])
+    //   }
+    //   catch  {
+    //     // its a string, so keep it as a string
+    //   }
+    // })
+    // dispatch(setResponses(responses))
 
     return {username, ...data.getUser}
   }

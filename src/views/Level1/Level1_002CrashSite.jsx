@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { navigateTo } from '../../store/slices/appSlice'
+
 import { useSpring, animated } from '@react-spring/web'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
@@ -14,15 +16,15 @@ import spoon2 from '../../assets/spoon.png'
 import player from '../../assets/player-character-2.png'
 import spaceshipRustling from '../../assets/spaceship-rustling.ogg'
 import Lop from '../../components/characters/Lop'
-import SpeechBubble from '../../components/SpeechBubble';
+import SpeechBubble from '../../components/bubbles/SpeechBubble';
 import Item from '../../components/Item';
-import MultipleChoicePrompt from '../../components/MultipleChoicePrompt'
-import Paragraph from '../../components/Paragraph'
 import DriftingText from '../../components/DriftingText'
+import DialogBubble from '../../components/bubbles/DialogBubble'
 
 import { setBubbleShow, selectBubbleShowAttribute } from '../../helpers/bubbleHelper'
 
 import { setPageAttribute, initializePageAttributes, selectPageAttributes } from '../../store/slices/pageSlice'
+import { updateCharacterPosition } from '../../store/slices/movableCharacterSlice'
 
 const defaultAttributes = {
   isPlaying: false,
@@ -30,7 +32,6 @@ const defaultAttributes = {
   isLoading: true,
   showRustle: true,
   showMunching: false,
-  showPrompt: false,
   shownPrompt: false,
   lopResponseNumber: 0,
   showSpoon: false,
@@ -43,7 +44,6 @@ const setVolume = (value) => setPageAttribute({pageId: "crashSite", key: "volume
 const setIsLoading = (value) => setPageAttribute({pageId: "crashSite", key: "isLoading", value})
 const setShowRustle = (value) => setPageAttribute({pageId: "crashSite", key: "showRustle", value})
 const setShowMunching = (value) => setPageAttribute({pageId: "crashSite", key: "showMunching", value})
-const setShowPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "showPrompt", value})
 const setShownPrompt = (value) => setPageAttribute({pageId: "crashSite", key: "shownPrompt", value})
 const setShowLopResponseNumber = (value) => setPageAttribute({pageId: "crashSite", key: "lopResponseNumber", value})
 const setShowSpoon = (value) => setPageAttribute({pageId: "crashSite", key: "showSpoon", value})
@@ -57,6 +57,7 @@ const CrashSite = () => {
 
   useEffect(() => {
     dispatch(initializePageAttributes({pageId: "crashSite", props: defaultAttributes}))
+    dispatch(updateCharacterPosition({pageId: "crashSite", id: "lopCharacter", right: defaultAttributes.lopPositionRight, bottom: "2vh", zIndex: 3}))
   }, [dispatch])
 
   const {
@@ -64,7 +65,6 @@ const CrashSite = () => {
     volume,
     isLoading,
     showRustle,
-    showPrompt,
     shownPrompt,  
     lopResponseNumber,
     showSpoon,
@@ -73,7 +73,7 @@ const CrashSite = () => {
     showMunching
   } = useSelector((state) => selectPageAttributes(state, "crashSite", defaultAttributes))
 
-  const showLopResponse = useSelector((state) => selectBubbleShowAttribute(state, "crashSite", "lopResponse", false))
+  const showLopResponse = useSelector((state) => selectBubbleShowAttribute({state, pageId: "crashSite", bubbleId: "lopResponse", defaultValue: false}).show)
 
   const audioRef = useRef(new Audio(spaceshipRustling))
 
@@ -110,18 +110,20 @@ const CrashSite = () => {
   })
 
   useEffect(() => {
-    if(lopPositionRight === "-25vh") dispatch(setLopPositionRight("25vh"))
+    setTimeout(() => {
+      if(lopPositionRight === "-25vh") dispatch(setLopPositionRight("25vh"))
+    }, 300)
   }, [dispatch, lopPositionRight])
 
   useEffect(() => {
     dispatch(setIsPlaying(true))
 
     const speechTimer = !shownPrompt ? setTimeout(() => {
-      dispatch(setBubbleShow("crashSite", "speechBubble", true))
+      dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "speechBubble", show: true}))
     }, 3000) : null
 
     const promptTimer = !shownPrompt ? setTimeout(() => {
-      dispatch(setShowPrompt(true))
+      dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "dialogBubble", show: true}) )
       dispatch(setShownPrompt(true))
     }, 6000) : null
 
@@ -141,18 +143,17 @@ const CrashSite = () => {
   }, [dispatch, showLopResponse])
 
   const makeChoice = (_, index) => {
-    dispatch(setBubbleShow("crashSite", "speechBubble", false))
-    
-    dispatch(setShowPrompt(false))
-    dispatch(setBubbleShow("crashSite", "lopResponse", true))
+    dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "speechBubble", show: false}))
+    dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "dialogBubble", show: false}))
+    dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "lopResponse", show: true}))
     dispatch(setShowLopResponseNumber(index + 1))            
   }
 
   const testWithSpoon = () => {
     console.log("testWithSpoon")
-    dispatch(setBubbleShow("crashSite", "lopResponse", false))
+    dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "lopResponse", show: false}))
     //move lop to ship
-    dispatch(setLopPositionRight("50vw"))
+    dispatch(setLopPositionRight("75vh"))
     setTimeout(() => { 
       dispatch(setShowSpoon(false)) 
       dispatch(setShowRustle(false))
@@ -164,14 +165,17 @@ const CrashSite = () => {
       dispatch(setShowMunching(false))
     }, 3000)
     setTimeout(() => { 
-      dispatch(setBubbleShow("crashSite", "lopQuestion", true))
+      dispatch(setBubbleShow({pageId: "crashSite", bubbleId: "lopQuestion", show: true}))
     }, 4000)
   }
 
   const gotoNextPage = () => {
-    navigate('/Level1/Level1_003IntroCellina');
+    dispatch(navigateTo({navigate, path: '/level1/Level1_003IntroCellina'}));
   }
 
+  /**
+   * Play Audio Effects
+   */
   useEffect(() => {
     const audio = audioRef.current
     audio.loop = true
@@ -315,7 +319,7 @@ const CrashSite = () => {
       ))}
 
       {/* Lop foreground */}
-      <Lop bottom="15vh" right={lopPositionRight} zIndex={2} state="idle" >
+      <Lop bottom="2vh" right={lopPositionRight} zIndex={3} state="idle" >
           {/* Lop speech bubble */}
             <SpeechBubble
               pageId="crashSite"
@@ -324,7 +328,6 @@ const CrashSite = () => {
               left="-25%"
               bottom="100%"
               mainText={t('crashSite.speechBubble.mainText')}
-              subText={t('crashSite.speechBubble.subText')}
               style={{
                 zIndex: 3,
                 minWidth: '200px',
@@ -338,7 +341,7 @@ const CrashSite = () => {
               maxWidth='400px'
               left="-25%"
               bottom="100%"
-              subText={t(`crashSite.lopResponse${lopResponseNumber}.subText`)}
+              mainText={t(`crashSite.lopResponse${lopResponseNumber}.mainText`)}
               showNext={true}
               onClick={testWithSpoon}
               style={{
@@ -355,7 +358,7 @@ const CrashSite = () => {
               maxWidth='400px'
               right="-50%"
               bottom="100%"
-              subText={t(`crashSite.lopQuestion.subText`)}
+              mainText={t(`crashSite.lopQuestion.mainText`)}
               showNext={true}
               onClick={gotoNextPage}
               style={{
@@ -389,7 +392,7 @@ const CrashSite = () => {
       {/* Player foreground */}
       <animated.div id="player-character" style={{
         position: 'absolute',
-        bottom: '5vh',
+        bottom: '15vh',
         width: '30vh',
         height: '30vh',
         backgroundImage: `url(${player})`,
@@ -402,20 +405,20 @@ const CrashSite = () => {
       }} />
 
       {/* Multiple choice prompt */}
-      {showPrompt && (
-        <MultipleChoicePrompt
-          prompt={t('crashSite.prompt.question')}
-          responseKey="crashSite"
-          choices={t('crashSite.prompt.choices', { returnObjects: true })}
-          onSubmit={makeChoice}
-          style={{
-            top: '5vh',
-            left: '50vh',
-            transform: 'translateX(-50%)',
-            zIndex: 3
-          }}
-        />
-      )}
+      <DialogBubble
+        pageId="crashSite"
+        id="dialogBubble"
+        responseKey="crashSite"
+        maxWidth='400px'
+        top="30vh"
+        right="5vh"
+        mainText={t('crashSite.prompt.question')}
+        choices={t('crashSite.prompt.choices', { returnObjects: true })}
+        onSubmit={makeChoice}
+        style={{
+          zIndex: 3
+        }}
+      />
     
 
       {/* Audio Control Button */}

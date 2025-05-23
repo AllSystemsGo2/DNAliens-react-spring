@@ -1,0 +1,296 @@
+//Fundamentals
+import { useSpring, animated } from '@react-spring/web'
+import { useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
+
+//Store
+import { navigateTo } from '../../store/slices/appSlice'
+import { initializePageAttributes, selectPageAttributes, setPageAttribute } from '../../store/slices/pageSlice'
+import { updateCharacterPosition } from '../../store/slices/movableCharacterSlice'
+import { setBubbleShow } from '../../helpers/bubbleHelper'
+import { getPageId } from '../../helpers/locationHelper'
+
+// Import backgrounds
+import starryBackground from '../../assets/starry-background.jpg'
+import planetForeground from '../../assets/planet-foreground.png'
+import spaceship from '../../assets/spaceship-crashed-2048.png'
+
+// Import character components
+import Lop from '../../components/characters/Lop'
+import Player from '../../components/characters/Player'
+import Sprinkles from '../../components/characters/Sprinkles'
+import Cellina from '../../components/characters/Cellina'
+
+// Import UI components
+import SpeechBubble from '../../components/bubbles/SpeechBubble'
+import Scene from '../../components/Scene'
+import DialogBubble from '../../components/bubbles/DialogBubble'
+
+const defaultAttributes = {
+  // Empty default state as requested
+  dialogCounter: 1,
+  showPlayerPrompt: false,
+  playerResponse: "",
+  playerState: "idle",
+  lopState: "idle",
+  cellinaState: "microscope",
+  sprinklesState: "hidden",
+}
+
+const Level1_010MeetSprinkles = () => {
+  const dispatch = useDispatch()
+  const { t } = useTranslation()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  useEffect(() => {
+    dispatch(initializePageAttributes({
+      pageId: getPageId(location.pathname), 
+      props: defaultAttributes 
+    }))
+    if(dialogCounter >= 4) {
+      dispatch_setSprinklesState("idle")
+      dispatch(updateCharacterPosition({id: "sprinkles-character", right: "10vh"}))
+    }
+  }, [dispatch, location.pathname])
+
+
+  // Use the same pattern as in Level1_001Frisbee to retrieve page attributes
+  const {
+    playerResponse,
+    dialogCounter,
+    playerState,
+    lopState,
+    cellinaState,
+    sprinklesState,
+  } = useSelector((state) => 
+    selectPageAttributes(state, state.app.pageId, defaultAttributes)
+  )
+  const dispatch_setDialogCounter = (counter) => dispatch(setPageAttribute({key: "dialogCounter", value: counter}))
+  const dispatch_setShowPlayerPrompt = (show) => dispatch(setPageAttribute({key: "showPlayerPrompt", value: show}))
+  const dispatch_setPlayerResponse = (response) => dispatch(setPageAttribute({key: "playerResponse", value: response}))
+  const dispatch_setCellinaState = (state) => dispatch(setPageAttribute({key: "cellinaState", value: state}))
+  const dispatch_setSprinklesState = (state) => dispatch(setPageAttribute({key: "sprinklesState", value: state}))
+
+  useEffect(() => {
+    console.log("dialogCounter", dialogCounter)
+    if (dialogCounter === 1) {
+      dispatch(setBubbleShow({bubbleId: "lop1", show: true}))           
+    } else {
+      dispatch(setBubbleShow({bubbleId: "lop1", show: false}))
+    }
+
+    if (dialogCounter === 2) {
+      setTimeout(() => {
+        dispatch_setCellinaState("idle")
+      }, 2000) 
+      dispatch(setBubbleShow({bubbleId: "lop2", show: true}))
+    } else {
+      dispatch(setBubbleShow({bubbleId: "lop2", show: false}))
+    }
+
+    if (dialogCounter === 3) {
+      dispatch_setSprinklesState("idle")
+      dispatch(updateCharacterPosition({id: "sprinkles-character", right: "10vh"}))
+      setTimeout(() => {
+        dispatch(setBubbleShow({bubbleId: "lopScream", show: true}))
+        dispatch(setBubbleShow({bubbleId: "playerScream", show: true}))
+        dispatch(setBubbleShow({bubbleId: "sprinklesScream", show: true}))
+      }, 2000)
+      setTimeout(() => {
+        dispatch(setBubbleShow({bubbleId: "playerScream", show: false}))
+        dispatch(setBubbleShow({bubbleId: "sprinklesScream", show: false}))
+        dispatch(setBubbleShow({bubbleId: "lopScream", show: false}))
+        dispatch(setBubbleShow({bubbleId: "lop3", show: true}))
+      }, 5000)      
+    } else {
+      dispatch(setBubbleShow({bubbleId: "lop3", show: false}))
+    }
+    if (dialogCounter === 4) {
+      dispatch(setBubbleShow({bubbleId: "cellina4", show: true}))
+    } else {
+      dispatch(setBubbleShow({bubbleId: "cellina4", show: false}))
+    }
+
+    if (dialogCounter === 5) {
+      dispatch(setBubbleShow({bubbleId: "lop5", show: true}))
+    } else {
+      dispatch(setBubbleShow({bubbleId: "lop5", show: false}))
+    }
+
+    if (dialogCounter === 6) {
+      dispatch(setBubbleShow({bubbleId: "cellina6", show: true}))
+    } else {
+      dispatch(setBubbleShow({bubbleId: "cellina6", show: false}))
+    }
+
+    if (dialogCounter === 7) {
+      dispatch(updateCharacterPosition({id: "lop-character", left: "100vh", bottom: "-2vh", zIndex: 4}))
+      setTimeout(() => {
+        dispatch(setBubbleShow({bubbleId: "lop7", show: true}))
+      }, 3000)
+      setTimeout(() => {
+        dispatch(setBubbleShow({bubbleId: "sprinklesMeow", show: true}))
+      }, 4000)
+    } else {
+      dispatch(setBubbleShow({bubbleId: "sprinklesMeow", show: false}))
+      dispatch(setBubbleShow({bubbleId: "lop7", show: false}))
+    }
+
+    if (dialogCounter === 8) {
+      dispatch(setBubbleShow({bubbleId: "cellina8", show: true}))
+      setTimeout(() => {
+        dispatch_setShowPlayerPrompt(true)
+        dispatch(setBubbleShow({bubbleId: "player-prompt", show: true}))
+      }, 2000)
+    } else {
+      dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
+      dispatch(setBubbleShow({bubbleId: "player-prompt", show: false}))
+      dispatch(setBubbleShow({bubbleId: "cellina8", show: false}))
+    }
+
+    if (dialogCounter === 9) {
+      dispatch(setBubbleShow({bubbleId: "lop9", show: true}))
+    } else {
+      dispatch(setBubbleShow({bubbleId: "player-response", show: false}))
+      dispatch(setBubbleShow({bubbleId: "lop9", show: false}))
+    }
+    if (dialogCounter === 10) {
+      dispatch(setBubbleShow({bubbleId: "cellina10", show: true}))
+    } else {
+      dispatch(setBubbleShow({bubbleId: "cellina10", show: false}))
+    }
+
+    if (dialogCounter === 11) {
+      dispatch(setBubbleShow({bubbleId: "lop11", show: true}))
+      dispatch(updateCharacterPosition({id: "lop-character", left: "45vh", bottom: "12vh", zIndex: 3}))
+    } else {
+      dispatch(setBubbleShow({bubbleId: "lop11", show: false}))
+    }
+
+    if (dialogCounter === 12) {
+      dispatch(setBubbleShow({bubbleId: "cellina12", show: true}))
+      setTimeout(() => {
+        dispatch_setCellinaState("spaceship")
+        dispatch(updateCharacterPosition({id: "cellina-character", right: "40vh", bottom: "30vh"}))
+      }, 1000)
+
+      setTimeout(() => {
+        dispatch(setBubbleShow({bubbleId: "cellina12", show: false}))
+        dispatch(setBubbleShow({bubbleId: "player13", show: true}))
+      }, 4000)
+    }
+  }, [dialogCounter, dispatch])
+
+  return (
+    <div className="view">
+      <Scene 
+        skyImage={starryBackground}
+        terrainImage={planetForeground}
+        transformTerrain="scaleX(1)"
+      />
+
+      <div style={{
+        position: 'absolute',
+        bottom: '10vh',
+        left: '-15vw',
+      }}>
+        {/* Smoke Effect */}
+        <div className="smoke-container">
+          <div className="smoke-particle" />
+          <div className="smoke-particle" />
+          <div className="smoke-particle" />
+          <div className="smoke-particle" />
+          <div className="smoke-particle" />
+        </div>
+
+        {/* Spaceship */}
+        <animated.div id="spaceship" style={{          
+          width: '60vh',
+          height: '60vh',
+          backgroundImage: `url(${spaceship})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 2,
+          transform: "rotateZ(185deg)"
+        }} />
+      </div>
+
+
+      <Player 
+        left="25vh"
+        bottom="5vh"
+        zIndex={3}
+        state={playerState}
+      >
+        <SpeechBubble id="playerScream" mainText={t("level1_010MeetSprinkles.scream")}/>      
+        <SpeechBubble id="player-response" mainText={playerResponse} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <DialogBubble id="player-prompt" 
+          top="-80%"
+          mainText={t("level1_010MeetSprinkles.playerPrompt.prompt", {returnObjects: true})} 
+          choices={t("level1_010MeetSprinkles.playerPrompt.choices", {returnObjects: true})} 
+          onSubmit={(choice) => {
+            console.log("choice", choice)
+            dispatch_setPlayerResponse(choice)
+            dispatch(setBubbleShow({bubbleId: "player-response", show: true}))
+            dispatch(setBubbleShow({bubbleId: "player-prompt", show: false}))
+        }}/>
+
+        <DialogBubble id="player13" 
+          top="-10%" left="20%"
+          mainText={t("level1_010MeetSprinkles.player13.prompt", {returnObjects: true})} 
+          choices={t("level1_010MeetSprinkles.player13.choices", {returnObjects: true})} 
+          onSubmit={() => {
+            dispatch(navigateTo({navigate, path: '/level1/Level1_011QuizChoice'}));
+        }}/>
+      </Player>
+      
+      <Lop 
+        left="5vh"
+        bottom="12vh"
+        zIndex={3}
+        state={lopState}
+      >
+        <SpeechBubble id="lop1" mainText={t("level1_010MeetSprinkles.lop1")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="lop2" mainText={t("level1_010MeetSprinkles.lop2")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="lopScream" mainText={t("level1_010MeetSprinkles.scream")}/>      
+        <SpeechBubble id="lop3" mainText={t("level1_010MeetSprinkles.lop3")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="lop5" mainText={t("level1_010MeetSprinkles.lop5")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="lop7" mainText={t("level1_010MeetSprinkles.lop7")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="lop9" mainText={t("level1_010MeetSprinkles.lop9")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="lop11" mainText={t("level1_010MeetSprinkles.lop11")} showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+      </Lop>
+
+      <Cellina 
+        right="10vh"
+        bottom="18vh"
+        zIndex={2}
+        state={cellinaState}  
+      >
+        <SpeechBubble id="cellina4" mainText={t("level1_010MeetSprinkles.cellina4")} top="-30%" showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="cellina6" mainText={t("level1_010MeetSprinkles.cellina6")} top="-30%" showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="cellina8" mainText={t("level1_010MeetSprinkles.cellina8")} top="-30%"/>
+        <SpeechBubble id="cellina10" mainText={t("level1_010MeetSprinkles.cellina10")} top="-30%" showNext={true} onClick={() => dispatch_setDialogCounter(dialogCounter + 1)}/>
+        <SpeechBubble id="cellina12" mainText={t("level1_010MeetSprinkles.cellina12")} top="-30%"/>
+      </Cellina>
+
+      <Sprinkles 
+        right="-30vh"
+        bottom="5vh"
+        zIndex={3}
+        state={sprinklesState}
+      >
+        <SpeechBubble id="sprinklesScream" mainText={t("level1_010MeetSprinkles.sprinklesScream")} />
+        <SpeechBubble id="meow" mainText={t("level1_010MeetSprinkles.meow")} />
+      </Sprinkles>
+
+      
+      
+    </div>
+  )
+}
+
+export default Level1_010MeetSprinkles
