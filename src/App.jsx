@@ -161,6 +161,9 @@ function App() {
             <Routes>
               <Route path="/" element={
                 <div className='view'>
+                  <div>
+                    <BeginButton/>
+                  </div>
                   <h3>{t('home.intro')}</h3>
                   <h3>{t('home.instructions')}</h3>
                   <div>
@@ -203,6 +206,22 @@ function App() {
         </div>
       </div>
     </MemoryRouter>
+  )
+}
+
+const BeginButton = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [disableReset, setDisableReset] = useState(false)
+  const handleBegin = () => {
+    setDisableReset(true)
+    dispatch(resetPageAttributes()).finally(() => {
+      setDisableReset(false)
+      dispatch(navigateTo({navigate, path: "/level1/Level1_001Frisbee"}))
+    })
+  }
+  return (
+    <button onClick={handleBegin} disabled={disableReset}>Begin Game</button>
   )
 }
 
