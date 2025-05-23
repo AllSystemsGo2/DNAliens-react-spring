@@ -148,7 +148,10 @@ const FightScene = ({ pageId, players, enemies, questionBank, playerHealth, enem
 
   return (
     <div className="fight-scene">
-      {showMCPrompt() && <MultipleChoicePrompt prompt={questionBank?.questions[questionIndex]?.question} responseKey={questionBank?.questions[questionIndex]?.responseKey} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>}
+      {showMCPrompt() && <MultipleChoicePrompt prompt={questionBank?.questions[questionIndex]?.question} style={{
+        position: "absolute",
+        top: "10%"
+      }} responseKey={questionBank?.questions[questionIndex]?.responseKey} choices={questionBank?.questions[questionIndex]?.answers} onSubmit={handleQuestion} submitText='Submit'/>}
       <div className="health-row">
         <div className="health-container">
           <div className="health-bar">
